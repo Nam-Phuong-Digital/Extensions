@@ -11,9 +11,9 @@ import OSLog
 
 @available (iOS 14,*)
 public class AppLogger {
-    static let shared:AppLogger = {AppLogger()}()
-    let loggerAPI = Logger(subsystem: "\(Bundle.main.applicationName ?? "")", category: "API")
-    let loggerApp = Logger(subsystem: "\(Bundle.main.applicationName ?? "")", category: "App")
+    static public let shared:AppLogger = {AppLogger()}()
+    public let loggerAPI = Logger(subsystem: "\(Bundle.main.applicationName ?? "")", category: "API")
+    public let loggerApp = Logger(subsystem: "\(Bundle.main.applicationName ?? "")", category: "App")
 }
 
 public extension Dictionary {
