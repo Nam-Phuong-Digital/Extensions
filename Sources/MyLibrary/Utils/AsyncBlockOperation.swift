@@ -9,11 +9,11 @@ import Foundation
 
 public class AsyncBlockOperation: BlockOperation {
     
-    typealias AsyncBlock = (AsyncBlockOperation) -> Void
+    public typealias AsyncBlock = (AsyncBlockOperation) -> Void
     
-    var block: AsyncBlock?
+    public var block: AsyncBlock?
     
-    init(block: @escaping AsyncBlock) {
+    public init(block: @escaping AsyncBlock) {
         super.init()
         self.block = block
     }
@@ -27,7 +27,7 @@ public class AsyncBlockOperation: BlockOperation {
         }
     }
     
-    func complete() {
+    public func complete() {
         isExecuting = false
         isFinished = true
     }
