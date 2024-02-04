@@ -40,7 +40,7 @@ public class ScaleUpViewController<Content>: UIViewController where Content: Vie
     
     var shouldTapDimToClose = false
     
-    init(
+    public init(
         selfResize:Bool = false,
         shouldTapDimToClose:Bool = false,
         onDismiss:(()->Void)? = nil
