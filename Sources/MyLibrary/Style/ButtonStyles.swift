@@ -11,8 +11,8 @@ import SwiftUI
 
 @available (iOS 13,*)
 public struct StandardButton: ButtonStyle {
-    let bgColor:Color
-    let textColor:Color
+    public let bgColor:Color
+    public let textColor:Color
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.system(size: 20))
