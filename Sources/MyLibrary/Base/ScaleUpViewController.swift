@@ -14,16 +14,16 @@ public class ScaleUpViewController<Content>: UIViewController where Content: Vie
 
     typealias Content = View
     
-    let selfResize:Bool
+    public let selfResize:Bool
     
-    var onDismiss:(()->Void)?
-    var rootView:Content?
+    public var onDismiss:(()->Void)?
+    public var rootView:Content?
     let store = Store()
     
     lazy var cancellables = Set<AnyCancellable>()
-    var customTransitionDelegate:UIViewControllerTransitioningDelegate?
+    public var customTransitionDelegate:UIViewControllerTransitioningDelegate?
 
-    lazy var isPresented:Binding<Bool> = Binding {[weak self] in guard let `self` = self else { return false}
+    lazy public var isPresented:Binding<Bool> = Binding {[weak self] in guard let `self` = self else { return false}
         return self.store.isPresented
     } set: {[weak self] in guard let `self` = self else { return}
         if !$0 {
@@ -38,7 +38,7 @@ public class ScaleUpViewController<Content>: UIViewController where Content: Vie
         @Published var isPresented:Bool = true
     }
     
-    var shouldTapDimToClose = false
+    private var shouldTapDimToClose = false
     
     public init(
         selfResize:Bool = false,
