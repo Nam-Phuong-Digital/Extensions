@@ -156,3 +156,151 @@ public extension Date {
         }
     }
 }
+
+// MARK: -  Calendar
+public extension Date {
+    func toMonthCalendar() -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let bool = calendar.isDate(self, equalTo: Date(), toGranularity: .year)
+        let formatter = DateFormatter()
+        formatter.locale = Locale.app
+        formatter.dateFormat = bool ? .formatMonthCalendar : .formatMonthYearCalendar
+        return formatter.string(from: self)
+    }
+    
+    func toMonthPersonalFlights() -> String {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let bool = calendar.isDate(self, equalTo: Date(), toGranularity: .year)
+        let formatter = DateFormatter()
+        formatter.locale = Locale.app
+        formatter.dateFormat = String.formatPersonalFlights(haveYear: !bool)
+        return formatter.string(from: self)
+    }
+    
+    func getTaskMonths() -> [Date]
+    {
+        var months = [Date]()
+
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let currenDate = calendar.component(.day, from: self)
+        let start =
+        if currenDate >= 20 {
+            -12
+        } else {
+            -11
+        }
+        
+        let end =
+        if currenDate >= 20 {
+            1
+        } else {
+            0
+        }
+        
+        var day = calendar.date(byAdding: .month, value: start, to: Date()) ?? Date()
+        for _ in start...end {
+            months.append(day)
+            day.addMonths(n: 1)
+        }
+        
+        return months
+    }
+    
+    func getNext12Months() -> [Date]
+    {
+        var months = [Date]()
+
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+
+        var day = self
+        for _ in 0..<12 {
+            months.append(day)
+            day.addMonths(n: 1)
+        }
+        
+        return months
+    }
+    
+    mutating func addDays(n: Int)
+    {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        self = calendar.date(byAdding: .day, value: n, to: self)!
+    }
+    
+    mutating func addMonths(n: Int)
+    {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        self = calendar.date(byAdding: .month, value: n, to: self)!
+    }
+    
+    func firstDayOfTheMonth() -> Date {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        return calendar.date(from:calendar.dateComponents([.year,.month], from: self))!
+    }
+    
+    func endDayOfTheMonth() -> Date {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        let range = calendar.range(of: .day, in: .month, for: self)!
+        var day = firstDayOfTheMonth()
+        day.addDays(n: range.count)
+        return day
+    }
+    
+    func getAllDays() -> [Date]
+    {
+        var days = [Date]()
+
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+
+        let range = calendar.range(of: .day, in: .month, for: self)!
+
+        var day = firstDayOfTheMonth()
+
+        for _ in 1...range.count
+        {
+            days.append(day)
+            day.addDays(n: 1)
+        }
+
+        return days
+    }
+    
+    func weekDay() -> Int {
+        var calendar = Calendar(identifier: .gregorian)
+        if #available(iOS 13.0, *) {
+            calendar.firstWeekday = 2
+        } else {
+            
+        }
+        return calendar.component(.weekday, from: self)
+    }
+    
+    func weekMonth() -> Int {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.firstWeekday = 2
+        return calendar.component(.weekOfMonth, from: self)
+    }
+    
+    func toString(format: String = "dd MMMM yyyy") -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale.app
+        formatter.dateFormat = format
+        return formatter.string(from: self)
+    }
+    
+    func get(
+        _ components: Calendar.Component...,
+        calendar: Calendar = Calendar.app
+    ) -> DateComponents {
+        return calendar.dateComponents(Set(components), from: self)
+    }
+}
