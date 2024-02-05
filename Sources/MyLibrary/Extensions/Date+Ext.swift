@@ -7,6 +7,15 @@
 
 import Foundation
 
+public protocol RangeMonthProtocol {
+    
+    /// example 11 month ago then should be: -11, should be an uninteger
+    var distanceOfMinMonthToCurrent:Int {get set}
+    
+    /// example 1 month next then should be: 1 shoud ble an integer
+    var distanceOfMaxMonthToCurrent:Int {get set}
+}
+
 public extension Date {
     
     var dateTimeToString: String? {
@@ -179,27 +188,15 @@ public extension Date {
         return formatter.string(from: self)
     }
     
-    func getTaskMonths() -> [Date]
+    func getTaskMonths(range:RangeMonthProtocol) -> [Date]
     {
         var months = [Date]()
 
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
         let currenDate = calendar.component(.day, from: self)
-        let start =
-        if currenDate >= 20 {
-            -12
-        } else {
-            -11
-        }
-        
-        let end =
-        if currenDate >= 20 {
-            1
-        } else {
-            0
-        }
-        
+        let start = range.distanceOfMinMonthToCurrent
+        let end = range.distanceOfMaxMonthToCurrent
         var day = calendar.date(byAdding: .month, value: start, to: Date()) ?? Date()
         for _ in start...end {
             months.append(day)
