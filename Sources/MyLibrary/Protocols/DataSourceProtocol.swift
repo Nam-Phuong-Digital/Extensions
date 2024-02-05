@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 public protocol DataSourceProtocol {
-    var _datasource:Any? {get set}
+    var datasource:Any? {get set}
     
     @MainActor
     func reloadDataSource(section:Int, animated:Bool)
