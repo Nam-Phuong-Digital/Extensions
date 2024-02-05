@@ -10,14 +10,16 @@ import UIKit
 
 public protocol LoadMoreActivityProtocol {
     var indicator:LoadMoreActivityIndicator? {get set}
+    func setupIndicatorLoadmore(to scrollView:UIScrollView)
+    func loadingMore(closure: (() -> Void)?)
 }
 
 public extension LoadMoreActivityProtocol {
     mutating func setupIndicatorLoadmore(to scrollView:UIScrollView) {
-        indicator = LoadMoreActivityIndicator(scrollView: scrollView)
+        self.indicator = LoadMoreActivityIndicator(scrollView: scrollView)
     }
     
-    mutating func loadingMore(closure: (() -> Void)?) {
+    mutating  func loadingMore(closure: (() -> Void)?) {
         if indicator == nil {
             fatalError("LoadMoreActivityIndicator not initialization")
         }
