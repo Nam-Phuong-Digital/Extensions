@@ -8,8 +8,22 @@
 
 import UIKit
 
-public protocol LoadMoreActivityPtotocol {
+public protocol LoadMoreActivityProtocol {
+    var indicator:LoadMoreActivityIndicator? {get set}
     func finishLoadMore()
+}
+
+extension LoadMoreActivityProtocol {
+    mutating func setupIndicatorLoadmore(to scrollView:UIScrollView) {
+        indicator = LoadMoreActivityIndicator(scrollView: scrollView)
+    }
+    
+    mutating func loadingMore(closure: (() -> Void)?) {
+        if indicator == nil {
+            fatalError("LoadMoreActivityIndicator not initialization")
+        }
+        indicator?.start (closure: closure)
+    }
 }
 
 public class LoadMoreActivityIndicator {
