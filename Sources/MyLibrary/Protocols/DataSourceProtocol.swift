@@ -50,3 +50,33 @@ public protocol DataSourceProtocol {
         with snapShot:@escaping ()->NSDiffableDataSourceSnapshot<Int,AnyHashable>
     )
 }
+
+
+public protocol CollectionDataSourceProtocol {
+    
+    @available (iOS 13,*)
+    func getDatasource() -> UICollectionViewDiffableDataSource<Int,AnyHashable>?
+    
+    @MainActor
+    func reloadDataSourceCollection(section:Int, animated:Bool)
+    
+    @MainActor
+    func reloadCollection(rows:[AnyHashable], animated:Bool)
+    
+    @available(iOS 13.0, *)
+    @MainActor
+    func setupDataCollectionSource(_ dataSource:@escaping ()->UICollectionViewDiffableDataSource<Int,AnyHashable>)
+    
+    func getItemCollection<T:Codable>(_ indexPath:IndexPath) -> T?
+    
+    func getItemCollection<T:Hashable>(_ indexPath:IndexPath) -> T?
+    
+    func getItemCollection(_ indexPath:IndexPath) -> AnyHashable?
+    
+    @MainActor
+    func updateDataSoureCollection(items:[AnyHashable], section:Int)
+    
+    @available(iOS 13.0, *)
+    @MainActor
+    func updateDataSoureCollection(with snapShot:@escaping ()->NSDiffableDataSourceSnapshot<Int,AnyHashable>)
+}
