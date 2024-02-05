@@ -11,7 +11,7 @@ import UIKit
 public protocol DataSourceProtocol {
     
     @available (iOS 13,*)
-    func getDatasource() -> UITableViewDiffableDataSource<Int,AnyHashable>
+    func getDatasource() -> UITableViewDiffableDataSource<Int,AnyHashable>?
     
     @MainActor
     func reloadDataSource(section:Int, animated:Bool)
