@@ -8,6 +8,11 @@
 import Foundation
 
 public struct DefaultRangeMonth: RangeMonthProtocol {
+    
+    public init() {
+        
+    }
+    
     public var distanceOfMinMonthToCurrent: Int {
         get {
             return -12
