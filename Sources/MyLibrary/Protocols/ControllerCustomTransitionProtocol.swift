@@ -9,5 +9,5 @@ import Foundation
 import UIKit
 
 public protocol ControllerCustomTransitionProtocol {
-    var customTransitionDelegate:UIViewControllerTransitioningDelegate? {get set}
+    func customTransitionDelegate(_ t:UIViewControllerTransitioningDelegate?)
 }
