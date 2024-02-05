@@ -185,10 +185,10 @@ public extension Date {
 
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
-        let currenDate = calendar.component(.day, from: self)
+        let currenDate = Date()
         let start = range.distanceOfMinMonthToCurrent
         let end = range.distanceOfMaxMonthToCurrent
-        var day = calendar.date(byAdding: .month, value: start, to: Date()) ?? Date()
+        var day = calendar.date(byAdding: .month, value: start, to: currenDate) ?? currenDate
         for _ in start...end {
             months.append(day)
             day.addMonths(n: 1)
