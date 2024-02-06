@@ -8,6 +8,8 @@
 import Foundation
 
 open class RangeMonth {
+
+    public init() {}
     
     /// example 11 month ago then should be: -11, should be an uninteger
     var distanceOfMinMonthToCurrent:Int = -12
