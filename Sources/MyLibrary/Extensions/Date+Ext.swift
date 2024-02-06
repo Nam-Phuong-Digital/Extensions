@@ -179,7 +179,7 @@ public extension Date {
         return formatter.string(from: self)
     }
     
-    func getTaskMonths(range:RangeMonthProtocol) -> [Date]
+    func getTaskMonths(range:RangeMonth = DefaultRangeMonth()) -> [Date]
     {
         var months = [Date]()
 
