@@ -37,8 +37,8 @@ open class BaseView: UIView {
             }
         }
         addSubview(view)
-        view.boundInside(self)
-        view.frame = self.frame
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.frame = bounds
     }
    
     // MARK: - init
