@@ -25,7 +25,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tt6-ia-eCz" customClass="RoundImageView" customModule="Cabinbook" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tt6-ia-eCz" customClass="RoundImageView">
                                 <rect key="frame" x="10" y="18" width="15" height="15"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="tt6-ia-eCz" secondAttribute="height" id="Rwh-xY-8KA"/>
