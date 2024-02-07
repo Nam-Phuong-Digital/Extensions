@@ -7,19 +7,18 @@
 //
 
 import UIKit
-import MyLibrary
 
-protocol ButtonScrollTabViewDelegate:AnyObject {
+public protocol ButtonScrollTabViewDelegate:AnyObject {
     func selectTab(identifier:String?,buttonTab:ButtonTab?)
     func shouldSelectTab(identifier:String?,buttonTab:ButtonTab?) -> Bool
 }
 
-extension ButtonScrollTabViewDelegate {
+public extension ButtonScrollTabViewDelegate {
     func selectTab(identifier:String?,buttonTab:ButtonTab?) {}
     func shouldSelectTab(identifier:String?,buttonTab:ButtonTab?) -> Bool {return true}
 }
 
-class ButtonTab: NSObject {
+public class ButtonTab: NSObject {
     let title:String
     let identifider:String
     let isSelected:Bool
@@ -34,31 +33,31 @@ class ButtonTab: NSObject {
     }
 }
 
-class ButtonScrollTabView: BaseView {
+public class ButtonScrollTabView: BaseView {
     
-    var maxHeight:CGFloat = 100 + CGSize.getSizeNavigationBarIncludeStatus.height
-    weak var delegate:ButtonScrollTabViewDelegate?
-    var buttonTabs:[ButtonTab] = []
-    var contentInset:UIEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+    public var maxHeight:CGFloat = 100 + CGSize.getSizeNavigationBarIncludeStatus.height
+    weak public  var delegate:ButtonScrollTabViewDelegate?
+    public var buttonTabs:[ButtonTab] = []
+    public var contentInset:UIEdgeInsets = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
     
     @IBOutlet weak var scrollView:UIScrollView!
     @IBOutlet weak var leading: NSLayoutConstraint!
     @IBOutlet weak var stackButton: UIStackView!
     @IBOutlet weak var underLine: UIView!
     
-    var onScrollDidChange:((UIScrollView)-> Void)?
-    var onScrollDidEnd:((UIScrollView)-> Void)?
+    public var onScrollDidChange:((UIScrollView)-> Void)?
+    public var onScrollDidEnd:((UIScrollView)-> Void)?
     
-    func dissmiss() {
+    public func dissmiss() {
         transform = CGAffineTransform.identity.translatedBy(x: 0, y: -maxHeight)
     }
     
-    func scrollToSelectIndex() {
+    public func scrollToSelectIndex() {
         if selectIndex >= buttonTabs.count {return}
         self.scrollView.setContentOffset(CGPoint(x: self.stackButton.arrangedSubviews[selectIndex].frame.origin.x - self.view.frame.width/2, y: 0), animated: true)
     }
     
-    func disabledNormalMenu() {
+    public func disabledNormalMenu() {
         scrollView.isScrollEnabled = false
         stackButton.arrangedSubviews.enumerated().forEach { (i,view) in
             if let button = view as? UIButton, i != selectIndex {
@@ -73,7 +72,7 @@ class ButtonScrollTabView: BaseView {
         }
     }
     
-    func enabledNormalMenu() {
+    public func enabledNormalMenu() {
         scrollView.isScrollEnabled = true
         stackButton.arrangedSubviews.enumerated().forEach { (i,view) in
             if let button = view as? UIButton, i != selectIndex {
@@ -88,14 +87,14 @@ class ButtonScrollTabView: BaseView {
         }
     }
     
-    var objectSelected:ButtonTab? {
+    public var objectSelected:ButtonTab? {
         get {
             if buttonTabs.count == 0, selectIndex > buttonTabs.count - 1 {return nil}
             return buttonTabs[selectIndex]
         }
     }
     
-    var selectIndex:Int = 0 {
+    public var selectIndex:Int = 0 {
         didSet {
             stackButton.arrangedSubviews.enumerated().forEach { (i,view) in
                 if let button = view as? UIButton {
@@ -118,11 +117,11 @@ class ButtonScrollTabView: BaseView {
         }
     }
     
-    func setSelectIndex(index:Int) {
+    public func setSelectIndex(index:Int) {
         selectIndex = index
     }
     
-    @objc func action(_ sender:UIButton) {
+    @objc public  func action(_ sender:UIButton) {
         let newIndex = stackButton.arrangedSubviews.firstIndex(where: {$0.isEqual(sender)}) ?? 0
         if selectIndex == newIndex {return}
         if self.delegate?.shouldSelectTab(identifier: buttonTabs[newIndex].identifider, buttonTab: buttonTabs[newIndex]) == true {
@@ -131,7 +130,7 @@ class ButtonScrollTabView: BaseView {
         }
     }
     
-    func setButtons(titles:[ButtonTab]) {
+    public func setButtons(titles:[ButtonTab]) {
         buttonTabs = titles
         stackButton.arrangedSubviews.forEach{$0.removeFromSuperview()}
         titles.enumerated().forEach({ i,tab in
@@ -148,7 +147,7 @@ class ButtonScrollTabView: BaseView {
         reFrameUnderLine()
     }
     
-    func reFrameUnderLine() {
+    public func reFrameUnderLine() {
         self.layoutIfNeeded()
         if selectIndex >= stackButton.arrangedSubviews.count || stackButton.arrangedSubviews.count == 0 {return}
         
@@ -162,7 +161,7 @@ class ButtonScrollTabView: BaseView {
         }
     }
     
-    func setSpaceWithSafeAreaTop() {
+    public func setSpaceWithSafeAreaTop() {
         let size = self.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
         if let height = getHeightConstraint() {
             height.constant = size.height + CGSize.getSizeNavigationBarIncludeStatus.height
@@ -171,45 +170,45 @@ class ButtonScrollTabView: BaseView {
         }
     }
     
-    func removeSpaceWithSafeAreaTop() {
+    public func removeSpaceWithSafeAreaTop() {
         if let height = getHeightConstraint() {
             self.removeConstraint(height)
         }
     }
     
-    func setBackground(color:UIColor){
+    public func setBackground(color:UIColor){
         view.backgroundColor = color
     }
     
     // MARK: -  override
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
         view.backgroundColor = .white
         underLine.backgroundColor = .mainColor
         scrollView.contentInset = contentInset
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         reFrameUnderLine()
         scrollView.contentInset = contentInset
     }
     
-    override func config() {
+    public override func config() {
         scrollView.delegate = self
     }
 }
 
 extension ButtonScrollTabView: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.onScrollDidChange?(scrollView)
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         self.onScrollDidChange?(scrollView)
     }
     
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate {
             self.onScrollDidChange?(scrollView)
         }
