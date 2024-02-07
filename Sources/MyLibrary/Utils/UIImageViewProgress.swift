@@ -62,19 +62,19 @@ public extension UIImage {
 
 open class UIImageViewProgress: UIImageView {
     
-    var urlImageString: String?
+    public var urlImageString: String?
     
-    weak var delegate: UIImageViewProgressDelegate?
+    weak public  var delegate: UIImageViewProgressDelegate?
     
-    var isLoadSuccessed = false
+    public var isLoadSuccessed = false
     
-    weak var sdWebImageOperation: SDWebImageOperation?
+    weak public  var sdWebImageOperation: SDWebImageOperation?
     
-    let circularProgressView = KDCircularProgress(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+    public let circularProgressView = KDCircularProgress(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     
-    let imageViewHeart = UIImageView(image: UIImage(named: "heart.png"))
+    public let imageViewHeart = UIImageView(image: UIImage(named: "heart.png"))
     
-    class func cacheKey(for url:URL) -> String {
+    class public  func cacheKey(for url:URL) -> String {
         return SDWebImageManager.shared.cacheKey(for: url) ?? ""
         
     }
@@ -99,7 +99,7 @@ open class UIImageViewProgress: UIImageView {
 //        print("Deinit UIImageViewProgress")
     }
     
-    init() {
+    public init() {
         
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
@@ -127,7 +127,7 @@ open class UIImageViewProgress: UIImageView {
         
     }
     
-    init(isProgressBar:Bool) {
+    public init(isProgressBar:Bool) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         if(isProgressBar){
             self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
@@ -181,7 +181,7 @@ open class UIImageViewProgress: UIImageView {
         
     }
     
-    func addDoubleTap() {
+    public func addDoubleTap() {
         self.isLoadSuccessed = false
         self.imageViewHeart.isHidden = true
         self.imageViewHeart.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y:(self.frame.size.height - 80)/2.0, width: 80, height: 80)
@@ -203,7 +203,7 @@ open class UIImageViewProgress: UIImageView {
     }
     
     
-    func loadImageNoProgressBar(url: URL?) {
+    public func loadImageNoProgressBar(url: URL?) {
         
         if(!self.circularProgressView.isHidden){
             self.circularProgressView.isHidden = true
@@ -292,11 +292,11 @@ open class UIImageViewProgress: UIImageView {
         }
     }
     
-    @objc func handleSingleTap(sender:AnyObject) {
+    @objc public  func handleSingleTap(sender:AnyObject) {
         
     }
     
-    @objc func handleDoubleTap(sender:AnyObject) {
+    @objc public  func handleDoubleTap(sender:AnyObject) {
         if(self.isLoadSuccessed) {
             self.animateLike()
         }
