@@ -8,9 +8,9 @@
 
 import UIKit
 
-class DayComponentCell: UICollectionViewCell {
+public class DayComponentCell: UICollectionViewCell {
 
-    struct Config: Hashable {
+    public struct Config: Hashable {
         let day:String?
         let iconTask:UIImage?
         let bgIcon:UIColor?
@@ -53,11 +53,11 @@ class DayComponentCell: UICollectionViewCell {
     
     let bgHightlightView:UIView = {
         let v = UIView()
-        v.backgroundColor = UIColor(resource: .border)
+        v.backgroundColor = UIColor("#C0C5CA")
         return v
     }()
     
-    override func awakeFromNib() {
+    public override func awakeFromNib() {
         super.awakeFromNib()
     }
     
@@ -66,7 +66,7 @@ class DayComponentCell: UICollectionViewCell {
     ) {
         lblDay.text = config.day
         lblIconTask.image = config.iconTask?.resizeImageWith(newSize: CGSize(width: 10, height: 10)).tint(with: .white)
-        lblIconTask.isHidden = config.iconTask.isNil
+        lblIconTask.isHidden = config.iconTask == nil
         lblIconTask.backgroundColor = config.bgIcon
         lblDay.font = config.isBold ? UIFont.boldSystemFont(ofSize: 16) : UIFont.systemFont(ofSize: 16)
         lblDay.textColor =
@@ -103,7 +103,7 @@ class DayComponentCell: UICollectionViewCell {
         }
     }
 
-    override func prepareForReuse() {
+    public override func prepareForReuse() {
         if #available(iOS 14, *) {
             var bg = UIBackgroundConfiguration.clear()
             bg.customView = bgNormalView

@@ -83,6 +83,17 @@ public extension View {
 
 public extension UIView {
     
+    static var nib:UINib {
+        return UINib(nibName: identifier, bundle: nil)
+    }
+    
+    static var identifier: String {
+        if let name = NSStringFromClass(self).components(separatedBy: ".").last {
+            return name
+        }
+        return String(describing: self)
+    }
+    
     func makeSnapshot() -> UIImage? {
         let renderer = UIGraphicsImageRenderer(size: frame.size)
         return renderer.image { rendererContext in

@@ -18,14 +18,14 @@ public class CEVMonth:Identifiable, Hashable {
     }
     
     public var id: String {identifier}
-    let identifier:String = .generateIdentifier
-    let date:Date
-    var days:[CEVDate]
-    init(date: Date, days: [CEVDate]) {
+    public let identifier:String = .generateIdentifier
+    public let date:Date
+    public var days:[CEVDate]
+    public init(date: Date, days: [CEVDate]) {
         self.date = date
         self.days = days
     }
-    func isEqual(_ date:Date?) -> Bool {
+    public func isEqual(_ date:Date?) -> Bool {
         guard let date = date else {return false}
         let compoNew = date.get(.month,.year)
         let compoown = self.date.get(.month,.year)
@@ -43,13 +43,13 @@ public class CEVDate:Identifiable, Hashable {
     }
     
     public var id: String {identifier}
-    let identifier:String = .generateIdentifier
-    let text:String
-    let date:Date
-    let disabled:Bool
-    let isBelongCurrentMonth:Bool
+    public let identifier:String = .generateIdentifier
+    public let text:String
+    public let date:Date
+    public let disabled:Bool
+    public let isBelongCurrentMonth:Bool
     
-    init(
+    public init(
         text: String,
         date: Date,
         disabled:Bool = false,
@@ -61,7 +61,7 @@ public class CEVDate:Identifiable, Hashable {
         self.isBelongCurrentMonth = isBelongCurrentMonth
     }
     
-    var isDisabled:Bool {
+    public var isDisabled:Bool {
         if disabled {
             return disabled
         }
@@ -69,19 +69,19 @@ public class CEVDate:Identifiable, Hashable {
         return calendar.startOfDay(for: date).timeIntervalSince1970 < calendar.startOfDay(for: Date()).timeIntervalSince1970
     }
     
-    func isEqual(_ date:Date?) -> Bool {
+    public func isEqual(_ date:Date?) -> Bool {
         guard let date = date else {return false}
         let calendar = Calendar.app
         return calendar.startOfDay(for: date).timeIntervalSince1970 == calendar.startOfDay(for: self.date).timeIntervalSince1970
     }
     
-    var keyEvent:(String,Int?,Int?){
+    public var keyEvent:(String,Int?,Int?){
         let calendar = Calendar.app
         let coms = calendar.dateComponents([.month,.year], from: date)
         guard let month = coms.month, let year = coms.year else {return ("",coms.month,coms.year)}
         return ("\(month)-\(year)",month,year)
     }
-    var textNumber:String {
+    public var textNumber:String {
         if let number = Int(text) {
             if number < 10 {
                 return " \(number) "
@@ -90,12 +90,12 @@ public class CEVDate:Identifiable, Hashable {
         }
         return text
     }
-    var shouldHidden:Bool{
+    public var shouldHidden:Bool{
         disabled
     }
 }
 
-enum WeekDay:Int {
+public enum WeekDay:Int {
     case sun = 1
     case mon = 2
     case tue = 3
@@ -104,11 +104,11 @@ enum WeekDay:Int {
     case fri = 6
     case sat = 7
     
-    static var allCases:[WeekDay] {
+    static public var allCases:[WeekDay] {
         [.mon,.tue,.web,.thu,.fri,.sat,.sun]
     }
     
-    var toString:String {
+    public var toString:String {
         var calendar = Calendar(identifier: .gregorian)
         calendar.locale = .app
         let days = calendar.shortWeekdaySymbols

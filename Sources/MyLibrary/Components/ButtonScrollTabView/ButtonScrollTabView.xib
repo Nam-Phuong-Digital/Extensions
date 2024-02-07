@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ButtonScrollTabView" customModule="Cabinbook" customModuleProvider="target">
+            <connections>
+                <outlet property="leading" destination="2wi-Bt-7YR" id="vaA-Vp-Npe"/>
+                <outlet property="scrollView" destination="rgI-ry-OWj" id="hSW-ZX-0CP"/>
+                <outlet property="stackButton" destination="0Bw-SI-7b0" id="GCq-aF-lWn"/>
+                <outlet property="underLine" destination="aDN-3A-oIi" id="FfQ-ef-l05"/>
+                <outlet property="view" destination="yic-eg-AxO" id="6fM-mj-ryS"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="yic-eg-AxO">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="372"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <scrollView multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rgI-ry-OWj">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="372"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GQJ-DU-gJb">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="372"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" alignment="bottom" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="0Bw-SI-7b0">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="372"/>
+                                    <variation key="heightClass=regular-widthClass=regular" spacing="20"/>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="0Bw-SI-7b0" secondAttribute="bottom" id="W57-zA-tWb"/>
+                                <constraint firstAttribute="trailing" secondItem="0Bw-SI-7b0" secondAttribute="trailing" priority="999" id="c2a-Wi-qib"/>
+                                <constraint firstItem="0Bw-SI-7b0" firstAttribute="leading" secondItem="GQJ-DU-gJb" secondAttribute="leading" id="ixf-wp-huq"/>
+                                <constraint firstItem="0Bw-SI-7b0" firstAttribute="top" secondItem="GQJ-DU-gJb" secondAttribute="top" id="nnV-jE-QdD"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aDN-3A-oIi">
+                            <rect key="frame" x="0.0" y="370" width="0.0" height="2"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="999" id="3dd-J3-oOn"/>
+                                <constraint firstAttribute="height" constant="2" id="T4u-A0-uVT"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="GQJ-DU-gJb" firstAttribute="top" secondItem="rgI-ry-OWj" secondAttribute="top" id="2U9-7j-Ipy"/>
+                        <constraint firstItem="aDN-3A-oIi" firstAttribute="leading" secondItem="rgI-ry-OWj" secondAttribute="leading" id="2wi-Bt-7YR"/>
+                        <constraint firstItem="GQJ-DU-gJb" firstAttribute="height" secondItem="rgI-ry-OWj" secondAttribute="height" id="77U-QQ-0XK"/>
+                        <constraint firstAttribute="bottom" secondItem="aDN-3A-oIi" secondAttribute="bottom" id="8bN-zE-XSC"/>
+                        <constraint firstAttribute="bottom" secondItem="GQJ-DU-gJb" secondAttribute="bottom" id="hPJ-FA-uJ9"/>
+                        <constraint firstAttribute="trailing" secondItem="GQJ-DU-gJb" secondAttribute="trailing" priority="1" id="oiI-kF-LFx"/>
+                        <constraint firstItem="GQJ-DU-gJb" firstAttribute="leading" secondItem="rgI-ry-OWj" secondAttribute="leading" id="xm5-gH-YYN"/>
+                    </constraints>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="rgI-ry-OWj" firstAttribute="top" secondItem="yic-eg-AxO" secondAttribute="top" id="685-jj-UmK"/>
+                <constraint firstItem="rgI-ry-OWj" firstAttribute="leading" secondItem="yic-eg-AxO" secondAttribute="leading" id="Hso-Cf-LGa"/>
+                <constraint firstAttribute="trailing" secondItem="rgI-ry-OWj" secondAttribute="trailing" id="Lu5-AN-5eO"/>
+                <constraint firstAttribute="bottom" secondItem="rgI-ry-OWj" secondAttribute="bottom" id="Qxa-dS-f5b"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="137.68115942028987" y="-667.63392857142856"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
