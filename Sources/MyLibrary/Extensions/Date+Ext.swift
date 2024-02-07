@@ -144,18 +144,6 @@ public extension Date {
         }
     }
     
-    var toMiddleDayString: String {
-        get {
-            let df = DateFormatter()
-            df.timeZone = TimeZone(identifier: "UTC")
-            df.locale = Locale(identifier: "en_US")
-            df.dateFormat = "yyyy-MM-dd'T'12:00:00"
-            let stringFromDate = df.string(from: self)
-            return stringFromDate
-            
-        }
-    }
-    
     var toStringyyyyMMddHHmmssSSS: String {
         get {
             let df = DateFormatter()
