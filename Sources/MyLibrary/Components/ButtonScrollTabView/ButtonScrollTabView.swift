@@ -19,11 +19,11 @@ public extension ButtonScrollTabViewDelegate {
 }
 
 public class ButtonTab: NSObject {
-    let title:String
-    let identifider:String
-    let isSelected:Bool
+    public let title:String
+    public let identifider:String
+    public let isSelected:Bool
     
-    init(title:String,
+    public init(title:String,
          identifier:String,
          isSelected:Bool) {
         self.title = title
