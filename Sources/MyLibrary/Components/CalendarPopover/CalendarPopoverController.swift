@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MyLibrary
 
 public extension UIViewController {
     func presentCalendarComponent(
@@ -43,7 +42,7 @@ public class CalendarPopoverController: UIViewController {
         self.currentDate = currentDate
         self.result = result
         self.rangeMonths = rangeMonths
-        super.init(nibName: "CalendarPopoverController", bundle: nil)
+        super.init(nibName: "CalendarPopoverController", bundle: .module)
         modalPresentationStyle = .popover
         if let pop = self.popoverPresentationController {
 //            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
