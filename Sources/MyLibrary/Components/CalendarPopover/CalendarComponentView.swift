@@ -31,14 +31,20 @@ public extension CalendarComponentViewDelegate {
 fileprivate let EXPAND_HEIGHT = 320.0
 fileprivate let COLLAPSE_HEIGHT = 50.0
 
-public class CalendarComponentView: BaseView {
+public class CalendarComponentView: UIView {
 
-    public init() {
-        super.init(bundle: nil)
+    required init?(coder aDecoder: NSCoder) {   // 2 - storyboard initializer
+        super.init(coder: aDecoder)
+        fromNib()   // 5.
+    }
+    public init() {   // 3 - programmatic initializer
+        super.init(frame: CGRect.zero)  // 4.
+        fromNib()  // 6.
     }
     
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(bundle:nil)
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        config()
     }
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -92,7 +98,7 @@ public class CalendarComponentView: BaseView {
     
     private var icons:[String:UIImage?] = [:]
     
-    public override func config() {
+    public func config() {
         
         btnBack.setCheckBoxStyle(image: Resource.Icon.back, selectedImage: Resource.Icon.back,tintColor: .mainColor)
         btnNext.setCheckBoxStyle(image: Resource.Icon.right, selectedImage: Resource.Icon.right, tintColor: .mainColor)
@@ -104,7 +110,6 @@ public class CalendarComponentView: BaseView {
             self.collectionView.isScrollEnabled = true
             self.collectionView.collectionViewLayout = UICollectionViewLayout.createLayout(columns: 7)
         } else {
-            self.view.layoutIfNeeded()
             self.collectionView.collectionViewLayout = CalendarFlowLayout()
             self.collectionView.isScrollEnabled = true
         }

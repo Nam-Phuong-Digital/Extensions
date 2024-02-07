@@ -17,7 +17,6 @@
                 <outlet property="collectionView" destination="cU3-QO-VXB" id="udx-f6-7EN"/>
                 <outlet property="heightCollectionView" destination="gYC-a2-sfz" id="Sgu-Ep-UIA"/>
                 <outlet property="tabMonths" destination="H68-IV-h6C" id="lEe-jq-oqq"/>
-                <outlet property="view" destination="iN0-l3-epB" id="7S5-8N-swt"/>
                 <outlet property="vwMonth" destination="WgC-z8-1zF" id="jg9-bP-nsa"/>
             </connections>
         </placeholder>
