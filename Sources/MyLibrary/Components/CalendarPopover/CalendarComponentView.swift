@@ -33,13 +33,13 @@ fileprivate let COLLAPSE_HEIGHT = 50.0
 
 public class CalendarComponentView: BaseView {
 
-//    init() {
-//        super.init(bundle: .module)
-//    }
+    public init() {
+        super.init(bundle: nil)
+    }
     
-//    required public init?(coder aDecoder: NSCoder) {
-//        super.init(bundle: .module)
-//    }
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(bundle:nil)
+    }
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tabMonths: ButtonScrollTabView!
