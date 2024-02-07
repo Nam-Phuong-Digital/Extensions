@@ -241,12 +241,12 @@ public extension String {
     
     var stringToDateYYYYMMdd: Date? {
         get {
+            let string = self.UTCToLocal(out: "yyyy-MM-dd'T'HH:mm:ss", fromFormat: "yyyy-MM-dd'T'HH:mm:ss")
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             let locale = Locale(identifier: "en_US_POSIX")
             df.locale = locale
-            let dateFromString = df.date(from: self)
-            df.timeZone = TimeZone(identifier: "UTC")
+            let dateFromString = df.date(from: string)
             return dateFromString
             
         }
@@ -254,12 +254,12 @@ public extension String {
     
     var stringToDateYYYYMMddSSS: Date? {
         get {
+            let string = self.UTCToLocal()
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
             let locale = Locale(identifier: "en_US_POSIX")
             df.locale = locale
-            let dateFromString = df.date(from: self)
-            df.timeZone = TimeZone(identifier: "UTC")
+            let dateFromString = df.date(from: string)
             return dateFromString
             
         }
