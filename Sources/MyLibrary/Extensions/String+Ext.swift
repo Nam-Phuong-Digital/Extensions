@@ -121,7 +121,7 @@ public extension String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.dateFormat = fromFormat
-        //        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let dt = dateFormatter.date(from: self)
         
         let dateFormatter1 = DateFormatter()
