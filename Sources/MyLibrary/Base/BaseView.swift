@@ -30,7 +30,11 @@ open class BaseView: UIView {
     // MARK: -  private
     private func loadNIb(bundle:Bundle?) {
         if let name = NSStringFromClass(type(of: self)).components(separatedBy: ".").last {
-            Bundle(for: type(of: self)).loadNibNamed(name, owner: nil, options: nil)
+            if let bundle {
+                bundle.loadNibNamed(name, owner: nil)
+            } else {
+                Bundle.module.loadNibNamed(name, owner: nil, options: nil)
+            }
         }
         addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
