@@ -37,11 +37,8 @@ open class BaseView: UIView {
             }
         }
         addSubview(view)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        view.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        view.boundInside(self)
+        view.frame = self.frame
     }
    
     // MARK: - init
