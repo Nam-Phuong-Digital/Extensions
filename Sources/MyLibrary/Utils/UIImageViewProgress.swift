@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-extension UIImage {
+public extension UIImage {
     
     func getImageFromRect(rect: CGRect) -> UIImage? {
         if let cg = self.cgImage,
@@ -53,7 +53,7 @@ extension UIImage {
 
 
 
-@objc protocol UIImageViewProgressDelegate: NSObjectProtocol {
+@objc public protocol UIImageViewProgressDelegate: NSObjectProtocol {
     
     @objc optional func userLikeImage()
     
@@ -228,7 +228,7 @@ open class UIImageViewProgress: UIImageView {
     }
     
     
-    func loadImageProgress(url: URL?) {
+    public func loadImageProgress(url: URL?) {
         if(url != nil) {
             self.urlImageString = url!.absoluteString
             self.cancelLoadImageProgress()
@@ -283,7 +283,7 @@ open class UIImageViewProgress: UIImageView {
         
     }
     
-    func cancelLoadImageProgress() {
+    public func cancelLoadImageProgress() {
         //urlImageString = nil
         self.image = nil
         self.sdWebImageOperation?.cancel()
@@ -305,7 +305,7 @@ open class UIImageViewProgress: UIImageView {
     
     
     
-    func animateLike() {
+    public func animateLike() {
         
         self.imageViewHeart.isHidden = false
         UIView.animate(withDuration: 0.3, delay: 0, options: .allowUserInteraction, animations: {
