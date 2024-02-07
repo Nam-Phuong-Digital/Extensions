@@ -35,6 +35,14 @@ public class ButtonTab: NSObject {
 
 public class ButtonScrollTabView: BaseView {
     
+    public init() {
+        super.init(bundle: .module)
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(bundle: .module)
+    }
+    
     public var maxHeight:CGFloat = 100 + CGSize.getSizeNavigationBarIncludeStatus.height
     weak public  var delegate:ButtonScrollTabViewDelegate?
     public var buttonTabs:[ButtonTab] = []
