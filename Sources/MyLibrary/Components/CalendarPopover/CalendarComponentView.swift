@@ -382,7 +382,7 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
 }
 
 extension CalendarComponentView: ButtonScrollTabViewDelegate {
-    func selectTab(identifier: String?, buttonTab: ButtonTab?) {
+    public func selectTab(identifier: String?, buttonTab: ButtonTab?) {
         if let identifier,
            let index = menuMonths.firstIndex(where: {
                $0.identifier == identifier
