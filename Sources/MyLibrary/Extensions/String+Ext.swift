@@ -243,9 +243,10 @@ public extension String {
         get {
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-//            let locale = Locale(identifier: "en_US_POSIX")
-            df.locale = Locale.app
+            let locale = Locale(identifier: "en_US_POSIX")
+            df.locale = locale
             let dateFromString = df.date(from: self)
+            df.timeZone = TimeZone(identifier: "UTC")
             return dateFromString
             
         }
@@ -258,6 +259,7 @@ public extension String {
             let locale = Locale(identifier: "en_US_POSIX")
             df.locale = locale
             let dateFromString = df.date(from: self)
+            df.timeZone = TimeZone(identifier: "UTC")
             return dateFromString
             
         }
