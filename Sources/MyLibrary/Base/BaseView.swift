@@ -28,9 +28,9 @@ open class BaseView: UIView {
     }
     
     // MARK: -  private
-    private func loadNIb() {
+    private func loadNIb(bundle:Bundle?) {
         if let name = NSStringFromClass(type(of: self)).components(separatedBy: ".").last {
-            Bundle.main.loadNibNamed(name, owner: self, options: nil)
+            bundle?.loadNibNamed(name, owner: self, options: nil)
         }
         addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -43,19 +43,19 @@ open class BaseView: UIView {
     // MARK: - init
     override public  init(frame: CGRect) {
         super.init(frame: frame)
-        loadNIb()
+        loadNIb(bundle: .main)
         config()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        loadNIb()
+        loadNIb(bundle: .main)
         config()
     }
     
-    public init() {
+    public init(bundle:Bundle?) {
         super.init(frame: CGRect.zero)
-        loadNIb()
+        loadNIb(bundle: bundle)
         config()
     }
     
