@@ -37,9 +37,9 @@ public class CalendarComponentView: BaseView {
 //        super.init(bundle: .module)
 //    }
     
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(bundle: .module)
-    }
+//    required public init?(coder aDecoder: NSCoder) {
+//        super.init(bundle: .module)
+//    }
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tabMonths: ButtonScrollTabView!
