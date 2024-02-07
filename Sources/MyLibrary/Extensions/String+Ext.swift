@@ -113,15 +113,12 @@ public extension String {
         return "Boundary-\(NSUUID().uuidString)"
     }
     
-    func UTCToLocal(
-        out format:String = "yyyy-MM-dd'T'HH:mm:ss.SSS",
-        fromFormat:String = "yyyy-MM-dd'T'HH:mm:ss.SSS"
-    ) -> String {
+    func UTCToLocal(format:String = "yyyy-MM-dd'T'HH:mm:ss.SSS") -> String {
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = fromFormat
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        //        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let dt = dateFormatter.date(from: self)
         
         let dateFormatter1 = DateFormatter()
@@ -232,7 +229,6 @@ public extension String {
             let formatStart:String = "dd/MM/yyyy"
             let formatter = DateFormatter()
             formatter.locale = Locale.app
-            formatter.timeZone = TimeZone.current
             formatter.dateFormat = formatStart
             return formatter.string(from: start)
         }
@@ -241,12 +237,11 @@ public extension String {
     
     var stringToDateYYYYMMdd: Date? {
         get {
-            let string = self.UTCToLocal(out: "yyyy-MM-dd'T'HH:mm:ss", fromFormat: "yyyy-MM-dd'T'HH:mm:ss")
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
             let locale = Locale(identifier: "en_US_POSIX")
             df.locale = locale
-            let dateFromString = df.date(from: string)
+            let dateFromString = df.date(from: self)
             return dateFromString
             
         }
@@ -254,12 +249,11 @@ public extension String {
     
     var stringToDateYYYYMMddSSS: Date? {
         get {
-            let string = self.UTCToLocal()
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
             let locale = Locale(identifier: "en_US_POSIX")
             df.locale = locale
-            let dateFromString = df.date(from: string)
+            let dateFromString = df.date(from: self)
             return dateFromString
             
         }
