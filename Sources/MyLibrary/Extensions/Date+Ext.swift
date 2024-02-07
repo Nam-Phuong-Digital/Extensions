@@ -9,6 +9,18 @@ import Foundation
 
 public extension Date {
     
+    var toLocalddMMyyyy: String? {
+        get {
+            let df = DateFormatter()
+            df.locale = Locale(identifier: "en_US")
+            df.dateFormat = "dd/MM/yyyy"
+            df.timeZone = TimeZone.current
+            let stringFromDate = df.string(from: self)
+            return stringFromDate
+            
+        }
+    }
+    
     var dateTimeToString: String? {
         get {
             let df = DateFormatter()
