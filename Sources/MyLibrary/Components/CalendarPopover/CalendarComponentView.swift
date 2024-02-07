@@ -35,11 +35,11 @@ public class CalendarComponentView: UIView {
 
     required init?(coder aDecoder: NSCoder) {   // 2 - storyboard initializer
         super.init(coder: aDecoder)
-        fromNib()   // 5.
+        fromNib(isModule: true)   // 5.
     }
     public init() {   // 3 - programmatic initializer
         super.init(frame: CGRect.zero)  // 4.
-        fromNib()  // 6.
+        fromNib(isModule: true)  // 6.
     }
     
     public override func awakeFromNib() {
