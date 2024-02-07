@@ -229,6 +229,7 @@ public extension String {
             let formatStart:String = "dd/MM/yyyy"
             let formatter = DateFormatter()
             formatter.locale = Locale.app
+            formatter.timeZone = TimeZone.current
             formatter.dateFormat = formatStart
             return formatter.string(from: start)
         }
