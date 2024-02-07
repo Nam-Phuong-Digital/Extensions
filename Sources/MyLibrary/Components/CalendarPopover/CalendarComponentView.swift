@@ -105,7 +105,7 @@ public class CalendarComponentView: BaseView {
         
         // Register cell classes
         self.collectionView.isPagingEnabled = true
-        self.collectionView!.register(DayComponentCell.nib, forCellWithReuseIdentifier: DayComponentCell.identifier)
+        self.collectionView.register(DayComponentCell.nib(bundle: .module), forCellWithReuseIdentifier: DayComponentCell.identifier)
 
         if #available(iOS 13.0, *) {
             dataSource = UICollectionViewDiffableDataSource<Int, AnyHashable>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in

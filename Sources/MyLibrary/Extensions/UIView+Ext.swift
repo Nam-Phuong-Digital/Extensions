@@ -83,8 +83,8 @@ public extension View {
 
 public extension UIView {
     
-    static var nib:UINib {
-        return UINib(nibName: identifier, bundle: nil)
+    static func nib(bundle:Bundle?) -> UINib {
+        return UINib(nibName: identifier, bundle: bundle)
     }
     
     static var identifier: String {
