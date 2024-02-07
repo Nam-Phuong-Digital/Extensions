@@ -33,20 +33,20 @@ public class TextFieldPublisher: BaseObservableView {
     @IBOutlet weak var lblError: UILabel!
     @IBOutlet weak var iconArrow: UIImageView!
     
-    @Published var text:String = ""
-    @Published var error:String = ""
+    @Published public var text:String = ""
+    @Published public var error:String = ""
     
-    @IBInspectable var borderColor:UIColor = .clear {
+    @IBInspectable public var borderColor:UIColor = .clear {
         didSet {
             setNeedsLayout()
         }
     }
-    @IBInspectable var borderWidth:CGFloat = 0 {
+    @IBInspectable public var borderWidth:CGFloat = 0 {
         didSet {
             setNeedsLayout()
         }
     }
-    @IBInspectable var haveShadow:Bool = false {
+    @IBInspectable public var haveShadow:Bool = false {
         didSet {
             setNeedsLayout()
         }
@@ -59,14 +59,14 @@ public class TextFieldPublisher: BaseObservableView {
         vwContent.borderWidth = borderWidth
     }
     
-    var onSubmit:(()->Void)?
-    var onSelect:(()->Void)? {
+    public var onSubmit:(()->Void)?
+    public var onSelect:(()->Void)? {
         didSet {
             textField.delegate = self
         }
     }
     
-    var showArrow:Bool = false {
+    public var showArrow:Bool = false {
         didSet {
             if iconArrow != nil {
                 iconArrow.isHidden = !showArrow
@@ -74,7 +74,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var isUpperCase:Bool = true {
+    public var isUpperCase:Bool = true {
         didSet {
             guard textField != nil else {return}
             if isUpperCase {
@@ -85,7 +85,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var textAlignment: NSTextAlignment = .left {
+    public var textAlignment: NSTextAlignment = .left {
         didSet {
             if textField != nil {
                 textField.textAlignment = textAlignment
@@ -93,7 +93,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var title:String  = ""{
+    public var title:String  = ""{
         didSet {
             if lblTitle != nil {
                 lblTitle.text = title
@@ -101,7 +101,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var placeHolder:String  = "" {
+    public var placeHolder:String  = "" {
         didSet {
             if textField != nil {
                 textField.attributedPlaceholder = NSAttributedString(string: placeHolder, attributes: [NSAttributedString.Key.foregroundColor: UIColor.borderColor])
@@ -109,7 +109,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var value:String = "" {
+    public var value:String = "" {
         didSet {
             if textField != nil {
                 textField.text = value
@@ -118,7 +118,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var isFocus:Bool {
+    public var isFocus:Bool {
         set {
             if textField != nil {
                 if newValue {
@@ -133,7 +133,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var isSecureTextEntry:Bool = false {
+    public var isSecureTextEntry:Bool = false {
         didSet {
             if textField != nil {
                 textField.isSecureTextEntry = isSecureTextEntry
@@ -141,7 +141,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var keyboarbType:UIKeyboardType = .default {
+    public var keyboarbType:UIKeyboardType = .default {
         didSet {
             if textField != nil {
                 textField.keyboardType = keyboarbType
@@ -149,7 +149,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var isEnabled:Bool  = true {
+    public var isEnabled:Bool  = true {
         didSet {
             if textField != nil {
                 textField.isEnabled = isEnabled
@@ -157,7 +157,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    var accessoryView:UIView? = nil {
+    public var accessoryView:UIView? = nil {
         didSet {
             if textField != nil {
                 textField.inputAccessoryView = accessoryView

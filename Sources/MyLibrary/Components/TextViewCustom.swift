@@ -29,9 +29,9 @@ public class TextViewCustom: UIView, UITextViewDelegate {
     
     let PLACEHOLDER_TAG = 100
     
-    var value:String = ""
+    public var value:String = ""
     
-    var onTyping:((String)->Void)?
+    public var onTyping:((String)->Void)?
     
     private var showPlaceholder:Bool = true {
         didSet {
@@ -41,7 +41,7 @@ public class TextViewCustom: UIView, UITextViewDelegate {
         }
     }
     
-    @IBInspectable var placeholder:String = "" {
+    @IBInspectable public var placeholder:String = "" {
         didSet {
             if lblPlaceholder != nil {
                 lblPlaceholder.text = placeholder
@@ -49,7 +49,7 @@ public class TextViewCustom: UIView, UITextViewDelegate {
         }
     }
     
-    @IBInspectable var placeholderColor:UIColor = UIColor.borderColor {
+    @IBInspectable public var placeholderColor:UIColor = UIColor.borderColor {
         didSet {
             if lblPlaceholder != nil {
                 lblPlaceholder.textColor = placeholderColor
@@ -57,7 +57,7 @@ public class TextViewCustom: UIView, UITextViewDelegate {
         }
     }
     
-    var font:UIFont? = UIFont.systemFont(ofSize: 17) {
+    public var font:UIFont? = UIFont.systemFont(ofSize: 17) {
         didSet {
             if textView != nil {
                 textView.font = font
@@ -65,7 +65,7 @@ public class TextViewCustom: UIView, UITextViewDelegate {
         }
     }
     
-    var text:String = "" {
+    public var text:String = "" {
         didSet {
             if textView != nil {
                 textView.text = text
@@ -74,7 +74,7 @@ public class TextViewCustom: UIView, UITextViewDelegate {
         }
     }
     
-    var textColor:UIColor? = .black {
+    public var textColor:UIColor? = .black {
         didSet {
             if textView != nil {
                 textView.textColor = textColor
@@ -82,7 +82,7 @@ public class TextViewCustom: UIView, UITextViewDelegate {
         }
     }
     
-    var isEnabled:Bool = true {
+    public var isEnabled:Bool = true {
         didSet {
             guard textView != nil else {return}
             textView.isEditable = isEnabled
