@@ -31,9 +31,9 @@ open class BaseView: UIView {
     private func loadNIb(bundle:Bundle?) {
         if let name = NSStringFromClass(type(of: self)).components(separatedBy: ".").last {
             if let bundle {
-                bundle.loadNibNamed(name, owner: nil)
+                bundle.loadNibNamed(name, owner: self)
             } else {
-                Bundle.module.loadNibNamed(name + ".xib", owner: nil, options: nil)
+                Bundle.module.loadNibNamed(name + ".xib", owner: self, options: nil)
             }
         }
         addSubview(view)
