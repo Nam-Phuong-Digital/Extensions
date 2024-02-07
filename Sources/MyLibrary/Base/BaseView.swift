@@ -54,7 +54,7 @@ open class BaseView: UIView {
     }
     
     public init(bundle:Bundle?) {
-        super.init(frame: CGRect.zero)
+        super.init(frame: CGRect(origin: .zero, size: CGSize(width: 300, height: 300)))
         loadNIb(bundle: bundle)
         config()
     }
