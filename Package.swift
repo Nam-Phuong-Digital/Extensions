@@ -29,6 +29,17 @@ let package = Package(
                 .product(name: "SDWebImage", package: "SDWebImage"),
                 .product(name: "Algorithms",package: "swift-algorithms"),
                 .product(name: "Collections",package: "swift-collections"),
+            ],
+            resources: [
+                .process("ButtonScrollTabView.xib"),
+                .process("CalendarComponentView.xib"),
+                .process("CalendarPopoverController.xib"),
+                .process("DayComponentCell.xib"),
+                .process("ScaleUpViewController.xib"),
+                .process("TextFieldPublisher.xib"),
+                .process("TextViewCustom.xib"),
+                .process("TextViewPublisher.xib"),
+                
             ]
         ),
         .testTarget(
