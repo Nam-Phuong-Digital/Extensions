@@ -113,11 +113,14 @@ public extension String {
         return "Boundary-\(NSUUID().uuidString)"
     }
     
-    func UTCToLocal(format:String = "yyyy-MM-dd'T'HH:mm:ss.SSS") -> String {
+    func UTCToLocal(
+        out format:String = "yyyy-MM-dd'T'HH:mm:ss.SSS",
+        fromFormat:String = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+    ) -> String {
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        dateFormatter.dateFormat = fromFormat
         //        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         let dt = dateFormatter.date(from: self)
         
