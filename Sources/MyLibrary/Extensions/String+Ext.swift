@@ -243,8 +243,8 @@ public extension String {
         get {
             let df = DateFormatter()
             df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-            let locale = Locale(identifier: "en_US_POSIX")
-            df.locale = locale
+//            let locale = Locale(identifier: "en_US_POSIX")
+            df.locale = Locale.app
             let dateFromString = df.date(from: self)
             return dateFromString
             
