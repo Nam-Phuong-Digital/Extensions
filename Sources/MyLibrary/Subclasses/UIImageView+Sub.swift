@@ -22,7 +22,7 @@ public class RoundImageView: UIImageViewProgress {
 
 public class ImageView10Corner: UIImageViewProgress {
     
-    var onPress:((UIImageView)->Void)?
+    public var onPress:((UIImageView)->Void)?
     
     // MARK: -  override
     public override func layoutSubviews() {
@@ -53,7 +53,7 @@ public class ImageView5Corner: UIImageViewProgress {
 public struct BindingImageViewRepresentable:UIViewRepresentable {
     public typealias UIViewType = UIView
     
-    @Binding var url:String?
+    @Binding public  var url:String?
     
     public func makeUIView(context: Context) -> UIView {
         let imv = UIImageViewProgress()
@@ -82,7 +82,7 @@ public struct ImageViewRepresentable:UIViewRepresentable {
     let asset:PHAsset?
     let uiImage:UIImage?
     
-    init(url: String? = nil, data: Data? = nil,asset: PHAsset? = nil,uiImage:UIImage? = nil) {
+    public init(url: String? = nil, data: Data? = nil,asset: PHAsset? = nil,uiImage:UIImage? = nil) {
         self.url = url
         self.data = data
         self.asset = asset
