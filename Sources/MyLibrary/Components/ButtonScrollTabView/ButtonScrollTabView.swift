@@ -33,14 +33,15 @@ public class ButtonTab: NSObject {
     }
 }
 
-public class ButtonScrollTabView: BaseView {
+public class ButtonScrollTabView: UIView {
     
-    public init() {
-        super.init(bundle: nil)
+    required init?(coder aDecoder: NSCoder) {   // 2 - storyboard initializer
+        super.init(coder: aDecoder)
+        fromNib(isModule: true)   // 5.
     }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(bundle:nil)
+    public init() {   // 3 - programmatic initializer
+        super.init(frame: CGRect.zero)  // 4.
+        fromNib(isModule: true)  // 6.
     }
     
     public var maxHeight:CGFloat = 100 + CGSize.getSizeNavigationBarIncludeStatus.height
@@ -62,7 +63,7 @@ public class ButtonScrollTabView: BaseView {
     
     public func scrollToSelectIndex() {
         if selectIndex >= buttonTabs.count {return}
-        self.scrollView.setContentOffset(CGPoint(x: self.stackButton.arrangedSubviews[selectIndex].frame.origin.x - self.view.frame.width/2, y: 0), animated: true)
+        self.scrollView.setContentOffset(CGPoint(x: self.stackButton.arrangedSubviews[selectIndex].frame.origin.x - self.frame.width/2, y: 0), animated: true)
     }
     
     public func disabledNormalMenu() {
@@ -185,13 +186,14 @@ public class ButtonScrollTabView: BaseView {
     }
     
     public func setBackground(color:UIColor){
-        view.backgroundColor = color
+        backgroundColor = color
     }
     
     // MARK: -  override
     public override func awakeFromNib() {
         super.awakeFromNib()
-        view.backgroundColor = .white
+        config()
+        backgroundColor = .white
         underLine.backgroundColor = .mainColor
         scrollView.contentInset = contentInset
     }
@@ -202,7 +204,7 @@ public class ButtonScrollTabView: BaseView {
         scrollView.contentInset = contentInset
     }
     
-    public override func config() {
+    public func config() {
         scrollView.delegate = self
     }
 }

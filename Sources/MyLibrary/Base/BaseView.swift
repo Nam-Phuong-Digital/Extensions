@@ -11,56 +11,7 @@ import Combine
 #endif
 
 @available (iOS 13,*)
-open class BaseObservableView: BaseView {
+open class BaseObservableView: UIView {
     
     lazy public var cancellables = Set<AnyCancellable>()
 }
-
-
-open class BaseView: UIView {
-    // MARK: -  override
-    open func setupTexts() {
-        // override
-    }
-    
-    open func config() {
-        setupTexts()
-    }
-    
-    // MARK: -  private
-    private func loadNIb(bundle:Bundle?) {
-        if let name = NSStringFromClass(type(of: self)).components(separatedBy: ".").last {
-            if let bundle {
-                bundle.loadNibNamed(name, owner: self)
-            } else {
-                Bundle.module.loadNibNamed(name, owner: self, options: nil)
-            }
-        }
-        addSubview(view)
-        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.frame = bounds
-    }
-   
-    // MARK: - init
-    override public  init(frame: CGRect) {
-        super.init(frame: frame)
-        loadNIb(bundle: .main)
-        config()
-    }
-    
-    required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        loadNIb(bundle: .main)
-        config()
-    }
-    
-    public init(bundle:Bundle?) {
-        super.init(frame: CGRect(origin: .zero, size: CGSize(width: 350, height: 440)))
-        loadNIb(bundle: bundle)
-        config()
-    }
-    
-    // MARK: - outlet
-    @IBOutlet weak public var view: UIView!
-}
-

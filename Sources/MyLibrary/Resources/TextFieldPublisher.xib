@@ -19,7 +19,6 @@
                 <outlet property="lblError" destination="zZu-pa-ABb" id="Uwc-gb-eKU"/>
                 <outlet property="lblTitle" destination="8du-gl-Epz" id="oHb-fA-46b"/>
                 <outlet property="textField" destination="oCf-dm-HRE" id="muR-pF-aUR"/>
-                <outlet property="view" destination="iN0-l3-epB" id="QUz-do-CaE"/>
                 <outlet property="vwContent" destination="eNF-gJ-zhp" id="0Lf-Sc-g2j"/>
             </connections>
         </placeholder>

@@ -8,8 +8,22 @@
 import UIKit
 import Combine
 
-public class TextViewCustom: BaseView, UITextViewDelegate {
+public class TextViewCustom: UIView, UITextViewDelegate {
 
+    required init?(coder aDecoder: NSCoder) {   // 2 - storyboard initializer
+        super.init(coder: aDecoder)
+        fromNib(isModule: true)   // 5.
+    }
+    public init() {   // 3 - programmatic initializer
+        super.init(frame: CGRect.zero)  // 4.
+        fromNib(isModule: true)  // 6.
+    }
+    
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        config()
+    }
+    
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var lblPlaceholder: UILabel!
     
@@ -75,9 +89,7 @@ public class TextViewCustom: BaseView, UITextViewDelegate {
         }
     }
     
-    public override func config() {
-        super.config()
-        view.backgroundColor = .clear
+    public func config() {
         backgroundColor = .clear
         textView.delegate = self
         

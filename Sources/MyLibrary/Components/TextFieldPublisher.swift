@@ -11,6 +11,20 @@ import Combine
 @available(iOS 13,*)
 public class TextFieldPublisher: BaseObservableView {
 
+    required init?(coder aDecoder: NSCoder) {   // 2 - storyboard initializer
+        super.init(coder: aDecoder)
+        fromNib(isModule: true)   // 5.
+    }
+    public init() {   // 3 - programmatic initializer
+        super.init(frame: CGRect.zero)  // 4.
+        fromNib(isModule: true)  // 6.
+    }
+    
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        config()
+    }
+    
     @IBOutlet weak var vwContent: Corner12View!
     @IBInspectable var shouldSubmit:Bool = false
     
@@ -152,9 +166,7 @@ public class TextFieldPublisher: BaseObservableView {
         }
     }
     
-    public override func config() {
-        super.config()
-        
+    public func config() {
         self.backgroundColor = .clear
         
         lblTitle.textColor = .blue
