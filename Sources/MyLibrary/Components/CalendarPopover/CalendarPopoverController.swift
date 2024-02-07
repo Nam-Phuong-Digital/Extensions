@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIViewController {
     func presentCalendarComponent(
-        currentDate:Date = Date(),
+        currentDate:Date? = Date(),
         sourceView:Any?,
         rangeMonths:RangeMonth = DefaultRangeMonth(),
         _ result: @escaping ((Date?) -> Void)
@@ -32,9 +32,9 @@ public class CalendarPopoverController: UIViewController {
     
     private var result: ((Date?) -> Void)
     private let rangeMonths:RangeMonth
-    private(set) var currentDate:Date
+    private var currentDate:Date?
     public init(
-        currentDate:Date,
+        currentDate:Date?,
         sourceView:Any?,
         rangeMonths:RangeMonth,
         _ result: @escaping ((Date?) -> Void)
@@ -82,7 +82,9 @@ public class CalendarPopoverController: UIViewController {
     @available (iOS 13,*)
     public override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
-        calendar.setCurrentDay(date: currentDate)
+        if let currentDate {
+            calendar.setCurrentDay(date: currentDate)
+        }
     }
     
     public override func viewDidLayoutSubviews() {
@@ -95,7 +97,9 @@ public class CalendarPopoverController: UIViewController {
         super.viewDidAppear(animated)
         
         if #unavailable (iOS 13) {
-            calendar.setCurrentDay(date: currentDate)
+            if let currentDate {
+                calendar.setCurrentDay(date: currentDate)
+            }
         }
         
         updateSize()
