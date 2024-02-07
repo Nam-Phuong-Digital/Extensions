@@ -156,7 +156,7 @@ public class ButtonScrollTabView: BaseView {
     }
     
     public func reFrameUnderLine() {
-        self.layoutIfNeeded()
+//        self.layoutIfNeeded()
         if selectIndex >= stackButton.arrangedSubviews.count || stackButton.arrangedSubviews.count == 0 {return}
         
         let f:CGRect = stackButton.convert(stackButton.arrangedSubviews[selectIndex].frame, to: scrollView)
