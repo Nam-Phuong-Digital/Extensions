@@ -33,7 +33,7 @@ open class BaseView: UIView {
             if let bundle {
                 bundle.loadNibNamed(name, owner: nil)
             } else {
-                Bundle.module.loadNibNamed(name, owner: nil, options: nil)
+                Bundle.module.loadNibNamed(name + ".xib", owner: nil, options: nil)
             }
         }
         addSubview(view)
