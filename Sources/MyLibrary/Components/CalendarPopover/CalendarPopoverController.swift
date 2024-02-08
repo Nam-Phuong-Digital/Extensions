@@ -172,22 +172,22 @@ extension CalendarPopoverController:CalendarComponentViewDelegate {
 
 extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
     
-    public func presentationController(_ presentationController: UIPresentationController, prepare adaptivePresentationController: UIPresentationController) {
-        adaptivePresentationController.presentingViewController.modalPresentationStyle = .none
-    }
-    
-    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        popoverPresentationController.canOverlapSourceViewRect = true
-        if let sourceView = sourceView as? UIView {
-            popoverPresentationController.sourceView = sourceView
-        } else if let sourceView = sourceView as? UIBarButtonItem {
-            if #available(iOS 16, *) {
-                popoverPresentationController.sourceItem = sourceView
-            } else {
-                popoverPresentationController.barButtonItem = sourceView
-            }
-        }
-    }
+//    public func presentationController(_ presentationController: UIPresentationController, prepare adaptivePresentationController: UIPresentationController) {
+//        adaptivePresentationController.presentingViewController.modalPresentationStyle = .none
+//    }
+//    
+//    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+//        popoverPresentationController.canOverlapSourceViewRect = true
+//        if let sourceView = sourceView as? UIView {
+//            popoverPresentationController.sourceView = sourceView
+//        } else if let sourceView = sourceView as? UIBarButtonItem {
+//            if #available(iOS 16, *) {
+//                popoverPresentationController.sourceItem = sourceView
+//            } else {
+//                popoverPresentationController.barButtonItem = sourceView
+//            }
+//        }
+//    }
     
     public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         true
