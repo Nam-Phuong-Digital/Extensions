@@ -91,7 +91,7 @@ public class CalendarPopoverController: UIViewController {
                     y = height - centerSourceViewY
                 }
             } else {// check with top
-                if centerSourceViewY < height {
+                if height - centerSourceViewY < height {
                     y = -(height - centerSourceViewY)
                 }
             }
