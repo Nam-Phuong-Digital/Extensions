@@ -79,9 +79,10 @@ public class CalendarPopoverController: UIViewController {
         
         if let rect = sourceView.superview?.convert(sourceView.frame, to: nil) {
             let height:CGFloat = 500
+            let attent = scrollView.frame.height - 500
             var y:CGFloat?
-            let minH = height
-            let maxH = scrollView.frame.height - 500
+            let minH = min(height, attent)
+            let maxH = max(height, attent)
             if (minH...maxH).contains(rect.origin.y) {
                 y = max(rect.origin.y - minH,maxH - rect.origin.y)
             }
