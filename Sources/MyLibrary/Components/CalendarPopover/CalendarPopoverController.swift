@@ -15,6 +15,7 @@ public extension UIViewController {
         rangeMonths:RangeMonth = DefaultRangeMonth(),
         _ result: @escaping ((Date?) -> Void)
     ) {
+        self.view.endEditing(true)
         let vc = CalendarPopoverController(
             currentDate: currentDate,
             sourceView:sourceView,
