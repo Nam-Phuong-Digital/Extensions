@@ -67,7 +67,7 @@ public class DateConvert {
         dateString:String
     ) {
         let df = DateFormatter()
-        df.dateFormat = detectFormatString(dateString)
+        df.dateFormat = Self.detectFormatString(dateString)
         let locale = Locale(identifier: "en_US_POSIX")
         df.locale = locale
         df.timeZone = TimeZone(identifier:"UTC")
@@ -75,7 +75,7 @@ public class DateConvert {
         self.date = dateFromString
     }
     
-    public func detectFormatString(_ dateString:String) -> String {
+    public static func detectFormatString(_ dateString:String) -> String {
         let regex1 = "^\\d{4}-\\d{2}-\\d{2}[']T[']\\d{2}:\\d{2}:\\d{2}$"
         let regex2 = "^\\d{4}-\\d{2}-\\d{2}[']T[']\\d{2}:\\d{2}:\\d{2}.\\d{3}$"
         
