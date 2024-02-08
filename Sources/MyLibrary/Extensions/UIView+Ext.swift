@@ -238,11 +238,11 @@ public extension UIView {
             if let parent = parent as? UIScrollView {
                 return parent
             } else {
-                if level == 5 {
+                if level == 10 {
                     return nil
                 }
                 max += 1
-                return getScrollView(max)
+                return parent.getScrollView(max)
             }
         }
         return nil
