@@ -97,7 +97,7 @@ public class CalendarPopoverController: UIViewController {
                 }
             }
             if let y {
-                scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: false)
+                scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
             }
         }
     }
