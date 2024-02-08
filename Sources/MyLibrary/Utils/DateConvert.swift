@@ -42,17 +42,21 @@ public class DateConvert {
         format:String = "yyyy-MM-dd'T'HH:mm:ss"
     ) -> String? {
         if let date = self.date {
-            return fromDateToString(date: date, format: format)
+            return fromDateToString(date: date, format: format, isUTC: true)
         }
         return dateString
     }
     
     private func fromDateToString(
         date:Date,
-        format:String = "yyyy-MM-dd'T'HH:mm:ss"
+        format:String = "yyyy-MM-dd'T'HH:mm:ss",
+        isUTC:Bool = false // when convert to string server from date UTC should true for this param
     ) -> String {
         let df = DateFormatter()
         df.dateFormat = format
+        if isUTC {
+            df.timeZone = TimeZone(identifier: "UTC")
+        }
         let locale = Locale(identifier: "en_US_POSIX")
         df.locale = locale
         let dateString = df.string(from: date)
