@@ -18,10 +18,12 @@ public extension UIViewController {
         let vc = CalendarPopoverController(
             currentDate: currentDate,
             sourceView:sourceView,
-            rangeMonths: rangeMonths,
+            rangeMonths: rangeMonths, 
+            scrollCompleted: {[weak self] in
+                self?.present($0, animated: true)
+            },
             result
         )
-        self.present(vc, animated: true)
     }
 }
 fileprivate let is_smallWidth = UIScreen.main.bounds.size.width <= 320
@@ -38,6 +40,7 @@ public class CalendarPopoverController: UIViewController {
         currentDate:Date?,
         sourceView:Any?,
         rangeMonths:RangeMonth,
+        scrollCompleted:@escaping (CalendarPopoverController)->(),
         _ result: @escaping ((Date?) -> Void)
     ) {
         self.currentDate = currentDate
@@ -45,13 +48,20 @@ public class CalendarPopoverController: UIViewController {
         self.rangeMonths = rangeMonths
         super.init(nibName: "CalendarPopoverController", bundle: .module)
         modalPresentationStyle = .popover
+        var shouldCheckScroll = false
         if let pop = self.popoverPresentationController {
 //            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
                 pop.sourceView = sourceView
                 scrollView = sourceView.getScrollView()
-                scrollToFitSpace(sourceView: sourceView)
+                if let scrollView {
+                    shouldCheckScroll = true
+                    scrollToFitSpace(
+                        sourceView: sourceView,
+                        scrollCompleted: scrollCompleted
+                    )
+                }
             } else if let sourceView = sourceView as? UIBarButtonItem {
                 if #available(iOS 16, *) {
                     pop.sourceItem = sourceView
@@ -59,6 +69,9 @@ public class CalendarPopoverController: UIViewController {
                     pop.barButtonItem = sourceView
                 }
             }
+        }
+        if !shouldCheckScroll {
+            scrollCompleted(self)
         }
     }
     
@@ -72,8 +85,12 @@ public class CalendarPopoverController: UIViewController {
         }
     }
     
-    private func scrollToFitSpace(sourceView:UIView?) {
+    private func scrollToFitSpace(
+        sourceView:UIView?,
+        scrollCompleted:@escaping (CalendarPopoverController)->()
+    ) {
         guard let sourceView, let scrollView else {
+            scrollCompleted(self)
             return
         }
         
@@ -93,11 +110,14 @@ public class CalendarPopoverController: UIViewController {
                 if rect.origin.y - maxAbove < minBelow - rect.origin.y { // move to top
                     y = -(rect.origin.y - (maxAbove/2))
                 } else { // move to bottom
-                    y = (scrollView.frame.height - minBelow) - rect.origin.y 
+                    y = (scrollView.frame.height - minBelow) - rect.origin.y
                 }
             }
             if let y {
                 scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {[weak self] in guard let self else { return }
+                    scrollCompleted(self)
+                }
             }
         }
     }
