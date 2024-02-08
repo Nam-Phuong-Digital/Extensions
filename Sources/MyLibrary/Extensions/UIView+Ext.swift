@@ -233,10 +233,15 @@ public extension UIView {
     }
     
     func getScrollView() -> UIScrollView? {
+        var max:Int = 0
         if let parent = self.superview {
             if let parent = parent as? UIScrollView {
                 return parent
             } else {
+                if max == 5 {
+                    return nil
+                }
+                max += 1
                 return getScrollView()
             }
         }
