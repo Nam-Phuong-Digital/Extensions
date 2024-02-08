@@ -94,13 +94,12 @@ public class CalendarPopoverController: UIViewController {
             var y:CGFloat?
             if abs(scrollView.frame.height - rect.origin.y) < height {
                 if rect.origin.y < scrollView.frame.height/2 { // move to top
-                    y = -(rect.origin.y - (maxAbove/2))
+                    y = -(rect.origin.y - height - (scrollView.frame.height - rect.origin.y))
                 } else { // move to bottom
-                    y = rect.origin.y - (scrollView.frame.height - minBelow)/2
+                    y = rect.origin.y - height - (scrollView.frame.height - rect.origin.y)
                 }
             }
             if let y {
-                sourceView.frame.origin.y = rect.origin.y + y
                 scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
             }
         }
@@ -177,9 +176,6 @@ extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
     public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
         popoverPresentationController.canOverlapSourceViewRect = true
         if let sourceView = sourceView as? UIView {
-            if sourceRect != .zero {
-                popoverPresentationController.sourceRect = sourceRect
-            }
             popoverPresentationController.sourceView = sourceView
         } else if let sourceView = sourceView as? UIBarButtonItem {
             if #available(iOS 16, *) {
