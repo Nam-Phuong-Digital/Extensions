@@ -32,6 +32,7 @@ public class CalendarPopoverController: UIViewController {
     
     private var result: ((Date?) -> Void)
     private var sourceView:Any?
+    private var sourceRect:CGRect = .zero
     private let rangeMonths:RangeMonth
     private var currentDate:Date?
     private var scrollView:UIScrollView? // purpose support scroll to perfect position to show calendar
@@ -99,6 +100,7 @@ public class CalendarPopoverController: UIViewController {
                 }
             }
             if let y {
+                sourceView.frame.origin.y = rect.origin.y + y
                 scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
             }
         }
@@ -173,7 +175,11 @@ extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
     }
     
     public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        popoverPresentationController.canOverlapSourceViewRect = true
         if let sourceView = sourceView as? UIView {
+            if sourceRect != .zero {
+                popoverPresentationController.sourceRect = sourceRect
+            }
             popoverPresentationController.sourceView = sourceView
         } else if let sourceView = sourceView as? UIBarButtonItem {
             if #available(iOS 16, *) {
