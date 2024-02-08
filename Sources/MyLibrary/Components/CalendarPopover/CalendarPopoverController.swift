@@ -95,9 +95,9 @@ public class CalendarPopoverController: UIViewController {
             var y:CGFloat?
             if abs(heightScreen - rect.origin.y) < height {
                 if rect.origin.y < heightScreen/2 { // move to top
-                    y = -(rect.origin.y - height - (heightScreen - rect.origin.y))
+                    y = -(height - (heightScreen - rect.origin.y))
                 } else { // move to bottom
-                    y = rect.origin.y - height - (heightScreen - rect.origin.y)
+                    y = height - (heightScreen - rect.origin.y)
                 }
             }
             if let y {
