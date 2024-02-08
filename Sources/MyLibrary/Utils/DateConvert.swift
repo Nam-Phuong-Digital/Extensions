@@ -20,10 +20,16 @@ public class DateConvert {
         if let dateString {
             self.dateString = dateString
             fromStringToDate(dateString: dateString)
+            if let date = self.date {
+                fromDateToString(date: date, format: formatOutput)
+            }
         }
         if let date {
             self.date = date
             fromDateToString(date: date, format: formatOutput)
+            if let dateString  = self.dateString {
+                fromStringToDate(dateString: dateString)
+            }
         }
     }
     
