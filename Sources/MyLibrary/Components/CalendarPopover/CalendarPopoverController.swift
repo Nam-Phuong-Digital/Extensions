@@ -51,6 +51,7 @@ public class CalendarPopoverController: UIViewController {
             if let sourceView = sourceView as? UIView {
                 pop.sourceView = sourceView
                 scrollView = sourceView.getScrollView()
+                scrollToFitSpace(sourceView: sourceView)
             } else if let sourceView = sourceView as? UIBarButtonItem {
                 if #available(iOS 16, *) {
                     pop.sourceItem = sourceView
@@ -68,6 +69,25 @@ public class CalendarPopoverController: UIViewController {
     deinit {
         if #available(iOS 14, *) {
             AppLogger.shared.loggerApp.log("\("\(NSStringFromClass(type(of: self))) \(#function)")")
+        }
+    }
+    
+    private func scrollToFitSpace(sourceView:UIView?) {
+        guard let sourceView, let scrollView else {
+            return
+        }
+        
+        if let rect = sourceView.superview?.convert(sourceView.frame, to: nil) {
+            let height:CGFloat = 500
+            var y:CGFloat?
+            let minH = height
+            let maxH = scrollView.frame.height - 500
+            if (minH...maxH).contains(rect.origin.y) {
+                y = max(rect.origin.y - minH,maxH - rect.origin.y)
+            }
+            if let y {
+                scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
+            }
         }
     }
     
