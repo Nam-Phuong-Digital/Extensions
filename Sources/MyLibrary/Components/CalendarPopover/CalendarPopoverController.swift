@@ -52,7 +52,7 @@ public class CalendarPopoverController: UIViewController {
 //            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
-                pop.sourceView = sourceView
+//                pop.sourceView = sourceView
                 scrollView = sourceView.getScrollView()
                 scrollToFitSpace(sourceView: sourceView)
             } else if let sourceView = sourceView as? UIBarButtonItem {
@@ -81,25 +81,17 @@ public class CalendarPopoverController: UIViewController {
         }
         
         if let rect = sourceView.superview?.convert(sourceView.frame, to: nil) {
-            let height:CGFloat = 500 // height calendar
+            let height:CGFloat = 600 // height calendar
             let heightScreen:CGFloat = self.view.window?.frame.height ?? scrollView.frame.height
-            let maxAbove:CGFloat = scrollView.frame.height - height // min y
-            let minBelow = height // max y
-            guard scrollView.frame.height > maxAbove,
-                  minBelow > 0,
-                  minBelow < scrollView.frame.height else {return}
-            let allowAreas:[ClosedRange<CGFloat>] = [
-                (0...maxAbove),
-                (minBelow...scrollView.frame.height)
-            ]
+            let centerSourceViewY:CGFloat = (rect.origin.y + rect.size.height/2)
             var y:CGFloat?
             // check out of safe area
-            if (rect.origin.y + rect.size.height/2) < height &&
-                heightScreen - (rect.origin.y + rect.size.height/2) < height {
-                if rect.origin.y < heightScreen/2 { // move to top
-                    y = -(height - (heightScreen - rect.origin.y))
+            if centerSourceViewY < height &&
+                heightScreen - centerSourceViewY < height {
+                if centerSourceViewY < heightScreen/2 { // move to top
+                    y = -(height - (heightScreen - centerSourceViewY))
                 } else { // move to bottom
-                    y = height - (heightScreen - rect.origin.y)
+                    y = height - (heightScreen - centerSourceViewY)
                 }
             }
             if let y {
@@ -176,18 +168,18 @@ extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
 //        adaptivePresentationController.presentingViewController.modalPresentationStyle = .none
 //    }
 //    
-//    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
 //        popoverPresentationController.canOverlapSourceViewRect = true
-//        if let sourceView = sourceView as? UIView {
-//            popoverPresentationController.sourceView = sourceView
-//        } else if let sourceView = sourceView as? UIBarButtonItem {
-//            if #available(iOS 16, *) {
-//                popoverPresentationController.sourceItem = sourceView
-//            } else {
-//                popoverPresentationController.barButtonItem = sourceView
-//            }
-//        }
-//    }
+        if let sourceView = sourceView as? UIView {
+            popoverPresentationController.sourceView = sourceView
+        } else if let sourceView = sourceView as? UIBarButtonItem {
+            if #available(iOS 16, *) {
+                popoverPresentationController.sourceItem = sourceView
+            } else {
+                popoverPresentationController.barButtonItem = sourceView
+            }
+        }
+    }
     
     public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         true
