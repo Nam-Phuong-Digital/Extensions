@@ -81,7 +81,7 @@ public class CalendarPopoverController: UIViewController {
         }
         
         if let rect = sourceView.superview?.convert(sourceView.frame, to: nil) {
-            let height:CGFloat = 600 // height calendar
+            let height:CGFloat = 500 // height calendar
             let heightScreen:CGFloat = self.view.window?.frame.height ?? scrollView.frame.height
             let centerSourceViewY:CGFloat = (rect.origin.y + rect.size.height/2)
             var y:CGFloat?
