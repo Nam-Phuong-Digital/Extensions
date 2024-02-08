@@ -231,4 +231,15 @@ public extension UIView {
         }
         return view
     }
+    
+    func getScrollView() -> UIScrollView? {
+        if let parent = self.superview {
+            if let parent = parent as? UIScrollView {
+                return parent
+            } else {
+                return getScrollView()
+            }
+        }
+        return nil
+    }
 }

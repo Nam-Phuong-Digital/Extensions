@@ -33,6 +33,7 @@ public class CalendarPopoverController: UIViewController {
     private var result: ((Date?) -> Void)
     private let rangeMonths:RangeMonth
     private var currentDate:Date?
+    private var scrollView:UIScrollView? // purpose support scroll to perfect position to show calendar
     public init(
         currentDate:Date?,
         sourceView:Any?,
@@ -49,6 +50,7 @@ public class CalendarPopoverController: UIViewController {
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
                 pop.sourceView = sourceView
+                scrollView = sourceView.getScrollView()
             } else if let sourceView = sourceView as? UIBarButtonItem {
                 if #available(iOS 16, *) {
                     pop.sourceItem = sourceView
