@@ -31,6 +31,7 @@ public class CalendarPopoverController: UIViewController {
     @IBOutlet weak var calendar: CalendarComponentView!
     
     private var result: ((Date?) -> Void)
+    private var sourceView:Any?
     private let rangeMonths:RangeMonth
     private var currentDate:Date?
     private var scrollView:UIScrollView? // purpose support scroll to perfect position to show calendar
@@ -40,6 +41,7 @@ public class CalendarPopoverController: UIViewController {
         rangeMonths:RangeMonth,
         _ result: @escaping ((Date?) -> Void)
     ) {
+        self.sourceView = sourceView
         self.currentDate = currentDate
         self.result = result
         self.rangeMonths = rangeMonths
@@ -97,7 +99,7 @@ public class CalendarPopoverController: UIViewController {
                 }
             }
             if let y {
-                scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: false)
+                scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
             }
         }
     }
@@ -165,6 +167,23 @@ extension CalendarPopoverController:CalendarComponentViewDelegate {
 }
 
 extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
+    
+    public func presentationController(_ presentationController: UIPresentationController, prepare adaptivePresentationController: UIPresentationController) {
+        adaptivePresentationController.presentingViewController.modalPresentationStyle = .none
+    }
+    
+    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        if let sourceView = sourceView as? UIView {
+            popoverPresentationController.sourceView = sourceView
+        } else if let sourceView = sourceView as? UIBarButtonItem {
+            if #available(iOS 16, *) {
+                popoverPresentationController.sourceItem = sourceView
+            } else {
+                popoverPresentationController.barButtonItem = sourceView
+            }
+        }
+    }
+    
     public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         true
     }
