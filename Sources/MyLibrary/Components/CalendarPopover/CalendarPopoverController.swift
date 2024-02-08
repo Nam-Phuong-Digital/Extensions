@@ -92,18 +92,9 @@ public class CalendarPopoverController: UIViewController {
                 }
             } else {// check with top
                 if height - centerSourceViewY < height {
-                    y = -(height - (heightScreen - centerSourceViewY))
+                    y = -(height - centerSourceViewY)
                 }
             }
-//                
-//            if centerSourceViewY < height &&
-//                heightScreen - centerSourceViewY < height {
-//                if centerSourceViewY < heightScreen/2 { // move to top
-//                    y = -(height - (heightScreen - centerSourceViewY))
-//                } else { // move to bottom
-//                    y = height - (heightScreen - centerSourceViewY)
-//                }
-//            }
             if let y {
                 scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
             }
