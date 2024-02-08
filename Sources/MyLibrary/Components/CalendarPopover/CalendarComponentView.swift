@@ -89,7 +89,7 @@ public class CalendarComponentView: UIView {
     weak var delegate:CalendarComponentViewDelegate? {
         didSet {
             self.delegate?.CalendarComponentView_allMonths(menuMonths)
-            self.delegate?.CalendarComponentView_rangeMonths()
+            getDatesForMonths()
         }
     }
     
@@ -141,9 +141,6 @@ public class CalendarComponentView: UIView {
         } else {
             self.collectionView.dataSource = self
         }
-        
-        getDatesForMonths()
-        updateDataSource()
     }
     
     func setCurrentDay(date:Date = Date()) {
