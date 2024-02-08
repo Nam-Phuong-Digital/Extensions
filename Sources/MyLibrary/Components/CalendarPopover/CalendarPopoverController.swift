@@ -78,8 +78,9 @@ public class CalendarPopoverController: UIViewController {
         }
         
         if let rect = sourceView.superview?.convert(sourceView.frame, to: nil) {
-            let maxAbove:CGFloat = scrollView.frame.height * 0.3
-            let minBelow = scrollView.frame.height - maxAbove
+            let height:CGFloat = 500 // height calendar
+            let maxAbove:CGFloat = scrollView.frame.height - height // min y
+            let minBelow = height // max y
             guard scrollView.frame.height > maxAbove,
                   minBelow > 0,
                   minBelow < scrollView.frame.height else {return}
@@ -89,9 +90,9 @@ public class CalendarPopoverController: UIViewController {
             ]
             var y:CGFloat?
             if allowAreas.filter({$0.contains(rect.origin.y)}).isEmpty {
-                if rect.origin.y - maxAbove < minBelow - rect.origin.y {
+                if rect.origin.y - maxAbove < minBelow - rect.origin.y { // move to top
                     y = -(rect.origin.y - maxAbove)
-                } else {
+                } else { // move to bottom
                     y = minBelow - rect.origin.y
                 }
             }
