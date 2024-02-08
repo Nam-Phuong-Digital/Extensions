@@ -93,7 +93,7 @@ public class CalendarPopoverController: UIViewController {
                 if rect.origin.y - maxAbove < minBelow - rect.origin.y { // move to top
                     y = -(rect.origin.y - (maxAbove/2))
                 } else { // move to bottom
-                    y = rect.origin.y - (scrollView.frame.height - minBelow)
+                    y = (scrollView.frame.height - minBelow) - rect.origin.y 
                 }
             }
             if let y {
