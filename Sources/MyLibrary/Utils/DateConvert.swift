@@ -27,9 +27,6 @@ public class DateConvert {
         if let date {
             self.date = date
             self.dateString = fromDateToString(date: date, format: formatOutput)
-            if let dateString = self.dateString {
-                fromStringToDate(dateString: dateString)
-            }
         }
     }
     
