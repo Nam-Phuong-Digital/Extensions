@@ -90,9 +90,9 @@ public class CalendarPopoverController: UIViewController {
             var y:CGFloat?
             if allowAreas.filter({$0.contains(rect.origin.y)}).isEmpty {
                 if rect.origin.y - height < attent - rect.origin.y {
-                    y = height
+                    y = rect.origin.y - height
                 } else if rect.origin.y - height > 0 {
-                    y = attent
+                    y = rect.origin.y - attent
                 }
             }
             if let y {
