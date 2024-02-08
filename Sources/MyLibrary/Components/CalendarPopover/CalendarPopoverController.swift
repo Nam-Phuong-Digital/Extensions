@@ -91,7 +91,7 @@ public class CalendarPopoverController: UIViewController {
             var y:CGFloat?
             if allowAreas.filter({$0.contains(rect.origin.y)}).isEmpty {
                 if rect.origin.y < scrollView.frame.height/2 { // move to top
-                    y = -(rect.origin.y - (maxAbove/2))
+                    y = (rect.origin.y - (maxAbove/2))
                 } else { // move to bottom
                     y = (scrollView.frame.height - minBelow) - rect.origin.y
                 }
