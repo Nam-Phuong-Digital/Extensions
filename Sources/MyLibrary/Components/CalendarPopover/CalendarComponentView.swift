@@ -89,6 +89,7 @@ public class CalendarComponentView: UIView {
     weak var delegate:CalendarComponentViewDelegate? {
         didSet {
             self.delegate?.CalendarComponentView_allMonths(menuMonths)
+            self.delegate?.CalendarComponentView_rangeMonths()
         }
     }
     
