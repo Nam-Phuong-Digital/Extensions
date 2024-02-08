@@ -91,8 +91,8 @@ public class CalendarPopoverController: UIViewController {
             if allowAreas.filter({$0.contains(rect.origin.y)}).isEmpty {
                 if rect.origin.y - maxAbove < minBelow - rect.origin.y {
                     y = maxAbove - rect.origin.y
-                } else if rect.origin.y - maxAbove > 0 {
-                    y = minBelow - rect.origin.y 
+                } else {
+                    y = minBelow - rect.origin.y
                 }
             }
             if let y {
