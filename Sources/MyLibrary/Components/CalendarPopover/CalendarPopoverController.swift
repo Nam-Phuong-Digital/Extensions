@@ -93,7 +93,7 @@ public class CalendarPopoverController: UIViewController {
                 (minBelow...scrollView.frame.height)
             ]
             var y:CGFloat?
-            if abs(heightScreen - rect.origin.y) < height {
+            if abs(heightScreen - rect.origin.y) < height && rect.origin.y > height {
                 if rect.origin.y < heightScreen/2 { // move to top
                     y = -(height - (heightScreen - rect.origin.y))
                 } else { // move to bottom
