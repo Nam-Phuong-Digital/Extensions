@@ -79,12 +79,23 @@ public class CalendarPopoverController: UIViewController {
         
         if let rect = sourceView.superview?.convert(sourceView.frame, to: nil) {
             let height:CGFloat = 500
-            let attent = scrollView.frame.height - 500
+            let attent = scrollView.frame.height - height
+            guard scrollView.frame.height > height, 
+                    attent > 0,
+                    attent < scrollView.frame.height else {return}
+            var allowAreas:[ClosedRange<CGFloat>] = [
+                (0...attent),
+                (attent...scrollView.frame.height)
+            ]
             var y:CGFloat?
             let minH = min(height, attent)
             let maxH = max(height, attent)
-            if (minH...maxH).contains(rect.origin.y) {
-                y = max(rect.origin.y - minH,maxH - rect.origin.y)
+            if allowAreas.filter({$0.contains(rect.origin.y)}).isEmpty {
+                if rect.origin.y - height < 0 {
+                    y = height - rect.origin.y
+                } else if rect.origin.y - height > 0 {
+                    y = rect.origin.y - height
+                }
             }
             if let y {
                 scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
