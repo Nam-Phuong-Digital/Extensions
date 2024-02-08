@@ -40,7 +40,7 @@ public class DateConvert {
         format:String = "yyyy-MM-dd'T'HH:mm:ss"
     ) {
         let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        df.dateFormat = format
         let locale = Locale(identifier: "en_US_POSIX")
         df.locale = locale
         let date = df.string(from: date)
