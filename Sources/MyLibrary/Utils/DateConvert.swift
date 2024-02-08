@@ -21,13 +21,13 @@ public class DateConvert {
             self.dateString = dateString
             fromStringToDate(dateString: dateString)
             if let date = self.date {
-                fromDateToString(date: date, format: formatOutput)
+                self.dateString = fromDateToString(date: date, format: formatOutput)
             }
         }
         if let date {
             self.date = date
-            fromDateToString(date: date, format: formatOutput)
-            if let dateString  = self.dateString {
+            self.dateString = fromDateToString(date: date, format: formatOutput)
+            if let dateString = self.dateString {
                 fromStringToDate(dateString: dateString)
             }
         }
@@ -41,16 +41,25 @@ public class DateConvert {
         return dateString
     }
     
+    public func stringToServer(
+        format:String = "yyyy-MM-dd'T'HH:mm:ss"
+    ) -> String? {
+        if let date = self.date {
+            return fromDateToString(date: date, format: format)
+        }
+        return dateString
+    }
+    
     private func fromDateToString(
         date:Date,
         format:String = "yyyy-MM-dd'T'HH:mm:ss"
-    ) {
+    ) -> String {
         let df = DateFormatter()
         df.dateFormat = format
         let locale = Locale(identifier: "en_US_POSIX")
         df.locale = locale
-        let date = df.string(from: date)
-        self.dateString = date
+        let dateString = df.string(from: date)
+        return dateString
     }
     
     private func fromStringToDate(
