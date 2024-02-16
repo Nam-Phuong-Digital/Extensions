@@ -106,6 +106,10 @@ public class CalendarComponentView: UIView {
         btnToday.setTitleStyle(title: "Today".localizedString())
         btnToday.tintColor = .mainColor
         
+        vwMonth.backgroundColor = .clear
+        collectionView.backgroundColor = .clear
+        
+        tabMonths.setBackground(color: .clear)
         tabMonths.delegate = self
         if #available(iOS 13.0, *) {
             self.collectionView.isScrollEnabled = true
