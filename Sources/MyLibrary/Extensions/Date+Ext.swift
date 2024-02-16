@@ -171,13 +171,13 @@ public extension Date {
 
 // MARK: -  Calendar
 public extension Date {
-    func toMonthCalendar() -> String {
+    func toMonthCalendar(isLongName:Bool = false) -> String {
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
         let bool = calendar.isDate(self, equalTo: Date(), toGranularity: .year)
         let formatter = DateFormatter()
         formatter.locale = Locale.app
-        formatter.dateFormat = bool ? .formatMonthCalendar : .formatMonthYearCalendar
+        formatter.dateFormat = bool ? (isLongName ? .formatLongMonthCalendar : .formatMonthCalendar) : (isLongName ? .formatLongMonthYearCalendar : .formatMonthYearCalendar)
         return formatter.string(from: self)
     }
     

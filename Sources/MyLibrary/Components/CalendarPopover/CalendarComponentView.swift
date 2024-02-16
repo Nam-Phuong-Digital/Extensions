@@ -63,7 +63,7 @@ public class CalendarComponentView: UIView {
             tabMonths.setButtons(
                 titles: menuMonths.compactMap({
                     .init(
-                        title: $0.date.toMonthCalendar(),
+                        title: $0.date.toMonthCalendar(isLongName:true),
                         identifier: $0.identifier,
                         isSelected: false
                     )
