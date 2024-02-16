@@ -114,9 +114,10 @@ public class ButtonScrollTabView: UIView {
                         button.setTitleColor(selected ? UIColor.mainColor : #colorLiteral(red: 0.6156862745, green: 0.6196078431, blue: 0.6980392157, alpha: 1), for: UIControl.State())
                     }) {[weak self] (bool) in guard let `self` = self else { return }
                         
-                        if selected {
+                        if selected, self.selectIndex < self.stackButton.arrangedSubviews.count {
                             let f:CGRect = self.stackButton.convert(self.stackButton.arrangedSubviews[self.selectIndex].frame, to: self.scrollView)
-                            self.scrollView.scrollRectToVisible(f, animated: true)
+                            self.scrollView.setContentOffset(CGPoint(x: (self.scrollView.contentSize.width - f.width)/2, y: 0), animated: true)
+//                            self.scrollView.scrollRectToVisible(f, animated: true)
                         }
                     }
                     CATransaction.commit()
