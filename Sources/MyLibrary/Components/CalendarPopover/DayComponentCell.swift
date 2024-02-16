@@ -41,7 +41,7 @@ public class DayComponentCell: UICollectionViewCell {
     
     let bgNormalView:UIView = {
         let v = UIView()
-        v.backgroundColor = .white
+        v.backgroundColor = .clear
         return v
     }()
     
