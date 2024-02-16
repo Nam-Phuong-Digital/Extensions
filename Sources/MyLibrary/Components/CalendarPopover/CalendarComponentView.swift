@@ -109,6 +109,7 @@ public class CalendarComponentView: UIView {
         vwMonth.backgroundColor = .clear
         collectionView.backgroundColor = .clear
         
+        tabMonths.contentInset = UIEdgeInsets(top: 0, left: tabMonths.frame.width/2, bottom: 0, right: tabMonths.frame.width/2)
         tabMonths.setBackground(color: .clear)
         tabMonths.delegate = self
         if #available(iOS 13.0, *) {
