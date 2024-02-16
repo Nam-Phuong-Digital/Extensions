@@ -116,7 +116,7 @@ public class ButtonScrollTabView: UIView {
                         
                         if selected, self.selectIndex < self.stackButton.arrangedSubviews.count {
                             let f:CGRect = self.stackButton.convert(self.stackButton.arrangedSubviews[self.selectIndex].frame, to: self.scrollView)
-                            self.scrollView.setContentOffset(CGPoint(x:(f.origin.x - self.scrollView.frame.width/2 - f.width/2), y: 0), animated: true)
+                            self.scrollView.setContentOffset(CGPoint(x:(f.origin.x - self.scrollView.frame.width/2 + f.width/2), y: 0), animated: true)
 //                            self.scrollView.scrollRectToVisible(f, animated: true)
                         }
                     }
