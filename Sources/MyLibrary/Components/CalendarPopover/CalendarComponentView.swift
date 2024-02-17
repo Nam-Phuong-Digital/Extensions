@@ -40,6 +40,7 @@ public class CalendarComponentView: UIView {
     public init() {   // 3 - programmatic initializer
         super.init(frame: CGRect.zero)  // 4.
         fromNib(isModule: true)  // 6.
+        config()
     }
     
     public override func awakeFromNib() {
@@ -148,6 +149,11 @@ public class CalendarComponentView: UIView {
         }
         
         getDatesForMonths()
+        if #available(iOS 13, *) {
+            updateDataSource()
+        } else {
+            self.collectionView.reloadData()
+        }
     }
     
     func setCurrentDay(date:Date = Date()) {
