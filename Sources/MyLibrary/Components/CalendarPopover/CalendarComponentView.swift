@@ -149,11 +149,6 @@ public class CalendarComponentView: UIView {
         }
         
         getDatesForMonths()
-        if #available(iOS 13, *) {
-            updateDataSource()
-        } else {
-            self.collectionView.reloadData()
-        }
     }
     
     func setCurrentDay(date:Date = Date()) {
@@ -231,6 +226,12 @@ public class CalendarComponentView: UIView {
         menuMonths = temp
         if let first = menuMonths.first(where: {$0.isEqual(Date())}) {
             currentMonth = first
+        }
+        
+        if #available(iOS 13, *) {
+            updateDataSource()
+        } else {
+            self.collectionView.reloadData()
         }
     }
     
