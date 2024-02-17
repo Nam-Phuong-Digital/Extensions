@@ -312,10 +312,12 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
                 self.onChangeDate?(nil)
                 return
             }
-            self.selectionDate = item
             self.onChangeDate?(item.date)
-            needreload.append(item)
-            self.reload(rows: needreload)
+            self.selectionDate = item
+            if !item.isEqual(selectionDate?.date) {
+                needreload.append(item)
+                self.reload(rows: needreload)
+            }
             
         } else {
             guard indexPath.section < menuMonths.count else {return}
@@ -329,8 +331,10 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
                 return
             }
             self.onChangeDate?(item.date)
-            selectionIndexpath = indexPath
-            reload.append(indexPath)
+            if !item.isEqual(selectionDate?.date) {
+                selectionIndexpath = indexPath
+                reload.append(indexPath)
+            }
             UIView.performWithoutAnimation {
                 self.collectionView.reloadItems(at: reload)
             }
