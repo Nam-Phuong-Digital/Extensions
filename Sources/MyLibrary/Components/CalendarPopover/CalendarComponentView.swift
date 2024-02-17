@@ -217,7 +217,7 @@ public class CalendarComponentView: UIView {
     }
     
     private func getDatesForMonths() {
-        var temp = menuMonths
+        var temp = [CEVMonth]()
         let range = self.delegate?.CalendarComponentView_rangeMonths() ?? DefaultRangeMonth()
         for month in Date().getTaskMonths(range: range) {
             let result = loadWeekDates(from: month)
