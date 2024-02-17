@@ -308,7 +308,7 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
                 needreload.append(selectionDate)
             }
             let item:CEVDate = self.dataSource?.itemIdentifier(for: indexPath) as! CEVDate
-            guard !item.disabled, !item.isEqual(selectionDate?.date) else {
+            guard !item.disabled else {
                 self.onChangeDate?(nil)
                 return
             }
@@ -324,7 +324,7 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
                 reload.append(selectionIndexpath)
             }
             let item = currentMonth.days[indexPath.row]
-            guard !item.disabled, !item.isEqual(selectionDate?.date) else {
+            guard !item.disabled else {
                 self.onChangeDate?(nil)
                 return
             }
