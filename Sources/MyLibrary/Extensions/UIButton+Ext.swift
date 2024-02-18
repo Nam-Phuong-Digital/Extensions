@@ -120,9 +120,9 @@ public extension UIButton {
         }
     }
     
-    func setTitleStyle(title:String?) {
+    func setTitleStyle(title:String?, color:UIColor? = .black) {
         setTitle(title, for: UIControl.State())
-        tintColor = .black
+        tintColor = color
         if #available(iOS 15, *) {
             configuration = .plain()
             configurationUpdateHandler = {btn in
@@ -130,6 +130,7 @@ public extension UIButton {
                 bg.backgroundColor = .clear
                 btn.configuration?.background = bg
                 btn.configuration?.title = title
+                btn.configuration?.baseForegroundColor = color
             }
         } else {
             backgroundColor = .clear
