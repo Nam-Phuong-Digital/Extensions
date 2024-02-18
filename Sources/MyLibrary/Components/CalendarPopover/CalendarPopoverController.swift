@@ -29,7 +29,7 @@ public extension UIViewController {
             rangeMonths: rangeMonths,
             result
         )
-        self.present(UINavigationController(rootViewController: vc), animated: true)
+        self.present(PopoverNavigationController(root: vc), animated: true)
     }
 }
 fileprivate let is_smallWidth = UIScreen.main.bounds.size.width <= 320
@@ -56,7 +56,7 @@ public class CalendarPopoverController: UIViewController {
         self.result = result
         self.rangeMonths = rangeMonths
         super.init(nibName: "CalendarPopoverController", bundle: .module)
-        self.navigationController?.modalPresentationStyle = .popover
+//        self.navigationController?.modalPresentationStyle = .popover
         if let pop = self.navigationController?.popoverPresentationController {
 //            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
             pop.delegate = self
