@@ -45,6 +45,10 @@ public struct FilterSingleSelectedObject: Hashable {
     let id:String = .generateIdentifier
     public let object:Any?
     public let title:String
+    public init(object: Any?, title: String) {
+        self.object = object
+        self.title = title
+    }
 }
 
 class FilterSingleSelectedController: UIViewController {
