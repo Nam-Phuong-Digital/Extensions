@@ -17,5 +17,8 @@ public class Resource {
         static public var primary:UIColor?
         static public var border:UIColor?
         static public var surface:UIColor?
+        static public var secondary:UIColor?
+        static public var onSecondary:UIColor?
+        static public var onPrimary:UIColor?
     }
 }

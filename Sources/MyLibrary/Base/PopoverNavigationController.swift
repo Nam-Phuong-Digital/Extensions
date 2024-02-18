@@ -14,12 +14,9 @@ class PopoverNavigationController: UINavigationController {
         self.modalPresentationStyle = .popover
         self.viewControllers = [root]
         if let pop = self.popoverPresentationController {
-//            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
                 pop.sourceView = sourceView
-//                scrollView = sourceView.getScrollView()
-//                scrollToFitSpace(sourceView: sourceView)
             } else if let sourceView = sourceView as? UIBarButtonItem {
                 if #available(iOS 16, *) {
                     pop.sourceItem = sourceView
@@ -28,6 +25,30 @@ class PopoverNavigationController: UINavigationController {
                 }
             }
         }
+        if #available(iOS 13, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor : Resource.Color.onPrimary ?? .white]
+    //        if let data = UserDefaults.backgroundImageData, let image = UIImage(data: data) {
+            if #available(iOS 14, *) {
+                if #available(iOS 15, *) {
+                    navBarAppearance.backgroundColor = Resource.Color.primary
+                } else {
+                    navBarAppearance.configureWithTransparentBackground()
+                    navBarAppearance.backgroundColor = Resource.Color.primary
+                }
+            } else {
+                navBarAppearance.backgroundColor = Resource.Color.primary
+            }
+            UINavigationBar.appearance().standardAppearance = navBarAppearance
+        } else {
+            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : Resource.Color.onPrimary ?? .white]
+            self.navigationBar.backgroundColor = Resource.Color.primary
+            navigationBar.setBackgroundImage(Resource.Color.primary?.imageRepresentation, for: .default)
+            navigationBar.shadowImage = UIImage()
+            self.navigationBar.isTranslucent = false
+        }
+            
     }
     
     required init?(coder aDecoder: NSCoder) {
