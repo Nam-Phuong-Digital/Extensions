@@ -89,8 +89,10 @@ class FilterSingleSelectedController: UIViewController {
                     if #available(iOS 14.0, *) {
                         var configure = UIListContentConfiguration.cell()
                         configure.text = item.title
+                        configure.textProperties.numberOfLines = 3
                         cell?.contentConfiguration = configure
                     } else {
+                        cell?.textLabel?.numberOfLines = 3
                         cell?.textLabel?.text = item.title
                     }
                     cell?.accessoryType = item == self.current ? .checkmark : .none
@@ -167,8 +169,10 @@ extension FilterSingleSelectedController: UITableViewDelegate, UITableViewDataSo
         if #available(iOS 14.0, *) {
             var configure = UIListContentConfiguration.cell()
             configure.text = item.title
+            configure.textProperties.numberOfLines = 3
             cell.contentConfiguration = configure
         } else {
+            cell.textLabel?.numberOfLines = 3
             cell.textLabel?.text = item.title
         }
         cell.setBGColor(.clear)
