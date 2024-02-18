@@ -99,27 +99,9 @@ public class CalendarPopoverController: UIViewController {
         super.viewDidLoad()
         
         if let sourceView = sourceView as? UIView {
-//                pop.sourceView = sourceView
             scrollView = sourceView.getScrollView()
             scrollToFitSpace(sourceView: sourceView)
         }
-        
-//        if let pop = self.navigationController?.popoverPresentationController {
-//            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
-//            pop.delegate = self
-//            if let sourceView = sourceView as? UIView {
-//                pop.sourceView = sourceView
-//                scrollView = sourceView.getScrollView()
-//                scrollToFitSpace(sourceView: sourceView)
-//            }
-//            else if let sourceView = sourceView as? UIBarButtonItem {
-//                if #available(iOS 16, *) {
-//                    pop.sourceItem = sourceView
-//                } else {
-//                    pop.barButtonItem = sourceView
-//                }
-//            }
-//        }
         
         let previous = UIBarButtonItem(image: Resource.Icon.back, style: .done, target: calendar, action: #selector(calendar.selectorBack(_:)))
         previous.tintColor = Resource.Color.onPrimary
@@ -160,6 +142,10 @@ public class CalendarPopoverController: UIViewController {
         updateSize()
     }
     
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateSize()
+    }
     
     private func updateSize() {
         let width:CGFloat =
@@ -192,29 +178,6 @@ extension CalendarPopoverController:CalendarComponentViewDelegate {
     public func CalendarComponentView_stateForPrevious(isDisabled: Bool) {
         self.navigationItem.leftBarButtonItem?.isEnabled = !isDisabled
     }
-}
-
-extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
-    
-    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-        if let sourceView = sourceView as? UIView {
-            popoverPresentationController.sourceView = sourceView
-        } else if let sourceView = sourceView as? UIBarButtonItem {
-            if #available(iOS 16, *) {
-                popoverPresentationController.sourceItem = sourceView
-            } else {
-                popoverPresentationController.barButtonItem = sourceView
-            }
-        }
-    }
-    
-    public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        true
-    }
-    
-    public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-            return .none
-        }
 }
 
 class PopoverBackgroundView: UIPopoverBackgroundView {
