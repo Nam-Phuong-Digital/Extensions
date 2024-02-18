@@ -10,17 +10,28 @@ import UIKit
 
 public extension UIViewController {
     func selectSingleFilter(
+        title:String? = nil,
         sourceView:Any?,
         current: String?,
         items: [String],
         result:@escaping (_ T:String?)->()
     ) {
         let vc = FilterSingleSelectedController(current: current, items: items, result: result)
-        let popVC = PopoverContainerController(
-            sourceView: sourceView,
-            contentController: vc
-        )
-        self.present(popVC, animated: true)
+        if let title {
+            vc.title = title
+            let nv = UINavigationController(rootViewController: vc)
+            let popVC = PopoverContainerController(
+                sourceView: sourceView,
+                contentController: nv
+            )
+            self.present(popVC, animated: true)
+        } else {
+            let popVC = PopoverContainerController(
+                sourceView: sourceView,
+                contentController: vc
+            )
+            self.present(popVC, animated: true)
+        }
     }
 }
 
@@ -83,7 +94,12 @@ class FilterSingleSelectedController: UIViewController {
             height = max
         }
         preferredContentSize = CGSize(width: 300, height: height)
-        self.parent?.preferredContentSize = preferredContentSize
+        if let nv = self.navigationController {
+            nv.preferredContentSize = preferredContentSize
+            nv.parent?.preferredContentSize = preferredContentSize
+        } else {
+            self.parent?.preferredContentSize = preferredContentSize
+        }
         
         reloadData()
     }
