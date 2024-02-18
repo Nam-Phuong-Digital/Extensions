@@ -12,9 +12,9 @@ public extension UIViewController {
     func selectSingleFilter(
         title:String? = nil,
         sourceView:Any?,
-        current: String?,
-        items: [String],
-        result:@escaping (_ T:String?)->()
+        current: FilterSingleSelectedObject?,
+        items: [FilterSingleSelectedObject],
+        result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) {
         let vc = FilterSingleSelectedController(current: current, items: items, result: result)
         if let title {
@@ -35,18 +35,29 @@ public extension UIViewController {
     }
 }
 
+public struct FilterSingleSelectedObject: Hashable {
+    public static func == (lhs: FilterSingleSelectedObject, rhs: FilterSingleSelectedObject) -> Bool {
+        lhs.id == rhs.id
+    }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    let id:String = .generateIdentifier
+    public let object:Any?
+    public let title:String
+}
 
 class FilterSingleSelectedController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private let items:[String]
-    private var current:String?
-    private var result:(_ T:String?)->()
+    private let items:[FilterSingleSelectedObject]
+    private var current:FilterSingleSelectedObject?
+    private var result:(_ T:FilterSingleSelectedObject?)->()
     init(
-        current: String?,
-        items: [String],
-        result:@escaping (_ T:String?)->()
+        current: FilterSingleSelectedObject?,
+        items: [FilterSingleSelectedObject],
+        result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) {
         self.items = items
         self.current = current
@@ -67,16 +78,16 @@ class FilterSingleSelectedController: UIViewController {
         if #available(iOS 13, *) {
             setupDataSource {
                 .init(tableView: self.tableView) {[weak self] tableView, indexPath, itemIdentifier in guard let self else { return nil}
-                    guard let item = itemIdentifier as? String, !self.items.isEmpty else {
+                    guard let item = itemIdentifier as? FilterSingleSelectedObject else {
                         return nil
                     }
                     let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
                     if #available(iOS 14.0, *) {
                         var configure = UIListContentConfiguration.cell()
-                        configure.text = item
+                        configure.text = item.title
                         cell?.contentConfiguration = configure
                     } else {
-                        cell?.textLabel?.text = item
+                        cell?.textLabel?.text = item.title
                     }
                     cell?.accessoryType = item == self.current ? .checkmark : .none
                     cell?.setBGColor(.clear)
@@ -124,7 +135,7 @@ class FilterSingleSelectedController: UIViewController {
 extension FilterSingleSelectedController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item: String? =
+        let item: FilterSingleSelectedObject? =
         if #available(iOS 13, *) {
             getItemIdentifier(indexPath)
         } else {
@@ -151,10 +162,10 @@ extension FilterSingleSelectedController: UITableViewDelegate, UITableViewDataSo
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if #available(iOS 14.0, *) {
             var configure = UIListContentConfiguration.cell()
-            configure.text = item
+            configure.text = item.title
             cell.contentConfiguration = configure
         } else {
-            cell.textLabel?.text = item
+            cell.textLabel?.text = item.title
         }
         cell.setBGColor(.clear)
         cell.accessoryType = item == self.current ? .checkmark : .none
