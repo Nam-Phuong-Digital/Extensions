@@ -56,8 +56,8 @@ public class CalendarPopoverController: UIViewController {
         self.result = result
         self.rangeMonths = rangeMonths
         super.init(nibName: "CalendarPopoverController", bundle: .module)
-        modalPresentationStyle = .popover
-        if let pop = self.popoverPresentationController {
+        self.navigationController?.modalPresentationStyle = .popover
+        if let pop = self.navigationController?.popoverPresentationController {
 //            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
