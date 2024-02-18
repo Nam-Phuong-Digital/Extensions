@@ -90,6 +90,9 @@ class FilterSingleSelectedController: UIViewController {
         
         let max = UIScreen.bounceWindow.height * 0.5
         var height:CGFloat = CGFloat(items.count * 50)
+        if let nv = self.navigationController {
+            height += nv.navigationBar.frame.height
+        }
         if height > max {
             height = max
         }
