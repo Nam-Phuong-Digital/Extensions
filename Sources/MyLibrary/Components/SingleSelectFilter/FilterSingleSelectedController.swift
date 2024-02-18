@@ -51,7 +51,7 @@ class FilterSingleSelectedController: UIViewController {
         self.items = items
         self.current = current
         self.result = result
-        super.init(nibName: "FilterSingleSelectedController", bundle: nil)
+        super.init(nibName: "FilterSingleSelectedController", bundle: .module)
     }
     
     required init?(coder: NSCoder) {

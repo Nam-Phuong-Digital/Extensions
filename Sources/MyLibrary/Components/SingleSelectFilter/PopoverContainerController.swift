@@ -19,7 +19,7 @@ public final class PopoverContainerController: UIViewController {
     ) {
         self.sourceView = sourceView
         self.contentController = contentController
-        super.init(nibName: "PopoverContainerController", bundle: nil)
+        super.init(nibName: "PopoverContainerController", bundle: .module)
         modalPresentationStyle = .popover
         if let pop = self.popoverPresentationController {
             pop.delegate = self
