@@ -29,7 +29,7 @@ public extension UIViewController {
             rangeMonths: rangeMonths,
             result
         )
-        self.present(PopoverNavigationController(root: vc), animated: true)
+        self.present(PopoverNavigationController(root: vc, sourceView: sourceView), animated: true)
     }
 }
 fileprivate let is_smallWidth = UIScreen.main.bounds.size.width <= 320
@@ -98,21 +98,28 @@ public class CalendarPopoverController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let pop = self.navigationController?.popoverPresentationController {
-//            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
-            pop.delegate = self
-            if let sourceView = sourceView as? UIView {
+        if let sourceView = sourceView as? UIView {
 //                pop.sourceView = sourceView
-                scrollView = sourceView.getScrollView()
-                scrollToFitSpace(sourceView: sourceView)
-            } else if let sourceView = sourceView as? UIBarButtonItem {
-                if #available(iOS 16, *) {
-                    pop.sourceItem = sourceView
-                } else {
-                    pop.barButtonItem = sourceView
-                }
-            }
+            scrollView = sourceView.getScrollView()
+            scrollToFitSpace(sourceView: sourceView)
         }
+        
+//        if let pop = self.navigationController?.popoverPresentationController {
+//            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
+//            pop.delegate = self
+//            if let sourceView = sourceView as? UIView {
+//                pop.sourceView = sourceView
+//                scrollView = sourceView.getScrollView()
+//                scrollToFitSpace(sourceView: sourceView)
+//            }
+//            else if let sourceView = sourceView as? UIBarButtonItem {
+//                if #available(iOS 16, *) {
+//                    pop.sourceItem = sourceView
+//                } else {
+//                    pop.barButtonItem = sourceView
+//                }
+//            }
+//        }
         
         let previous = UIBarButtonItem(image: Resource.Icon.back, style: .done, target: calendar, action: #selector(calendar.selectorBack(_:)))
         let next = UIBarButtonItem(image: Resource.Icon.right, style: .done, target: calendar, action: #selector(calendar.selectorNext(_:)))
