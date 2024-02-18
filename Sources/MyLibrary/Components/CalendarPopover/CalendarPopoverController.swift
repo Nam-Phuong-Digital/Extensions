@@ -23,13 +23,20 @@ public extension UIViewController {
         _ result: @escaping ((Date?) -> Void)
     ) {
         self.view.endEditing(true)
+        let group = DispatchGroup()
+        group.enter()
         let vc = CalendarPopoverController(
             currentDate: currentDate,
             sourceView:sourceView,
             rangeMonths: rangeMonths,
+            scrollCompleted: {
+                group.leave()
+            },
             result
         )
-        self.present(PopoverNavigationController(root: vc, sourceView: sourceView), animated: true)
+        group.notify(queue: .main) {[weak self] in
+            self?.present(PopoverNavigationController(root: vc, sourceView: sourceView), animated: true)
+        }
     }
 }
 fileprivate let is_smallWidth = UIScreen.main.bounds.size.width <= 320
@@ -49,6 +56,7 @@ public class CalendarPopoverController: UIViewController {
         currentDate:Date?,
         sourceView:Any?,
         rangeMonths:RangeMonth,
+        scrollCompleted:@escaping ()->(),
         _ result: @escaping ((Date?) -> Void)
     ) {
         self.sourceView = sourceView
@@ -57,6 +65,10 @@ public class CalendarPopoverController: UIViewController {
         self.rangeMonths = rangeMonths
         super.init(nibName: "CalendarPopoverController", bundle: .module)
 //        self.navigationController?.modalPresentationStyle = .popover
+        if let sourceView = sourceView as? UIView {
+            scrollView = sourceView.getScrollView()
+            scrollToFitSpace(sourceView: sourceView,scrollCompleted: scrollCompleted)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -69,8 +81,12 @@ public class CalendarPopoverController: UIViewController {
         }
     }
     
-    private func scrollToFitSpace(sourceView:UIView?) {
+    private func scrollToFitSpace(
+        sourceView:UIView?,
+        scrollCompleted:@escaping ()->()
+    ) {
         guard let sourceView, let scrollView else {
+            scrollCompleted()
             return
         }
         
@@ -91,17 +107,17 @@ public class CalendarPopoverController: UIViewController {
             }
             if let y {
                 scrollView.setContentOffset(CGPoint(x: 0, y: scrollView.contentOffset.y + y), animated: true)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    scrollCompleted()
+                }
+            } else {
+                scrollCompleted()
             }
         }
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if let sourceView = sourceView as? UIView {
-            scrollView = sourceView.getScrollView()
-            scrollToFitSpace(sourceView: sourceView)
-        }
         
         let previous = UIBarButtonItem(image: Resource.Icon.back, style: .done, target: calendar, action: #selector(calendar.selectorBack(_:)))
         previous.tintColor = Resource.Color.onPrimary
