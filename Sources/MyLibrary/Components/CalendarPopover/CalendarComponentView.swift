@@ -18,6 +18,9 @@ public protocol CalendarComponentViewDelegate: AnyObject {
     func CalendarComponentView_getIcon(for date:Date) -> CalendarComponentIcon?
     func CalendarComponentView_allMonths(_ months:[CEVMonth])
     func CalendarComponentView_rangeMonths() -> RangeMonth?
+    
+    func CalendarComponentView_stateForNext(isDisabled:Bool)
+    func CalendarComponentView_stateForPrevious(isDisabled:Bool)
 }
 
 public extension CalendarComponentViewDelegate {
@@ -26,6 +29,8 @@ public extension CalendarComponentViewDelegate {
     }
     func CalendarComponentView_allMonths(_ months:[CEVMonth]) {}
     func CalendarComponentView_rangeMonths() -> RangeMonth? {nil}
+    func CalendarComponentView_stateForNext(isDisabled:Bool){}
+    func CalendarComponentView_stateForPrevious(isDisabled:Bool){}
 }
 
 fileprivate let EXPAND_HEIGHT = 320.0
@@ -105,7 +110,7 @@ public class CalendarComponentView: UIView {
         btnBack.setCheckBoxStyle(image: Resource.Icon.back, selectedImage: Resource.Icon.back,tintColor: .mainColor)
         btnNext.setCheckBoxStyle(image: Resource.Icon.right, selectedImage: Resource.Icon.right, tintColor: .mainColor)
         btnToday.setTitleStyle(title: "Today".localizedString())
-        btnToday.tintColor = .mainColor
+        btnToday.tintColor = Resource.Color.primary
         
         vwMonth.backgroundColor = .clear
         collectionView.backgroundColor = .clear
@@ -169,6 +174,8 @@ public class CalendarComponentView: UIView {
     func setCurrentMonth(month:CEVMonth) {
         currentMonth = month
         if let index = menuMonths.firstIndex(of: currentMonth) {
+            self.delegate?.CalendarComponentView_stateForNext(isDisabled: index < menuMonths.count - 1)
+            self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: index > 0)
             btnBack.isEnabled = index > 0
             btnNext.isEnabled = index < menuMonths.count - 1
         }

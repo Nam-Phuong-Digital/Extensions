@@ -9,6 +9,13 @@
 import UIKit
 
 public extension UIViewController {
+    
+    /// show Canlendar
+    /// - Parameters:
+    ///   - currentDate: current selected date
+    ///   - sourceView: control destination for arrow
+    ///   - rangeMonths: range of months to display on calendar, base ``RangeMonth``
+    ///   - result: return a clouse with `Date`
     func presentCalendarComponent(
         currentDate:Date? = Date(),
         sourceView:Any?,
@@ -22,11 +29,12 @@ public extension UIViewController {
             rangeMonths: rangeMonths,
             result
         )
-        self.present(vc, animated: true)
+        self.present(UINavigationController(rootViewController: vc), animated: true)
     }
 }
 fileprivate let is_smallWidth = UIScreen.main.bounds.size.width <= 320
 fileprivate let is_iphone = UIDevice.current.userInterfaceIdiom != .pad
+/* @class CalendarPopoverController */
 public class CalendarPopoverController: UIViewController {
 
     @IBOutlet weak var calendar: CalendarComponentView!
@@ -104,6 +112,16 @@ public class CalendarPopoverController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let previous = UIBarButtonItem(image: Resource.Icon.back, style: .done, target: calendar, action: #selector(calendar.selectorBack(_:)))
+        let next = UIBarButtonItem(image: Resource.Icon.right, style: .done, target: calendar, action: #selector(calendar.selectorNext(_:)))
+        let btnToday = UIButton(type: .custom)
+        btnToday.setTitleStyle(title: "Today".localizedString())
+        btnToday.addTarget(calendar, action: #selector(calendar.selectorToday(_:)), for: .touchUpInside)
+        self.navigationItem.leftBarButtonItem = previous
+        self.navigationItem.rightBarButtonItem = next
+        self.navigationItem.titleView = btnToday
+        
         calendar.delegate = self
         calendar.onChangeDate = {[weak self] in
             self?.result($0)
@@ -118,12 +136,6 @@ public class CalendarPopoverController: UIViewController {
         if let currentDate {
             calendar.setCurrentDay(date: currentDate)
         }
-    }
-    
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        updateSize()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -162,16 +174,19 @@ extension CalendarPopoverController:CalendarComponentViewDelegate {
     public func CalendarComponentView_rangeMonths() -> RangeMonth? {
         return rangeMonths
     }
+    
+    public func CalendarComponentView_stateForNext(isDisabled: Bool) {
+        self.navigationItem.rightBarButtonItem?.isEnabled = !isDisabled
+    }
+    
+    public func CalendarComponentView_stateForPrevious(isDisabled: Bool) {
+        self.navigationItem.leftBarButtonItem?.isEnabled = !isDisabled
+    }
 }
 
 extension CalendarPopoverController: UIPopoverPresentationControllerDelegate {
     
-//    public func presentationController(_ presentationController: UIPresentationController, prepare adaptivePresentationController: UIPresentationController) {
-//        adaptivePresentationController.presentingViewController.modalPresentationStyle = .none
-//    }
-//    
     public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
-//        popoverPresentationController.canOverlapSourceViewRect = true
         if let sourceView = sourceView as? UIView {
             popoverPresentationController.sourceView = sourceView
         } else if let sourceView = sourceView as? UIBarButtonItem {

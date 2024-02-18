@@ -7,6 +7,7 @@
 
 import Foundation
 
+/* @class RangeMonth*/
 open class RangeMonth {
 
     public init() {}
@@ -18,6 +19,7 @@ open class RangeMonth {
     public var distanceOfMaxMonthToCurrent:Int = 1
 }
 
+/* @class DefaultRangeMonth */
 public class DefaultRangeMonth: RangeMonth {
     
     public override init() {
