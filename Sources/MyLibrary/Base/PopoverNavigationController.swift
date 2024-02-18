@@ -7,9 +7,9 @@
 
 import UIKit
 
-class PopoverNavigationController: UINavigationController {
+public class PopoverNavigationController: UINavigationController {
 
-    init(root: UIViewController, sourceView:Any?) {
+    public init(root: UIViewController, sourceView:Any?) {
         super.init(nibName: "PopoverNavigationController", bundle: .module)
         self.modalPresentationStyle = .popover
         self.viewControllers = [root]
@@ -31,7 +31,7 @@ class PopoverNavigationController: UINavigationController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }

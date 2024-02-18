@@ -57,9 +57,6 @@ public class CalendarComponentView: UIView {
     @IBOutlet weak var tabMonths: ButtonScrollTabView!
     @IBOutlet weak var vwMonth: UIView!
     @IBOutlet weak var heightCollectionView: NSLayoutConstraint!
-    @IBOutlet weak var btnBack: UIButton!
-    @IBOutlet weak var btnNext: UIButton!
-    @IBOutlet weak var btnToday: UIButton!
     
     private var currentWeek:Int = 0
     
@@ -106,11 +103,6 @@ public class CalendarComponentView: UIView {
     private var icons:[String:UIImage?] = [:]
     
     public func config() {
-        
-        btnBack.setCheckBoxStyle(image: Resource.Icon.back, selectedImage: Resource.Icon.back,tintColor: .mainColor)
-        btnNext.setCheckBoxStyle(image: Resource.Icon.right, selectedImage: Resource.Icon.right, tintColor: .mainColor)
-        btnToday.setTitleStyle(title: "Today".localizedString())
-        btnToday.tintColor = Resource.Color.primary
         
         vwMonth.backgroundColor = .clear
         collectionView.backgroundColor = .clear
@@ -176,8 +168,6 @@ public class CalendarComponentView: UIView {
         if let index = menuMonths.firstIndex(of: currentMonth) {
             self.delegate?.CalendarComponentView_stateForNext(isDisabled: index < menuMonths.count - 1)
             self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: index > 0)
-            btnBack.isEnabled = index > 0
-            btnNext.isEnabled = index < menuMonths.count - 1
         }
         if let index = menuMonths.firstIndex(where: {$0.isEqual(month.date)}) {
             tabMonths.setSelectIndex(index: index)
@@ -283,7 +273,7 @@ public class CalendarComponentView: UIView {
         return rowWeekDates.flatMap({$0})
     }
     
-    @IBAction func selectorBack(_ sender: Any) {
+    @objc func selectorBack(_ sender: UIBarButtonItem) {
         if let index = self.menuMonths.firstIndex(of: currentMonth) {
             let target = index - 1
             if target >= 0 {
@@ -291,7 +281,7 @@ public class CalendarComponentView: UIView {
             }
         }
     }
-    @IBAction func selectorToday(_ sender: Any) {
+    @objc func selectorToday(_ sender: Any) {
         let date = Date()
         if let current = self.menuMonths.first(where: {$0.isEqual(date)}) {
             if let _ = current.days.first(where: {$0.isEqual(date)}) {
@@ -305,7 +295,7 @@ public class CalendarComponentView: UIView {
             setCurrentMonth(month: current)
         }
     }
-    @IBAction func selectorNext(_ sender: Any) {
+    @objc func selectorNext(_ sender: UIBarButtonItem) {
         if let index = self.menuMonths.firstIndex(of: currentMonth) {
             let target = index + 1
             if target < self.menuMonths.count {
@@ -427,8 +417,8 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
             }
             currentMonth = menuMonths[index]
             if let index = menuMonths.firstIndex(of: currentMonth) {
-                btnBack.isEnabled = index > 0
-                btnNext.isEnabled = index < menuMonths.count - 1
+                self.delegate?.CalendarComponentView_stateForNext(isDisabled: index < menuMonths.count - 1)
+                self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: index > 0)
             }
         }
     }
