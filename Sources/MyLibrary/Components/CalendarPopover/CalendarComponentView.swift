@@ -166,8 +166,8 @@ public class CalendarComponentView: UIView {
     func setCurrentMonth(month:CEVMonth) {
         currentMonth = month
         if let index = menuMonths.firstIndex(of: currentMonth) {
-            self.delegate?.CalendarComponentView_stateForNext(isDisabled: index < menuMonths.count - 1)
-            self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: index > 0)
+            self.delegate?.CalendarComponentView_stateForNext(isDisabled: !(index < menuMonths.count - 1))
+            self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: !(index > 0))
         }
         if let index = menuMonths.firstIndex(where: {$0.isEqual(month.date)}) {
             tabMonths.setSelectIndex(index: index)
@@ -417,8 +417,8 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
             }
             currentMonth = menuMonths[index]
             if let index = menuMonths.firstIndex(of: currentMonth) {
-                self.delegate?.CalendarComponentView_stateForNext(isDisabled: index < menuMonths.count - 1)
-                self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: index > 0)
+                self.delegate?.CalendarComponentView_stateForNext(isDisabled: !(index < menuMonths.count - 1))
+                self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: !(index > 0))
             }
         }
     }
