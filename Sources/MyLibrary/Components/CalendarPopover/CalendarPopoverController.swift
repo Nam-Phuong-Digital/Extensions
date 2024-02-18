@@ -57,21 +57,6 @@ public class CalendarPopoverController: UIViewController {
         self.rangeMonths = rangeMonths
         super.init(nibName: "CalendarPopoverController", bundle: .module)
 //        self.navigationController?.modalPresentationStyle = .popover
-        if let pop = self.navigationController?.popoverPresentationController {
-//            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
-            pop.delegate = self
-            if let sourceView = sourceView as? UIView {
-//                pop.sourceView = sourceView
-                scrollView = sourceView.getScrollView()
-                scrollToFitSpace(sourceView: sourceView)
-            } else if let sourceView = sourceView as? UIBarButtonItem {
-                if #available(iOS 16, *) {
-                    pop.sourceItem = sourceView
-                } else {
-                    pop.barButtonItem = sourceView
-                }
-            }
-        }
     }
     
     required init?(coder: NSCoder) {
@@ -112,6 +97,22 @@ public class CalendarPopoverController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let pop = self.navigationController?.popoverPresentationController {
+//            pop.popoverBackgroundViewClass = PopoverBackgroundView.self
+            pop.delegate = self
+            if let sourceView = sourceView as? UIView {
+//                pop.sourceView = sourceView
+                scrollView = sourceView.getScrollView()
+                scrollToFitSpace(sourceView: sourceView)
+            } else if let sourceView = sourceView as? UIBarButtonItem {
+                if #available(iOS 16, *) {
+                    pop.sourceItem = sourceView
+                } else {
+                    pop.barButtonItem = sourceView
+                }
+            }
+        }
         
         let previous = UIBarButtonItem(image: Resource.Icon.back, style: .done, target: calendar, action: #selector(calendar.selectorBack(_:)))
         let next = UIBarButtonItem(image: Resource.Icon.right, style: .done, target: calendar, action: #selector(calendar.selectorNext(_:)))
