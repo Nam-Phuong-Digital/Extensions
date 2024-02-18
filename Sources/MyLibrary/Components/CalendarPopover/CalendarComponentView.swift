@@ -387,6 +387,10 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
             }
             tabMonths.selectIndex = index
             currentMonth = menuMonths[index]
+            if let index = menuMonths.firstIndex(of: currentMonth) {
+                self.delegate?.CalendarComponentView_stateForNext(isDisabled: !(index < menuMonths.count - 1))
+                self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: !(index > 0))
+            }
         }
     }
     
@@ -401,6 +405,10 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
             }
             tabMonths.selectIndex = index
             currentMonth = menuMonths[index]
+            if let index = menuMonths.firstIndex(of: currentMonth) {
+                self.delegate?.CalendarComponentView_stateForNext(isDisabled: !(index < menuMonths.count - 1))
+                self.delegate?.CalendarComponentView_stateForPrevious(isDisabled: !(index > 0))
+            }
         }
     }
 }
