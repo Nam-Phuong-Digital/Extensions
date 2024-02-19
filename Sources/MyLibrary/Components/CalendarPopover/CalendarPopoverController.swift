@@ -52,6 +52,7 @@ public class CalendarPopoverController: UIViewController {
     private let rangeMonths:RangeMonth
     private var currentDate:Date?
     private var scrollView:UIScrollView? // purpose support scroll to perfect position to show calendar
+    private var originOffset:CGPoint?
     public init(
         currentDate:Date?,
         sourceView:Any?,
@@ -67,6 +68,7 @@ public class CalendarPopoverController: UIViewController {
 //        self.navigationController?.modalPresentationStyle = .popover
         if let sourceView = sourceView as? UIView {
             scrollView = sourceView.getScrollView()
+            originOffset = scrollView?.contentOffset
             scrollToFitSpace(sourceView: sourceView,scrollCompleted: scrollCompleted)
         }
     }
@@ -179,7 +181,10 @@ public class CalendarPopoverController: UIViewController {
     
     public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        self.result(nil)
+        if let originOffset {
+            scrollView?.setContentOffset(originOffset, animated: true)
+        }
+        
     }
 }
 
