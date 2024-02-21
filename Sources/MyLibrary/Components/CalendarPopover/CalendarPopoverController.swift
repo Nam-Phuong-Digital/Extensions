@@ -39,7 +39,7 @@ public extension UIViewController {
         }
     }
 }
-fileprivate let is_smallWidth = UIScreen.main.bounds.size.width <= 320
+fileprivate let is_smallWidth = UIScreen.bounceWindow.size.width <= 320
 fileprivate let is_iphone = UIDevice.current.userInterfaceIdiom != .pad
 /* @class CalendarPopoverController */
 public class CalendarPopoverController: UIViewController {

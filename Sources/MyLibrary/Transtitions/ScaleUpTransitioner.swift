@@ -59,7 +59,6 @@ public class ScaleUpAnimateTransiting: NSObject,  UIViewControllerAnimatedTransi
 // MARK: -  ScaleUpAnimateTransitionDelegate
 public class ScaleUpAnimateTransitionDelegate:NSObject, UIViewControllerTransitioningDelegate {
     var shouldTapDimToClose = true
-    
     init(shouldTapDimToClose:Bool = false) {
         super.init()
         self.shouldTapDimToClose = shouldTapDimToClose
@@ -171,7 +170,6 @@ class ScaleUpPresentationController: UIPresentationController {
         self.presentedView?.frame = self.frameOfPresentedViewInContainerView
         presentedView?.center = self.containerView?.center ?? .zero
         presentedView?.center.y -= hegightKeyboard/2
-        
     }
     
     override var frameOfPresentedViewInContainerView: CGRect {
