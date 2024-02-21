@@ -25,15 +25,17 @@ public extension UIViewController {
         self.view.endEditing(true)
         let group = DispatchGroup()
         group.enter()
-        let vc = CalendarPopoverController(
-            currentDate: currentDate,
-            sourceView:sourceView,
-            rangeMonths: rangeMonths,
-            scrollCompleted: {
-                group.leave()
-            },
-            result
-        )
+        DispatchQueue.main.async {
+            let vc = CalendarPopoverController(
+                currentDate: currentDate,
+                sourceView:sourceView,
+                rangeMonths: rangeMonths,
+                scrollCompleted: {
+                    group.leave()
+                },
+                result
+            )
+        }
         group.notify(queue: .main) {[weak self] in
             self?.present(PopoverNavigationController(root: vc, sourceView: sourceView), animated: true)
         }
