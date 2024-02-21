@@ -18,6 +18,7 @@ public class PopoverNavigationController: UINavigationController {
         if let pop = self.popoverPresentationController {
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
+                pop.sourceRect = sourceView.bounds
                 pop.sourceView = sourceView
             } else if let sourceView = sourceView as? UIBarButtonItem {
                 if #available(iOS 16, *) {

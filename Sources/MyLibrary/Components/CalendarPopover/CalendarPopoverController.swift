@@ -168,10 +168,14 @@ public class CalendarPopoverController: UIViewController {
     
     private func updateSize() {
         let width:CGFloat =
-        if is_smallWidth {
-            320
+        if #available(iOS 15, *) {
+            400
         } else {
-            350
+            if is_smallWidth {
+                320
+            } else {
+                350
+            }
         }
         self.preferredContentSize = CGSizeMake(
             width,
