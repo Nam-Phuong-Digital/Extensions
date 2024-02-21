@@ -65,7 +65,6 @@ public class CalendarPopoverController: UIViewController {
         self.result = result
         self.rangeMonths = rangeMonths
         super.init(nibName: "CalendarPopoverController", bundle: .module)
-//        self.navigationController?.modalPresentationStyle = .popover
         if let sourceView = sourceView as? UIView {
             scrollView = sourceView.getScrollView()
             originOffset = scrollView?.contentOffset
@@ -168,14 +167,10 @@ public class CalendarPopoverController: UIViewController {
     
     private func updateSize() {
         let width:CGFloat =
-        if #available(iOS 15, *) {
-            400
+        if is_smallWidth {
+            320
         } else {
-            if is_smallWidth {
-                320
-            } else {
-                350
-            }
+            350
         }
         self.preferredContentSize = CGSizeMake(
             width,
