@@ -28,8 +28,8 @@
                 <constraint firstItem="ggk-Vv-Vw3" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9Wo-Yd-Xyw">
                     <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
-                <constraint firstItem="ggk-Vv-Vw3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Lco-un-qfo"/>
-                <constraint firstItem="ggk-Vv-Vw3" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="cKc-yc-ZHM"/>
+                <constraint firstItem="ggk-Vv-Vw3" firstAttribute="left" secondItem="i5M-Pr-FkT" secondAttribute="left" id="Lco-un-qfo"/>
+                <constraint firstItem="ggk-Vv-Vw3" firstAttribute="right" secondItem="i5M-Pr-FkT" secondAttribute="right" id="cKc-yc-ZHM"/>
                 <constraint firstAttribute="bottom" secondItem="ggk-Vv-Vw3" secondAttribute="bottom" id="xOP-Qj-gE3">
                     <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
