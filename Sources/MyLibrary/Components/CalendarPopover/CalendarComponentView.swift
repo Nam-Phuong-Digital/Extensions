@@ -111,7 +111,7 @@ public class CalendarComponentView: UIView {
         tabMonths.setBackground(color: .clear)
         tabMonths.delegate = self
         
-        if #available(iOS 16.0, *) {
+        if #available(iOS 13, *) {
             self.collectionView.collectionViewLayout = UICollectionViewLayout.createLayout(columns: 7)
         } else {
             self.collectionView.collectionViewLayout = CalendarFlowLayout()
@@ -123,7 +123,7 @@ public class CalendarComponentView: UIView {
         self.collectionView.isPagingEnabled = true
         self.collectionView.register(DayComponentCell.nib(bundle: .module), forCellWithReuseIdentifier: DayComponentCell.identifier)
 
-        if #available(iOS 16.0, *) {
+        if #available(iOS 13, *) {
             dataSource = UICollectionViewDiffableDataSource<Int, AnyHashable>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayComponentCell.identifier, for: indexPath) as! DayComponentCell
                 let item = itemIdentifier as! CEVDate
@@ -151,12 +151,13 @@ public class CalendarComponentView: UIView {
         if let current = self.menuMonths.first(where: {$0.isEqual(date)}) {
             if let date = current.days.first(where: {$0.isEqual(date)}) {
                 self.selectionDate = date
-                if #available(iOS 16, *) {
-                    updateDataSource()
-                } else {
-                    self.collectionView.reloadData()
+                DispatchQueue.main.async {
+                    if #available(iOS 13, *) {
+                        self.updateDataSource()
+                    } else {
+                        self.collectionView.reloadData()
+                    }
                 }
-                
             }
             setCurrentMonth(month: current)
         }
@@ -186,18 +187,20 @@ public class CalendarComponentView: UIView {
     }
     
     func reloadIcons() {
-        if #available(iOS 16.0, *) {
-            if let sections = self.dataSource?.snapshot().numberOfSections {
-                self.reload(sections: Array(0..<sections))
+        DispatchQueue.main.async {
+            if #available(iOS 13, *) {
+                if let sections = self.dataSource?.snapshot().numberOfSections {
+                    self.reload(sections: Array(0..<sections))
+                }
+            } else {
+                self.collectionView.reloadData()
             }
-        } else {
-            self.collectionView.reloadData()
         }
     }
     
     @MainActor
     private func updateDataSource() {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 13, *) {
             self.updateDataSoure {[unowned self] in
                 var snap = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
                 snap.appendSections(self.menuMonths.enumerated().compactMap({$0.offset}))
@@ -223,11 +226,12 @@ public class CalendarComponentView: UIView {
         if let first = menuMonths.first(where: {$0.isEqual(Date())}) {
             currentMonth = first
         }
-        
-        if #available(iOS 16, *) {
-            updateDataSource()
-        } else {
-            self.collectionView.reloadData()
+        DispatchQueue.main.async {
+            if #available(iOS 13, *) {
+                self.updateDataSource()
+            } else {
+                self.collectionView.reloadData()
+            }
         }
     }
     
@@ -284,7 +288,7 @@ public class CalendarComponentView: UIView {
         let date = Date()
         if let current = self.menuMonths.first(where: {$0.isEqual(date)}) {
             if let _ = current.days.first(where: {$0.isEqual(date)}) {
-                if #available(iOS 16, *) {
+                if #available(iOS 13, *) {
                     updateDataSource()
                 } else {
                     self.collectionView.reloadData()
@@ -307,7 +311,7 @@ public class CalendarComponentView: UIView {
 extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 13, *) {
             var needreload:[CEVDate] = []
             if let selectionDate {
                 needreload.append(selectionDate)
@@ -347,11 +351,11 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
     }
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return menuMonths.count
+        return 1
     }
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard section < menuMonths.count else {return 0}
-        let temp = menuMonths[section].days.chunks(ofCount: 7).filter({
+        let temp = currentMonth.days.chunks(ofCount: 7).filter({
             $0.filter({$0.shouldHidden}).count != 7
         })
         currentMonth.days = temp.flatMap({$0})
@@ -360,7 +364,7 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayComponentCell.identifier, for: indexPath) as! DayComponentCell
-        let item = menuMonths[indexPath.section].days[indexPath.row]
+        let item = currentMonth.days[indexPath.row]
         let type = self.delegate?.CalendarComponentView_getIcon(for: item.date)
         cell.show(
             config: .init(
@@ -419,7 +423,7 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
                $0.identifier == identifier
            }) {
             
-            if #available(iOS 16,*) {
+            if #available(iOS 13,*) {
                 collectionView.scrollToItem(at: IndexPath(item: 0, section: index), at: .left, animated: true)
             }
             currentMonth = menuMonths[index]
