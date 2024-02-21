@@ -10,9 +10,11 @@ import UIKit
 public class PopoverNavigationController: UINavigationController {
 
     private var root: UIViewController!
+    private var sourceView:Any?
     
     public init(root: UIViewController, sourceView:Any?) {
         self.root = root
+        self.sourceView = sourceView
         super.init(nibName: "PopoverNavigationController", bundle: .module)
         self.modalPresentationStyle = .popover
         if let pop = self.popoverPresentationController {
@@ -42,6 +44,18 @@ public class PopoverNavigationController: UINavigationController {
 }
 
 extension PopoverNavigationController: UIPopoverPresentationControllerDelegate {
+    public func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        if let sourceView = sourceView as? UIView {
+            popoverPresentationController.sourceView = sourceView
+        } else if let sourceView = sourceView as? UIBarButtonItem {
+            if #available(iOS 16, *) {
+                popoverPresentationController.sourceItem = sourceView
+            } else {
+                popoverPresentationController.barButtonItem = sourceView
+            }
+        }
+    }
+    
     public func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         true
     }
