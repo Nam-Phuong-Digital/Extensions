@@ -23,20 +23,17 @@ public extension UIViewController {
         _ result: @escaping ((Date?) -> Void)
     ) {
         self.view.endEditing(true)
-        var vc:CalendarPopoverController!
         let group = DispatchGroup()
         group.enter()
-        DispatchQueue.main.async {
-            vc = CalendarPopoverController(
-                currentDate: currentDate,
-                sourceView:sourceView,
-                rangeMonths: rangeMonths,
-                scrollCompleted: {
-                    group.leave()
-                },
-                result
-            )
-        }
+        let vc = CalendarPopoverController(
+            currentDate: currentDate,
+            sourceView:sourceView,
+            rangeMonths: rangeMonths,
+            scrollCompleted: {
+                group.leave()
+            },
+            result
+        )
         group.notify(queue: .main) {[weak self] in
             self?.present(PopoverNavigationController(root: vc, sourceView: sourceView), animated: true)
         }
@@ -176,11 +173,11 @@ public class CalendarPopoverController: UIViewController {
         } else {
             350
         }
-        self.preferredContentSize = self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-//        self.preferredContentSize = CGSizeMake(
-//            width,
-//            self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-//        )
+        self.preferredContentSize = CGSizeMake(
+            width,
+            self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        )
+        self.navigationController?.preferredContentSize = self.preferredContentSize
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
