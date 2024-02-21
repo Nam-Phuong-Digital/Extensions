@@ -112,11 +112,9 @@ public class CalendarComponentView: UIView {
         tabMonths.delegate = self
         
         if #available(iOS 16.0, *) {
-            self.collectionView.isScrollEnabled = true
             self.collectionView.collectionViewLayout = UICollectionViewLayout.createLayout(columns: 7)
         } else {
             self.collectionView.collectionViewLayout = CalendarFlowLayout()
-            self.collectionView.isScrollEnabled = true
         }
         
         self.collectionView.delegate = self
@@ -349,11 +347,11 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
     }
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return menuMonths.count
     }
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard section < menuMonths.count else {return 0}
-        let temp = currentMonth.days.chunks(ofCount: 7).filter({
+        let temp = menuMonths[section].days.chunks(ofCount: 7).filter({
             $0.filter({$0.shouldHidden}).count != 7
         })
         currentMonth.days = temp.flatMap({$0})
@@ -362,7 +360,7 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayComponentCell.identifier, for: indexPath) as! DayComponentCell
-        let item = currentMonth.days[indexPath.row]
+        let item = menuMonths[indexPath.section].days[indexPath.row]
         let type = self.delegate?.CalendarComponentView_getIcon(for: item.date)
         cell.show(
             config: .init(
