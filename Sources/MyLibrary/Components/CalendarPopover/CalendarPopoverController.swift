@@ -173,10 +173,11 @@ public class CalendarPopoverController: UIViewController {
         } else {
             350
         }
-        self.preferredContentSize = CGSizeMake(
-            width,
-            self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        )
+        self.preferredContentSize = self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+//        self.preferredContentSize = CGSizeMake(
+//            width,
+//            self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+//        )
     }
     
     public override func viewDidDisappear(_ animated: Bool) {
