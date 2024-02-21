@@ -137,9 +137,6 @@ public class CalendarPopoverController: UIViewController {
             self?.result($0)
             self?.dismiss(animated: true)
         }
-        if let currentDate {
-            calendar.setCurrentDay(date: currentDate)
-        }
         updateSize()
     }
     
@@ -155,7 +152,9 @@ public class CalendarPopoverController: UIViewController {
         super.viewDidAppear(animated)
         
 //        if #unavailable (iOS 13) {
-            
+        if let currentDate {
+            calendar.setCurrentDay(date: currentDate)
+        }
 //        }
         
         updateSize()

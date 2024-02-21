@@ -80,7 +80,7 @@ public class CalendarComponentView: UIView {
         didSet {
             self.currentWeek = 0
             self.selectionIndexpath = nil
-            if #unavailable(iOS 13) {
+            if #unavailable(iOS 16) {
                 collectionView.reloadData()
             }
             self.onChangeMonth?(currentMonth.date)
@@ -111,7 +111,7 @@ public class CalendarComponentView: UIView {
         tabMonths.setBackground(color: .clear)
         tabMonths.delegate = self
         
-        if #available(iOS 13.0, *) {
+        if #available(iOS 16.0, *) {
             self.collectionView.isScrollEnabled = true
             self.collectionView.collectionViewLayout = UICollectionViewLayout.createLayout(columns: 7)
         } else {
@@ -125,7 +125,7 @@ public class CalendarComponentView: UIView {
         self.collectionView.isPagingEnabled = true
         self.collectionView.register(DayComponentCell.nib(bundle: .module), forCellWithReuseIdentifier: DayComponentCell.identifier)
 
-        if #available(iOS 13.0, *) {
+        if #available(iOS 16.0, *) {
             dataSource = UICollectionViewDiffableDataSource<Int, AnyHashable>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayComponentCell.identifier, for: indexPath) as! DayComponentCell
                 let item = itemIdentifier as! CEVDate
@@ -153,7 +153,7 @@ public class CalendarComponentView: UIView {
         if let current = self.menuMonths.first(where: {$0.isEqual(date)}) {
             if let date = current.days.first(where: {$0.isEqual(date)}) {
                 self.selectionDate = date
-                if #available(iOS 13, *) {
+                if #available(iOS 16, *) {
                     updateDataSource()
                 } else {
                     self.collectionView.reloadData()
@@ -188,7 +188,7 @@ public class CalendarComponentView: UIView {
     }
     
     func reloadIcons() {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 16.0, *) {
             if let sections = self.dataSource?.snapshot().numberOfSections {
                 self.reload(sections: Array(0..<sections))
             }
@@ -199,7 +199,7 @@ public class CalendarComponentView: UIView {
     
     @MainActor
     private func updateDataSource() {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 16.0, *) {
             self.updateDataSoure {[unowned self] in
                 var snap = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
                 snap.appendSections(self.menuMonths.enumerated().compactMap({$0.offset}))
@@ -226,7 +226,7 @@ public class CalendarComponentView: UIView {
             currentMonth = first
         }
         
-        if #available(iOS 13, *) {
+        if #available(iOS 16, *) {
             updateDataSource()
         } else {
             self.collectionView.reloadData()
@@ -286,7 +286,7 @@ public class CalendarComponentView: UIView {
         let date = Date()
         if let current = self.menuMonths.first(where: {$0.isEqual(date)}) {
             if let _ = current.days.first(where: {$0.isEqual(date)}) {
-                if #available(iOS 13, *) {
+                if #available(iOS 16, *) {
                     updateDataSource()
                 } else {
                     self.collectionView.reloadData()
@@ -309,7 +309,7 @@ public class CalendarComponentView: UIView {
 extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if #available(iOS 13.0, *) {
+        if #available(iOS 16.0, *) {
             var needreload:[CEVDate] = []
             if let selectionDate {
                 needreload.append(selectionDate)
@@ -421,7 +421,7 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
                $0.identifier == identifier
            }) {
             
-            if #available(iOS 13,*) {
+            if #available(iOS 16,*) {
                 collectionView.scrollToItem(at: IndexPath(item: 0, section: index), at: .left, animated: true)
             }
             currentMonth = menuMonths[index]
