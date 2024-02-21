@@ -9,45 +9,49 @@ import Foundation
 
 public class DateConvert {
     
-    private var date:Date?
-    private var dateString:String?
+    private var date:Date
+    private var dateString:String
     
-    public init(
+    public init?(
         date: Date? = nil,
         dateString: String? = nil,
         formatOutput:String = "yyyy-MM-dd'T'HH:mm:ss"
     ) {
+        var localDate:Date?
+        var localDateString:String?
         if let dateString {
             self.dateString = dateString
-            fromStringToDate(dateString: dateString)
-            if let date = self.date {
-                self.dateString = fromDateToString(date: date, format: formatOutput)
+            if let date = Self.fromStringToDate(dateString: dateString) {
+                localDate = date
+                localDateString = Self.fromDateToString(date: date, format: formatOutput)
             }
         }
         if let date {
-            self.date = date
-            self.dateString = fromDateToString(date: date, format: formatOutput)
+            localDate = date
+            localDateString = Self.fromDateToString(date: date, format: formatOutput)
         }
+        guard let localDate, let localDateString else {
+            return nil
+        }
+        self.date = localDate
+        self.dateString = localDateString
     }
     
-    public func getDate() -> Date? {
+    public func getDate() -> Date {
         return date
     }
     
-    public func getDateString() -> String? {
+    public func getDateString() -> String {
         return dateString
     }
     
     public func stringToServer(
         format:String = "yyyy-MM-dd'T'HH:mm:ss"
     ) -> String? {
-        if let date = self.date {
-            return fromDateToString(date: date, format: format, isUTC: true)
-        }
-        return dateString
+        return Self.fromDateToString(date: date, format: format, isUTC: true)
     }
     
-    private func fromDateToString(
+    private static func fromDateToString(
         date:Date,
         format:String = "yyyy-MM-dd'T'HH:mm:ss",
         isUTC:Bool = false // when convert to string server from date UTC should true for this param
@@ -63,16 +67,16 @@ public class DateConvert {
         return dateString
     }
     
-    private func fromStringToDate(
+    private static func fromStringToDate(
         dateString:String
-    ) {
+    ) -> Date? {
         let df = DateFormatter()
         df.dateFormat = Self.detectFormatString(dateString)
         let locale = Locale(identifier: "en_US_POSIX")
         df.locale = locale
         df.timeZone = TimeZone(identifier:"UTC")
         let dateFromString = df.date(from: dateString)
-        self.date = dateFromString
+        return dateFromString
     }
     
     public static func detectFormatString(_ dateString:String) -> String {
