@@ -185,7 +185,6 @@ public class CalendarPopoverController: UIViewController {
         if let originOffset {
             scrollView?.setContentOffset(originOffset, animated: true)
         }
-        
     }
 }
 

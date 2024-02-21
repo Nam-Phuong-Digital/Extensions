@@ -9,10 +9,12 @@ import UIKit
 
 public class PopoverNavigationController: UINavigationController {
 
+    private var root: UIViewController!
+    
     public init(root: UIViewController, sourceView:Any?) {
+        self.root = root
         super.init(nibName: "PopoverNavigationController", bundle: .module)
         self.modalPresentationStyle = .popover
-        self.viewControllers = [root]
         if let pop = self.popoverPresentationController {
             pop.delegate = self
             if let sourceView = sourceView as? UIView {
@@ -33,6 +35,7 @@ public class PopoverNavigationController: UINavigationController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewControllers = [root]
         // Do any additional setup after loading the view.
     }
 }
