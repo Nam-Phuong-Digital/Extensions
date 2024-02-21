@@ -23,10 +23,11 @@ public extension UIViewController {
         _ result: @escaping ((Date?) -> Void)
     ) {
         self.view.endEditing(true)
+        var vc:CalendarPopoverController!
         let group = DispatchGroup()
         group.enter()
         DispatchQueue.main.async {
-            let vc = CalendarPopoverController(
+            vc = CalendarPopoverController(
                 currentDate: currentDate,
                 sourceView:sourceView,
                 rangeMonths: rangeMonths,
