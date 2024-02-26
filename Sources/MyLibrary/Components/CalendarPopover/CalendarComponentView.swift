@@ -423,7 +423,7 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
                $0.identifier == identifier
            }) {
             
-            if #available(iOS 16,*) {
+            if #available(iOS 16,*), index < dataSource?.snapshot().numberOfSections ?? 0 {
                 collectionView.scrollToItem(at: IndexPath(item: 0, section: index), at: .left, animated: true)
             }
             currentMonth = menuMonths[index]
