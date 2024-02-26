@@ -143,7 +143,7 @@ public class CalendarPopoverController: UIViewController {
     @available (iOS 13,*)
     public override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
-        if #available (iOS 16) {
+        if #available (iOS 16, *) {
             if let currentDate {
                 calendar.setCurrentDay(date: currentDate)
             }
