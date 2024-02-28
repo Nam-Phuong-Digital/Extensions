@@ -135,6 +135,9 @@ public class CalendarPopoverController: UIViewController {
         calendar.delegate = self
         calendar.onChangeDate = {[weak self] in
             self?.result($0)
+            if let originOffset = self?.originOffset {
+                self?.scrollView?.setContentOffset(originOffset, animated: true)
+            }
             self?.dismiss(animated: true)
         }
         updateSize()
@@ -179,13 +182,6 @@ public class CalendarPopoverController: UIViewController {
             self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         )
         self.navigationController?.preferredContentSize = self.preferredContentSize
-    }
-    
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        if let originOffset {
-            scrollView?.setContentOffset(originOffset, animated: true)
-        }
     }
 }
 
