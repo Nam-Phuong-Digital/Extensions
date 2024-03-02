@@ -48,7 +48,7 @@ public class ScaleUpViewController<Content>: UIViewController where Content: Vie
         self.selfResize = selfResize
         self.shouldTapDimToClose = shouldTapDimToClose
         self.onDismiss = onDismiss
-        super.init(nibName: String(describing: "ScaleUpViewController"), bundle: .main)
+        super.init(nibName: String(describing: "ScaleUpViewController"), bundle: .module)
         self.modalPresentationStyle = .custom
         customTransitionDelegate = ScaleUpAnimateTransitionDelegate(shouldTapDimToClose: shouldTapDimToClose)
         transitioningDelegate = customTransitionDelegate
