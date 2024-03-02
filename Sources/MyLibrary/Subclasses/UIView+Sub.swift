@@ -107,7 +107,11 @@ public struct ProgressIndicatior: UIViewRepresentable {
 open class Corner12View: IBInspectableView {
     open override func layoutSubviews() {
         super.layoutSubviews()
-        drawCorner(corner: 12, borderWidth: borderWidth, borderColor: borderColor)
+        drawCorner(
+            corner: 12,
+            borderWidth: borderWidth,
+            borderColor: borderColor
+        )
         if haveShadow {
             layer.masksToBounds = false
             layer.shadowColor = UIColor.black.cgColor
@@ -273,7 +277,11 @@ open class HalfCornerView: IBInspectableView {
 
     public override func layoutSubviews() {
         super.layoutSubviews()
-        drawCorner(corner: self.frame.height/2)
+        drawCorner(
+            corner: self.frame.height/2,
+            borderWidth: borderWidth,
+            borderColor: borderColor
+        )
     }
 }
 
@@ -282,7 +290,11 @@ open class RoundCornerView: IBInspectableView {
     // MARK: -  override
     open override func layoutSubviews() {
         super.layoutSubviews()
-        drawCorner(corner: self.frame.height/2)
+        drawCorner(
+            corner: self.frame.height/2,
+            borderWidth: borderWidth,
+            borderColor: borderColor
+        )
         if haveShadow {
             layer.masksToBounds = false
             layer.shadowColor = UIColor.black.cgColor
@@ -301,7 +313,11 @@ open class Corner10View: IBInspectableView {
     // MARK: -  override
     open override func layoutSubviews() {
         super.layoutSubviews()
-        drawCorner(corner: 10)
+        drawCorner(
+            corner: 10,
+            borderWidth: borderWidth,
+            borderColor: borderColor
+        )
         if haveShadow {
             layer.masksToBounds = false
             layer.shadowColor = UIColor.black.cgColor
@@ -320,7 +336,11 @@ open class Corner5View: IBInspectableView {
     // MARK: -  override
     open override func layoutSubviews() {
         super.layoutSubviews()
-        drawCorner(corner: 5)
+        drawCorner(
+            corner: 5,
+            borderWidth: borderWidth,
+            borderColor: borderColor
+        )
         if haveShadow {
             layer.masksToBounds = false
             layer.shadowColor = UIColor.black.cgColor
