@@ -76,6 +76,8 @@ public class DateConvert {
         if isPosix {
             let locale = Locale(identifier: "en_US_POSIX")
             df.locale = locale
+        } else {
+            df.locale = Locale(identifier: "ISO8601DateFormatter")
         }
         df.timeZone = TimeZone(identifier:"UTC")
         let dateFromString = df.date(from: dateString)
