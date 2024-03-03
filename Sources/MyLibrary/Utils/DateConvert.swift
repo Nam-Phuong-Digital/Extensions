@@ -73,12 +73,8 @@ public class DateConvert {
         let df = DateFormatter()
         let (format, isPosix) = Self.detectFormatString(dateString)
         df.dateFormat = format
-        if isPosix {
-            let locale = Locale(identifier: "en_US_POSIX")
-            df.locale = locale
-        } else {
-            df.locale = Locale(identifier: "ISO8601DateFormatter")
-        }
+        let locale = Locale(identifier: "en_US_POSIX")
+        df.locale = locale
         df.timeZone = TimeZone(identifier:"UTC")
         let dateFromString = df.date(from: dateString)
         return dateFromString
@@ -86,7 +82,7 @@ public class DateConvert {
     
     public static func detectFormatString(_ dateString:String) -> (String,Bool) {
         let regex1 = "^\\d{4}-\\d{2}-\\d{2}[']?T[']?\\d{2}:\\d{2}:\\d{2}$"
-        let regex2 = "^\\d{4}-\\d{2}-\\d{2}[']?T[']?\\d{2}:\\d{2}:\\d{2}.\\d{3}$"
+        let regex2 = "^\\d{4}-\\d{2}-\\d{2}[']?T[']?\\d{2}:\\d{2}:\\d{2}.*$"
         
         if NSPredicate(format: "SELF MATCHES %@", regex2).evaluate(with: dateString) {
             return ("yyyy-MM-dd'T'HH:mm:ss.SSS", true)
