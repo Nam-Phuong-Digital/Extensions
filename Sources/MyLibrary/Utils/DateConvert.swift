@@ -86,6 +86,6 @@ public class DateConvert {
         if NSPredicate(format: "SELF MATCHES %@", regex2).evaluate(with: dateString) {
             return "yyyy-MM-dd'T'HH:mm:ss.SSS"
         }
-        return "yyyy-MM-dd'T'HH:mm:ss"
+        return "yyyy-MM-ddTHH:mm:ss"
     }
 }
