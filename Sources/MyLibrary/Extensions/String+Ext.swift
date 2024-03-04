@@ -280,4 +280,8 @@ public extension String {
     func localizedString() -> String {
         return NSLocalizedString(self, comment: "")
     }
+    
+    func toInt(defaultValue: Int = 0) -> Int {
+        Int(self) ?? defaultValue
+    }
 }
