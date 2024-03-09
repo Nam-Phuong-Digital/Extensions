@@ -177,11 +177,13 @@ public class CalendarPopoverController: UIViewController {
         } else {
             350
         }
-        self.preferredContentSize = CGSizeMake(
-            width,
-            self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        )
-        self.navigationController?.preferredContentSize = self.preferredContentSize
+        UIView.animate(withDuration: 0.1) {
+            self.preferredContentSize = CGSizeMake(
+                width,
+                self.view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            )
+            self.navigationController?.preferredContentSize = self.preferredContentSize
+        }
     }
 }
 
