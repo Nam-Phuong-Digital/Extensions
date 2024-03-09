@@ -53,7 +53,7 @@ public extension UICollectionViewLayout {
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
             section.interGroupSpacing = 0
-            section.orthogonalScrollingBehavior = .groupPagingCentered
+            section.orthogonalScrollingBehavior = .groupPaging
             if #available(iOS 14.0, *) {
                 section.contentInsetsReference = .none
             }
