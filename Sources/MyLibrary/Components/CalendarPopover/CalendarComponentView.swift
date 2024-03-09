@@ -106,7 +106,10 @@ public class CalendarComponentView: UIView {
         
         vwMonth.backgroundColor = .clear
         collectionView.backgroundColor = .clear
-        collectionView.contentInsetAdjustmentBehavior = .scrollableAxes
+        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.bounces = false
+        collectionView.alwaysBounceHorizontal = false
+        collectionView.alwaysBounceVertical = false
         if #available(iOS 13.0, *) {
             collectionView.automaticallyAdjustsScrollIndicatorInsets = false
         }
