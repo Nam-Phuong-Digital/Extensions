@@ -151,7 +151,7 @@ public class CalendarComponentView: UIView {
             self.collectionView.dataSource = self
         }
         
-        getDatesForMonths()
+//        getDatesForMonths()
     }
     
     func setCurrentDay(date:Date = Date()) {
