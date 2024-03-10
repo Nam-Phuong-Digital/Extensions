@@ -232,6 +232,16 @@ public extension UIView {
         return view
     }
     
+    func findResignReponser() {
+        if self.isFirstResponder {
+            self.resignFirstResponder()
+            return
+        }
+        for subview in self.subviews {
+            subview.findResignReponser()
+        }
+    }
+    
     func getScrollView(_ level:Int = 0) -> UIScrollView? {
         var max:Int = level
         if let parent = self.superview {

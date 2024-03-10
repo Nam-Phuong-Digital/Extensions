@@ -22,7 +22,7 @@ public extension UIViewController {
         rangeMonths:RangeMonth = DefaultRangeMonth(),
         _ result: @escaping ((Date?) -> Void)
     ) {
-        self.view.endEditing(true)
+        self.view.findClass(classNeeded: <#T##AnyClass#>)
         let group = DispatchGroup()
         group.enter()
         let vc = CalendarPopoverController(
