@@ -170,6 +170,7 @@ public extension Date {
 }
 
 // MARK: -  Calendar
+fileprivate var cacheDate:[String:[Date]] = [:]
 public extension Date {
     func toMonthCalendar(isLongName:Bool = false) -> String {
         var calendar = Calendar(identifier: .gregorian)
@@ -242,7 +243,10 @@ public extension Date {
     func firstDayOfTheMonth() -> Date {
         var calendar = Calendar(identifier: .gregorian)
         calendar.firstWeekday = 2
-        return calendar.date(from:calendar.dateComponents([.year,.month], from: self))!
+        guard let date = calendar.date(from:calendar.dateComponents([.year,.month], from: self)) else {
+            return self
+        }
+        return calendar.startOfDay(for: date)
     }
     
     func endDayOfTheMonth() -> Date {
@@ -256,6 +260,11 @@ public extension Date {
     
     func getAllDays() -> [Date]
     {
+        var day = firstDayOfTheMonth()
+        let key = day.toStringOriginal
+        if let cache = cacheDate[key], !cache.isEmpty {
+            return cache
+        }
         var days = [Date]()
 
         var calendar = Calendar(identifier: .gregorian)
@@ -263,14 +272,12 @@ public extension Date {
 
         let range = calendar.range(of: .day, in: .month, for: self)!
 
-        var day = firstDayOfTheMonth()
-
         for _ in 1...range.count
         {
             days.append(day)
             day.addDays(n: 1)
         }
-
+        cacheDate[key] = days
         return days
     }
     
