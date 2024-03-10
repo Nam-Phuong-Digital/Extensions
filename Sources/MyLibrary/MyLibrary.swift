@@ -11,6 +11,7 @@ public class Resource {
     public class Icon {
         static public var back:UIImage?
         static public var right:UIImage?
+        static public var checkMark:UIImage?
     }
     
     public class Color {
