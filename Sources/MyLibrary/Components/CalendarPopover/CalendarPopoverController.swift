@@ -163,10 +163,10 @@ public class CalendarPopoverController: UIViewController {
         updateSize()
     }
     
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateSize()
-    }
+//    public override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        updateSize()
+//    }
     
     private func updateSize() {
         let width:CGFloat =
