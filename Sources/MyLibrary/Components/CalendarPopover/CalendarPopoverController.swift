@@ -51,7 +51,7 @@ public class CalendarPopoverController: UIViewController {
     private var sourceRect:CGRect = .zero
     private let rangeMonths:RangeMonth
     private var currentDate:Date?
-    private var scrollView:UIScrollView? // purpose support scroll to perfect position to show calendar
+    private weak var scrollView:UIScrollView? // purpose support scroll to perfect position to show calendar
     private var originOffset:CGPoint?
     public init(
         currentDate:Date?,
@@ -163,10 +163,10 @@ public class CalendarPopoverController: UIViewController {
         updateSize()
     }
     
-//    public override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        updateSize()
-//    }
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateSize()
+    }
     
     private func updateSize() {
         let width:CGFloat =
