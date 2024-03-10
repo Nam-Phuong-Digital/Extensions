@@ -51,7 +51,7 @@ public class PopoverNavigationController: UINavigationController {
             self.navigationController?.navigationBar.isTranslucent = false
         }
         
-        self.navigationController?.navigationBar.barTintColor = Resource.Color.onTertiary
+        self.navigationController?.navigationBar.barTintColor = Resource.Color.tertiary
         self.navigationController?.view.backgroundColor = Resource.Color.tertiary
         self.navigationController?.navigationBar.tintColor = Resource.Color.onTertiary
     }
