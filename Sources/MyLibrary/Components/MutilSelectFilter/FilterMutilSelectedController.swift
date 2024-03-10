@@ -14,9 +14,17 @@ public extension UIViewController {
         sourceView:Any?,
         current: [FilterSingleSelectedObject],
         items: [FilterSingleSelectedObject],
+        maxSelect:Int? = nil,
+        onMaximumSelected:(()->())? = nil,
         result:@escaping (_ T:[FilterSingleSelectedObject])->()
     ) {
-        let vc = FilterMutilSelectedController(current: current, items: items, result: result)
+        let vc = FilterMutilSelectedController(
+            current: current,
+            items: items,
+            maxSelect: maxSelect,
+            onMaximumSelected: onMaximumSelected,
+            result: result
+        )
         if let title {
             vc.title = title
             let nv = PopoverNavigationController(root: vc, sourceView: sourceView)
@@ -39,17 +47,23 @@ class FilterMutilSelectedController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
+    private var maxSelect:Int?
     private let items:[FilterSingleSelectedObject]
     private var current:[FilterSingleSelectedObject]
     private var result:(_ T:[FilterSingleSelectedObject])->()
+    private var onMaximumSelected:(()->())?
     init(
         current: [FilterSingleSelectedObject],
         items: [FilterSingleSelectedObject],
+        maxSelect:Int?,
+        onMaximumSelected:(()->())?,
         result:@escaping (_ T:[FilterSingleSelectedObject])->()
     ) {
         self.items = items
         self.current = current
         self.result = result
+        self.maxSelect = maxSelect
+        self.onMaximumSelected = onMaximumSelected
         super.init(nibName: "FilterMutilSelectedController", bundle: .module)
     }
     
@@ -146,6 +160,10 @@ extension FilterMutilSelectedController: UITableViewDelegate, UITableViewDataSou
         if self.current.contains(item) {
             self.current.removeAll(where: {$0.id == item.id})
         } else {
+            if let maxSelect, self.current.count == maxSelect {
+                self.onMaximumSelected?()
+                return
+            }
             self.current.append(item)
         }
         if #available(iOS 13, *) {
