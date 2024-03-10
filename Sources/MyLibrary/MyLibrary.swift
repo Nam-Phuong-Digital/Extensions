@@ -21,5 +21,7 @@ public class Resource {
         static public var secondary:UIColor?
         static public var onSecondary:UIColor?
         static public var onPrimary:UIColor?
+        static public var tertiary:UIColor?
+        static public var onTertiary:UIColor?
     }
 }

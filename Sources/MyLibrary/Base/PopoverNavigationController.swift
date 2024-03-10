@@ -39,7 +39,21 @@ public class PopoverNavigationController: UINavigationController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.viewControllers = [root]
-        // Do any additional setup after loading the view.
+        
+        if #available(iOS 13.0, *) {
+            self.navigationBar.scrollEdgeAppearance = .standard
+        } else {
+            self.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+            self.navigationBar.backgroundColor = Resource.Color.tertiary
+            navigationController?.navigationBar.setBackgroundImage(Resource.Color.tertiary?.imageRepresentation, for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.view.backgroundColor = Resource.Color.tertiary
+            self.navigationController?.navigationBar.isTranslucent = false
+        }
+        
+        self.navigationController?.navigationBar.barTintColor = Resource.Color.onTertiary
+        self.navigationController?.view.backgroundColor = Resource.Color.tertiary
+        self.navigationController?.navigationBar.tintColor = Resource.Color.onTertiary
     }
 }
 
@@ -63,4 +77,24 @@ extension PopoverNavigationController: UIPopoverPresentationControllerDelegate {
     public func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
             return .none
         }
+}
+
+@available (iOS 13,*)
+fileprivate extension UINavigationBarAppearance {
+    static var standard:UINavigationBarAppearance {
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor : Resource.Color.onTertiary ?? .white]
+        if #available(iOS 14, *) {
+            if #available(iOS 15, *) {
+                navBarAppearance.backgroundColor = Resource.Color.tertiary
+            } else {
+                navBarAppearance.configureWithTransparentBackground()
+                navBarAppearance.backgroundColor = Resource.Color.tertiary
+            }
+        } else {
+            navBarAppearance.backgroundColor = Resource.Color.tertiary
+        }
+        return navBarAppearance
+    }
 }

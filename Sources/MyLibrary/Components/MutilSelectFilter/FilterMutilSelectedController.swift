@@ -19,7 +19,7 @@ public extension UIViewController {
         let vc = FilterMutilSelectedController(current: current, items: items, result: result)
         if let title {
             vc.title = title
-            let nv = UINavigationController(rootViewController: vc)
+            let nv = PopoverNavigationController(root: vc, sourceView: sourceView)
             let popVC = PopoverContainerController(
                 sourceView: sourceView,
                 contentController: nv
