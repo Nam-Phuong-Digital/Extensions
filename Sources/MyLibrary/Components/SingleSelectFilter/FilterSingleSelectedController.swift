@@ -105,14 +105,12 @@ class FilterSingleSelectedController: UIViewController {
         }
         tableView.delegate = self
         
-        let max = UIScreen.bounceWindow.height * 0.5
+        let max = UIScreen.bounceWindow.height * 0.8
         var height:CGFloat = CGFloat(items.count * 50)
         if let nv = self.navigationController {
             height += nv.navigationBar.frame.height
         }
-        if height > max {
-            height = max
-        }
+        height = min(height,max)
         preferredContentSize = CGSize(width: 300, height: height)
         if let nv = self.navigationController {
             nv.preferredContentSize = preferredContentSize
