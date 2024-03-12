@@ -15,7 +15,7 @@ public extension UIViewController {
         current: [FilterSingleSelectedObject],
         items: [FilterSingleSelectedObject],
         maxSelect:Int? = nil,
-        onMaximumSelected:(()->())? = nil,
+        onMaximumSelected:(()->String)? = nil,
         result:@escaping (_ T:[FilterSingleSelectedObject])->()
     ) {
         let vc = FilterMutilSelectedController(
@@ -51,12 +51,12 @@ class FilterMutilSelectedController: UIViewController {
     private let items:[FilterSingleSelectedObject]
     private var current:[FilterSingleSelectedObject]
     private var result:(_ T:[FilterSingleSelectedObject])->()
-    private var onMaximumSelected:(()->())?
+    private var onMaximumSelected:(()->String)?
     init(
         current: [FilterSingleSelectedObject],
         items: [FilterSingleSelectedObject],
         maxSelect:Int?,
-        onMaximumSelected:(()->())?,
+        onMaximumSelected:(()->String)?,
         result:@escaping (_ T:[FilterSingleSelectedObject])->()
     ) {
         self.items = items
@@ -160,8 +160,10 @@ extension FilterMutilSelectedController: UITableViewDelegate, UITableViewDataSou
         if self.current.contains(item) {
             self.current.removeAll(where: {$0.id == item.id})
         } else {
-            if let maxSelect, self.current.count == maxSelect {
-                self.onMaximumSelected?()
+            if let maxSelect, self.current.count == maxSelect, let message = self.onMaximumSelected?() {
+                let vc = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+                vc.addAction(.init(title: "OK", style: .cancel))
+                self.present(vc, animated: true)
                 return
             }
             self.current.append(item)
