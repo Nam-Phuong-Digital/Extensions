@@ -12,6 +12,7 @@ import Combine
 #endif
 
 @available(iOS 13.0, *)
+@MainActor
 open class BaseObservableObject:ObservableObject {
     
     @Published public var isRequest:Bool = false
