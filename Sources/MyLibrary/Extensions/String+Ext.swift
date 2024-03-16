@@ -9,6 +9,14 @@ import Foundation
 import UIKit
 
 public extension String {
+    
+    var na: String {
+        if self.isEmpty {
+            return "N/A"
+        }
+        return self
+    }
+    
     /**
      Convert argb string to rgba string.
      */
