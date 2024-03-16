@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-private var PullRefreshEvent:String = "PullRefreshEvent"
+private var PullRefreshEvent = "PullRefreshEvent"
 private var RefreshControl:String = "PullRefreshControl"
 public extension UITableView {
     

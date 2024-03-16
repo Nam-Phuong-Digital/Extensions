@@ -115,7 +115,7 @@ public extension PHAsset {
     func getDataToUpload(maxLength:Int = 320000) async throws -> (URL?,Data?) {
         return try await withUnsafeThrowingContinuation({ c in
             self.getDataToUpload(maxLength: maxLength) { responseURL, data, error in
-                if let error {
+                if error != nil {
                     c.resume(throwing: NSError(domain: "com.photos.error.app", code: 404, userInfo: [:]))
                 } else {
                     c.resume(returning: (responseURL,data))
