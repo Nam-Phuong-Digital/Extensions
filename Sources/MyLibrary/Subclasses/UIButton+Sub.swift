@@ -8,18 +8,18 @@
 import UIKit
 
 public class IBInspectableButton:UIButton {
-    @IBInspectable var haveShadow:Bool = false {
+    @IBInspectable public var haveShadow:Bool = false {
         didSet {
             setNeedsLayout()
         }
     }
     
-    @IBInspectable var borderColor:UIColor = .clear {
+    @IBInspectable public var borderColor:UIColor = .clear {
         didSet {
             setNeedsLayout()
         }
     }
-    @IBInspectable var borderWidth:CGFloat = 0 {
+    @IBInspectable public var borderWidth:CGFloat = 0 {
         didSet {
             setNeedsLayout()
         }
