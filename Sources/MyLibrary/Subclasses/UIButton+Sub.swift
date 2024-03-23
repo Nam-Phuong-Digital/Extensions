@@ -48,7 +48,7 @@ public class ButtonHalfHeight: IBInspectableButton {
 
 public class Button10Corner: IBInspectableButton {
 
-    var object:Any? // need keep object to handle in extension using this button class
+    public var object:Any? // need keep object to handle in extension using this button class
     // MARK: -  override
     public override func layoutSubviews() {
         super.layoutSubviews()
@@ -58,7 +58,7 @@ public class Button10Corner: IBInspectableButton {
 
 public class Button5Corner: IBInspectableButton {
 
-    var object:Any? // need keep object to handle in extension using this button class
+    public var object:Any? // need keep object to handle in extension using this button class
     
     // MARK: -  override
     public override func layoutSubviews() {
