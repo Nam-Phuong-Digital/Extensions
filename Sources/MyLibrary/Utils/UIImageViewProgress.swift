@@ -70,7 +70,7 @@ open class UIImageViewProgress: UIImageView {
     
     weak public  var sdWebImageOperation: SDWebImageOperation?
     
-    public let circularProgressView = KDCircularProgress(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+//    public let circularProgressView = KDCircularProgress(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     
     public let imageViewHeart = UIImageView(image: UIImage(named: "heart.png"))
     
@@ -102,24 +102,24 @@ open class UIImageViewProgress: UIImageView {
     public init() {
         
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
-        
-        self.circularProgressView.autoresizingMask = [.flexibleTopMargin,.flexibleBottomMargin,.flexibleRightMargin,.flexibleLeftMargin]
-        //self.circularProgressView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        self.circularProgressView.trackColor = UIColor.white
-        self.circularProgressView.startAngle = -90
-        self.circularProgressView.progressThickness = 0.13
-        self.circularProgressView.trackThickness = 0.13
-        self.circularProgressView.clockwise = true
-        self.circularProgressView.gradientRotateSpeed = 0.0
-        self.circularProgressView.roundedCorners = false
-        //self.circularProgressView.glowMode = .Forward
-        self.circularProgressView.glowAmount = 0.0
-        //self.circularProgressView.setColors(UIColor.cyanColor() ,UIColor.whiteColor(), UIColor.magentaColor(), UIColor.whiteColor(), UIColor.orangeColor())
-        self.circularProgressView.set(colors: UIColor.black)
-        //self.circularProgressView.center = CGPoint(x: self.center.x, y: self.center.y + 25)
-        self.circularProgressView.tag = 1000
-        addSubview(self.circularProgressView)
+//        self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
+//        
+//        self.circularProgressView.autoresizingMask = [.flexibleTopMargin,.flexibleBottomMargin,.flexibleRightMargin,.flexibleLeftMargin]
+//        //self.circularProgressView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+//        self.circularProgressView.trackColor = UIColor.white
+//        self.circularProgressView.startAngle = -90
+//        self.circularProgressView.progressThickness = 0.13
+//        self.circularProgressView.trackThickness = 0.13
+//        self.circularProgressView.clockwise = true
+//        self.circularProgressView.gradientRotateSpeed = 0.0
+//        self.circularProgressView.roundedCorners = false
+//        //self.circularProgressView.glowMode = .Forward
+//        self.circularProgressView.glowAmount = 0.0
+//        //self.circularProgressView.setColors(UIColor.cyanColor() ,UIColor.whiteColor(), UIColor.magentaColor(), UIColor.whiteColor(), UIColor.orangeColor())
+//        self.circularProgressView.set(colors: UIColor.black)
+//        //self.circularProgressView.center = CGPoint(x: self.center.x, y: self.center.y + 25)
+//        self.circularProgressView.tag = 1000
+//        addSubview(self.circularProgressView)
         
         addDoubleTap()
         
@@ -129,27 +129,27 @@ open class UIImageViewProgress: UIImageView {
     
     public init(isProgressBar:Bool) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-        if(isProgressBar){
-            self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
-            self.circularProgressView.autoresizingMask = [.flexibleTopMargin,.flexibleBottomMargin,.flexibleRightMargin,.flexibleLeftMargin]
-            //self.circularProgressView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-            self.circularProgressView.trackColor = UIColor.white
-            self.circularProgressView.startAngle = -90
-            self.circularProgressView.progressThickness = 0.13
-            self.circularProgressView.trackThickness = 0.13
-            self.circularProgressView.clockwise = true
-            self.circularProgressView.gradientRotateSpeed = 0.0
-            self.circularProgressView.roundedCorners = false
-            //self.circularProgressView.glowMode = .Forward
-            self.circularProgressView.glowAmount = 0.0
-            //self.circularProgressView.setColors(UIColor.cyanColor() ,UIColor.whiteColor(), UIColor.magentaColor(), UIColor.whiteColor(), UIColor.orangeColor())
-            self.circularProgressView.set(colors: UIColor.black)
-            //self.circularProgressView.center = CGPoint(x: self.center.x, y: self.center.y + 25)
-            self.circularProgressView.tag = 1000
-            addSubview(self.circularProgressView)
-            
-            
-        }
+//        if(isProgressBar){
+//            self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
+//            self.circularProgressView.autoresizingMask = [.flexibleTopMargin,.flexibleBottomMargin,.flexibleRightMargin,.flexibleLeftMargin]
+//            //self.circularProgressView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+//            self.circularProgressView.trackColor = UIColor.white
+//            self.circularProgressView.startAngle = -90
+//            self.circularProgressView.progressThickness = 0.13
+//            self.circularProgressView.trackThickness = 0.13
+//            self.circularProgressView.clockwise = true
+//            self.circularProgressView.gradientRotateSpeed = 0.0
+//            self.circularProgressView.roundedCorners = false
+//            //self.circularProgressView.glowMode = .Forward
+//            self.circularProgressView.glowAmount = 0.0
+//            //self.circularProgressView.setColors(UIColor.cyanColor() ,UIColor.whiteColor(), UIColor.magentaColor(), UIColor.whiteColor(), UIColor.orangeColor())
+//            self.circularProgressView.set(colors: UIColor.black)
+//            //self.circularProgressView.center = CGPoint(x: self.center.x, y: self.center.y + 25)
+//            self.circularProgressView.tag = 1000
+//            addSubview(self.circularProgressView)
+//            
+//            
+//        }
         
         
     }
@@ -158,25 +158,25 @@ open class UIImageViewProgress: UIImageView {
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
-        
-        self.circularProgressView.autoresizingMask = [.flexibleTopMargin,.flexibleBottomMargin,.flexibleRightMargin,.flexibleLeftMargin]
-        //self.circularProgressView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
-        self.circularProgressView.trackColor = UIColor.white
-        self.circularProgressView.startAngle = -90
-        self.circularProgressView.progressThickness = 0.13
-        self.circularProgressView.trackThickness = 0.13
-        self.circularProgressView.clockwise = true
-        self.circularProgressView.gradientRotateSpeed = 0.0
-        self.circularProgressView.roundedCorners = false
-        //self.circularProgressView.glowMode = .Forward
-        self.circularProgressView.glowAmount = 0.0
-        //self.circularProgressView.setColors(UIColor.cyanColor() ,UIColor.whiteColor(), UIColor.magentaColor(), UIColor.whiteColor(), UIColor.orangeColor())
-        self.circularProgressView.set(colors: UIColor.black)
-        //self.circularProgressView.center = CGPoint(x: self.center.x, y: self.center.y + 25)
-        self.circularProgressView.tag = 1000
-        self.circularProgressView.isHidden = true
-        addSubview(self.circularProgressView)
+//        self.circularProgressView.frame = CGRect(x: (self.frame.size.height - 80)/2.0, y: (self.frame.size.height - 80)/2.0, width: 80, height: 80)
+//        
+//        self.circularProgressView.autoresizingMask = [.flexibleTopMargin,.flexibleBottomMargin,.flexibleRightMargin,.flexibleLeftMargin]
+//        //self.circularProgressView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+//        self.circularProgressView.trackColor = UIColor.white
+//        self.circularProgressView.startAngle = -90
+//        self.circularProgressView.progressThickness = 0.13
+//        self.circularProgressView.trackThickness = 0.13
+//        self.circularProgressView.clockwise = true
+//        self.circularProgressView.gradientRotateSpeed = 0.0
+//        self.circularProgressView.roundedCorners = false
+//        //self.circularProgressView.glowMode = .Forward
+//        self.circularProgressView.glowAmount = 0.0
+//        //self.circularProgressView.setColors(UIColor.cyanColor() ,UIColor.whiteColor(), UIColor.magentaColor(), UIColor.whiteColor(), UIColor.orangeColor())
+//        self.circularProgressView.set(colors: UIColor.black)
+//        //self.circularProgressView.center = CGPoint(x: self.center.x, y: self.center.y + 25)
+//        self.circularProgressView.tag = 1000
+//        self.circularProgressView.isHidden = true
+//        addSubview(self.circularProgressView)
         
         
     }
@@ -205,10 +205,10 @@ open class UIImageViewProgress: UIImageView {
     
     public func loadImageNoProgressBar(url: URL?) {
         
-        if(!self.circularProgressView.isHidden){
-            self.circularProgressView.isHidden = true
-            self.circularProgressView.angle = 0.0
-        }
+//        if(!self.circularProgressView.isHidden){
+//            self.circularProgressView.isHidden = true
+//            self.circularProgressView.angle = 0.0
+//        }
         if(url != nil) {
             self.urlImageString = url!.absoluteString
             self.cancelLoadImageProgress()
@@ -232,10 +232,10 @@ open class UIImageViewProgress: UIImageView {
         if(url != nil) {
             self.urlImageString = url!.absoluteString
             self.cancelLoadImageProgress()
-            if(self.circularProgressView.isHidden){
-                self.circularProgressView.isHidden = false
-                self.circularProgressView.angle = 0.0
-            }
+//            if(self.circularProgressView.isHidden){
+//                self.circularProgressView.isHidden = false
+//                self.circularProgressView.angle = 0.0
+//            }
             /*
              self.sd_setImage(with: url as URL!, placeholderImage: nil, options: .cacheMemoryOnly , progress: { [weak self](receivedSize, expectedSize) -> Void in
              let progressView = self?.viewWithTag(1000) as! KDCircularProgress
@@ -287,9 +287,9 @@ open class UIImageViewProgress: UIImageView {
         //urlImageString = nil
         self.image = nil
         self.sdWebImageOperation?.cancel()
-        if(!self.circularProgressView.isHidden){
-            self.circularProgressView.isHidden = true
-        }
+//        if(!self.circularProgressView.isHidden){
+//            self.circularProgressView.isHidden = true
+//        }
     }
     
     @objc public  func handleSingleTap(sender:AnyObject) {
