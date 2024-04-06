@@ -62,6 +62,7 @@ fileprivate class ToastMessageView: UIViewController {
         self.icon = icon
         self.holdController = holdController
         self.config = config
+
         super.init(nibName: "ToastMessageView", bundle: .module)
         self.modalPresentationStyle = .popover
         
