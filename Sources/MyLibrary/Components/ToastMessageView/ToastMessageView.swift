@@ -7,33 +7,107 @@
 
 import UIKit
 
-extension UIViewController {
+public extension UIViewController {
+    
+    /// show toast message view
+    /// - Parameters:
+    ///   - message: content string to present
+    ///   - icon: ``UIImage`` represent, default is `checkmark.seal.fill`
+    ///   - config: ``ToastMessageViewConfig`` to change dismiss timerinterval and preferred width
+    ///   - isSourceDismissImmediately: if show toast on a viewcontroller and dismiss immediately, so turn `true` . default is `false`
+    ///   - canInteract: When a Toast is active, interactions with sourceView is normally enabled. to disabled this behaviour so turn `false` interactions with sourceView is disabled  until the Toast is dismissed
     func showToast(
         message: String,
         icon: UIImage? = UIImage(named: "checkmark.seal.fill"),
-        config: ToastMessageViewConfig = .default
+        config: ToastMessageViewConfig = .default,
+        isSourceDismissImmediately: Bool = false,
+        canInteract: Bool = true
     ) {
-        let vc = ToastMessageView(
+        if isSourceDismissImmediately, let presentingViewController {
+            presentingViewController.display(
+                getToastView(message: message, icon: icon, config: config, holdController: presentingViewController, canInteract: canInteract)
+            )
+            return
+        }
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            if let splitViewController {
+                splitViewController.display(
+                    getToastView(message: message, icon: icon, config: config, holdController: splitViewController, canInteract: canInteract)
+                )
+            } else if let navigationController {
+                navigationController.display(
+                    getToastView(message: message, icon: icon, config: config, holdController: navigationController, canInteract: canInteract)
+                )
+            } else {
+                self.display(
+                    getToastView(message: message, icon: icon, config: config, holdController: self, canInteract: canInteract)
+                )
+            }
+        } else {
+            if let navigationController {
+                navigationController.display(
+                    getToastView(message: message, icon: icon, config: config, holdController: navigationController, canInteract: canInteract)
+                )
+            } else {
+                self.display(
+                    getToastView(message: message, icon: icon, config: config, holdController: self, canInteract: canInteract)
+                )
+            }
+        }
+    }
+    
+    @objc private func display(_ vc: ToastMessageView) {
+        DispatchQueue.main.async {
+            Timer.scheduledTimer(withTimeInterval: 0.05, repeats: false) {[weak self] timer in
+                timer.invalidate()
+                if self?.presentedViewController == nil {
+                    self?.present(vc, animated: true)
+                } else {
+                    // if different message then show
+                    if self?.presentedViewController?.isEqual(vc) == false {
+                        self?.display(vc)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func getToastView(
+        message: String,
+        icon: UIImage? = UIImage(named: "checkmark.seal.fill"),
+        config: ToastMessageViewConfig = .default,
+        holdController: UIViewController?,
+        canInteract: Bool
+    ) -> ToastMessageView {
+        ToastMessageView(
             message: message,
             icon: icon,
-            holdController: self,
-            config: config
+            holdController: holdController,
+            config: config,
+            canInteract: canInteract
         )
-        self.present(vc, animated: true)
     }
 }
 
-struct ToastMessageViewConfig {
+public struct ToastMessageViewConfig {
     let preferredMaxWidth: CGFloat
     let dismissInterval: TimeInterval
     
-    static var `default`: ToastMessageViewConfig {
+    public static var `default`: ToastMessageViewConfig {
         // current width follow to Figma
         .init(preferredMaxWidth: 222, dismissInterval: 2)
     }
 }
 
 fileprivate class ToastMessageView: UIViewController {
+    
+    // override this function to check Toast is same
+    override func isEqual(_ object: Any?) -> Bool {
+        if let object = object as? ToastMessageView {
+            return message == object.message
+        }
+        return super.isEqual(object)
+    }
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
@@ -56,13 +130,14 @@ fileprivate class ToastMessageView: UIViewController {
         message: String,
         icon: UIImage?,
         holdController: UIViewController?,
-        config: ToastMessageViewConfig
+        config: ToastMessageViewConfig,
+        canInteract: Bool
     ) {
         self.message = message
         self.icon = icon
         self.holdController = holdController
         self.config = config
-
+        
         super.init(nibName: "ToastMessageView", bundle: .module)
         self.modalPresentationStyle = .popover
         
@@ -71,12 +146,13 @@ fileprivate class ToastMessageView: UIViewController {
             pop.popoverBackgroundViewClass = TipBackground.self
             pop.delegate = self
             if let vc = holdController {
-                if let parent = vc.presentingViewController {
-                    pop.passthroughViews = [parent.view] // view can interactive
+                if canInteract {
+                    pop.passthroughViews = [vc.view] // view can interactive
+                }
+                if let vcFirst = vc.getFirst(), (vcFirst.modalPresentationStyle != .fullScreen && vcFirst.modalPresentationStyle != .overFullScreen), let parent = vc.presentingViewController  {
                     pop.sourceView = parent.view
                     pop.sourceRect = parent.view.frame
                 } else {
-                    pop.passthroughViews = [vc.view] // view can interactive
                     pop.sourceView = vc.view
                     pop.sourceRect = vc.view.frame
                 }
@@ -95,6 +171,7 @@ fileprivate class ToastMessageView: UIViewController {
         let style = NSMutableParagraphStyle()
         style.lineBreakMode = .byWordWrapping
         style.lineSpacing = 5
+        style.alignment = .center
         messageLabel.attributedText = NSAttributedString(string: message, attributes: [.paragraphStyle: style])
         
         tapGestureDismiss = UITapGestureRecognizer(target: self, action: #selector(self.dismissTip(_:)))
@@ -112,7 +189,7 @@ fileprivate class ToastMessageView: UIViewController {
     }
     
     @objc func dismissTip(_ sender: Timer) {
-        self.dismiss(animated: true)
+        self.dismiss(animated: false)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -133,8 +210,8 @@ fileprivate class ToastMessageView: UIViewController {
             0
         }
         if let containerView = self.popoverPresentationController?.containerView {
-            let y = containerView.frame.height/2 + self.preferredContentSize.height/2 - additionHeight
-            let x = containerView.frame.width/2 - self.preferredContentSize.width/2
+            let y = containerView.frame.height/2 + height/2 - additionHeight
+            let x = containerView.frame.width/2 - width/2
             self.popoverPresentationController?.sourceRect = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
         }
         self.preferredContentSize = CGSize(width: width, height: height)
@@ -193,5 +270,13 @@ fileprivate class TipBackground: UIPopoverBackgroundView {
         super.layoutSubviews()
         self.isHidden = true // hidden this background to remove default shadow
     }
-    
+}
+
+extension UIViewController {
+    func getFirst() -> UIViewController? {
+        if let parent = self.parent {
+            return parent.getFirst()
+        }
+        return self
+    }
 }
