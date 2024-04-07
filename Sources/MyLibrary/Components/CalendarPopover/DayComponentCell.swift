@@ -47,7 +47,7 @@ public class DayComponentCell: UICollectionViewCell {
     
     let bgSelectedView:UIView = {
         let v = UIView()
-        v.backgroundColor = .mainColor
+        v.backgroundColor = Resource.Color.primary
         return v
     }()
     
@@ -65,7 +65,7 @@ public class DayComponentCell: UICollectionViewCell {
         config:Config
     ) {
         lblDay.text = config.day
-        lblIconTask.image = config.iconTask?.resizeImageWith(newSize: CGSize(width: 10, height: 10)).tint(with: .white)
+        lblIconTask.image = config.iconTask?.resize(newSize: CGSize(width: 10, height: 10)).tintImage(with: .white)
         lblIconTask.isHidden = config.iconTask == nil
         lblIconTask.backgroundColor = config.bgIcon
         lblDay.font = config.isBold ? UIFont.boldSystemFont(ofSize: 16) : UIFont.systemFont(ofSize: 16)
@@ -75,7 +75,7 @@ public class DayComponentCell: UICollectionViewCell {
         } else if config.isHighligted {
             UIColor.white
         } else if !config.isBold {
-            UIColor.borderColor
+            UIColor("#C0C5CA")
         }  else {
             UIColor.black
         }

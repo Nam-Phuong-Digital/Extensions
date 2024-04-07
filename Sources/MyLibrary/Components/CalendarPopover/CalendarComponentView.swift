@@ -67,7 +67,7 @@ public class CalendarComponentView: UIView {
                 titles: menuMonths.compactMap({
                     .init(
                         title: $0.date.toMonthCalendar(isLongName:true),
-                        identifier: $0.identifier,
+                        identifier: $0.date.toStringOriginal,
                         isSelected: false
                     )
                 })
@@ -427,7 +427,7 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
     public func selectTab(identifier: String?, buttonTab: ButtonTab?) {
         if let identifier,
            let index = menuMonths.firstIndex(where: {
-               $0.identifier == identifier
+               $0.date.toStringOriginal == identifier
            }) {
             
             if #available(iOS 13,*), index < dataSource?.snapshot().numberOfSections ?? 0 {

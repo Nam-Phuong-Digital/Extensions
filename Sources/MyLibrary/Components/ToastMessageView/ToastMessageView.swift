@@ -15,13 +15,13 @@ public extension UIViewController {
     ///   - icon: ``UIImage`` represent, default is `checkmark.seal.fill`
     ///   - config: ``ToastMessageViewConfig`` to change dismiss timerinterval and preferred width
     ///   - isSourceDismissImmediately: if show toast on a viewcontroller and dismiss immediately, so turn `true` . default is `false`
-    ///   - canInteract: When a Toast is active, interactions with sourceView is normally enabled. to disabled this behaviour so turn `false` interactions with sourceView is disabled  until the Toast is dismissed
+    ///   - canInteract: When a Toast is active, interactions with sourceView is normally disabled until the Toast is dismissed. to enabled this behaviour so turn `true` interactions with sourceView is enabled 
     func showToast(
         message: String,
         icon: UIImage? = UIImage(named: "checkmark.seal.fill"),
         config: ToastMessageViewConfig = .default,
         isSourceDismissImmediately: Bool = false,
-        canInteract: Bool = true
+        canInteract: Bool = false
     ) {
         if isSourceDismissImmediately, let presentingViewController {
             presentingViewController.display(
@@ -34,25 +34,17 @@ public extension UIViewController {
                 splitViewController.display(
                     getToastView(message: message, icon: icon, config: config, holdController: splitViewController, canInteract: canInteract)
                 )
-            } else if let navigationController {
-                navigationController.display(
-                    getToastView(message: message, icon: icon, config: config, holdController: navigationController, canInteract: canInteract)
-                )
-            } else {
-                self.display(
-                    getToastView(message: message, icon: icon, config: config, holdController: self, canInteract: canInteract)
-                )
+                return
             }
+        }
+        if let navigationController {
+            navigationController.display(
+                getToastView(message: message, icon: icon, config: config, holdController: navigationController, canInteract: canInteract)
+            )
         } else {
-            if let navigationController {
-                navigationController.display(
-                    getToastView(message: message, icon: icon, config: config, holdController: navigationController, canInteract: canInteract)
-                )
-            } else {
-                self.display(
-                    getToastView(message: message, icon: icon, config: config, holdController: self, canInteract: canInteract)
-                )
-            }
+            self.display(
+                getToastView(message: message, icon: icon, config: config, holdController: self, canInteract: canInteract)
+            )
         }
     }
     

@@ -241,20 +241,4 @@ public extension UIView {
             subview.findResignReponser()
         }
     }
-    
-    func getScrollView(_ level:Int = 0) -> UIScrollView? {
-        var max:Int = level
-        if let parent = self.superview {
-            if let parent = parent as? UIScrollView {
-                return parent
-            } else {
-                if level == 10 {
-                    return nil
-                }
-                max += 1
-                return parent.getScrollView(max)
-            }
-        }
-        return nil
-    }
 }

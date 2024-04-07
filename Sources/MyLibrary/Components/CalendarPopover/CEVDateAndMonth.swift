@@ -8,17 +8,15 @@
 
 import Foundation
 
-public class CEVMonth:Identifiable, Hashable {
+public class CEVMonth: Hashable {
     public static func == (lhs: CEVMonth, rhs: CEVMonth) -> Bool {
-        lhs.identifier == rhs.identifier
+        lhs.date == rhs.date
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+        hasher.combine(date)
     }
     
-    public var id: String {identifier}
-    public let identifier:String = .generateIdentifier
     public let date:Date
     public var days:[CEVDate]
     public init(date: Date, days: [CEVDate]) {
@@ -33,17 +31,15 @@ public class CEVMonth:Identifiable, Hashable {
     }
 }
 
-public class CEVDate:Identifiable, Hashable {
+public class CEVDate: Hashable {
     public static func == (lhs: CEVDate, rhs: CEVDate) -> Bool {
-        lhs.identifier == rhs.identifier
+        lhs.date == rhs.date
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
+        hasher.combine(date)
     }
     
-    public var id: String {identifier}
-    public let identifier:String = .generateIdentifier
     public let text:String
     public let date:Date
     public let disabled:Bool

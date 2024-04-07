@@ -146,22 +146,6 @@ public extension String {
         Locale.isEn ? "MMMM dd, yyyy" : "dd MMMM, yyyy"
     }
     
-    static var formatLongMonthCalendar:String {
-        "MMMM"
-    }
-    
-    static var formatLongMonthYearCalendar:String {
-        "MMMM yyyy"
-    }
-    
-    static var formatMonthCalendar:String {
-        Locale.isEn ? "MMM" : "MMMM"
-    }
-    
-    static var formatMonthYearCalendar:String {
-        Locale.isEn ? "MMM yyyy" : "MMMM yyyy"
-    }
-    
     static var formatddMMMM:String {
         Locale.isEn ? "MMM dd" : "dd MMMM"
     }
