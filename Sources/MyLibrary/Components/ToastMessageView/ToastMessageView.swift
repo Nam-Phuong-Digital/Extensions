@@ -264,7 +264,7 @@ fileprivate class TipBackground: UIPopoverBackgroundView {
     }
 }
 
-extension UIViewController {
+fileprivate extension UIViewController {
     func getFirst() -> UIViewController? {
         if let parent = self.parent {
             return parent.getFirst()
