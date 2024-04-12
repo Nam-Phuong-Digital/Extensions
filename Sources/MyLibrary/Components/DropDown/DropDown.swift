@@ -54,9 +54,9 @@ fileprivate class DropDown: UIViewController {
             pop.canOverlapSourceViewRect = true
             pop.popoverBackgroundViewClass = DropdownBackground.self
             pop.delegate = self
-            if let view = sourceView as? UIView, canInteract {
-                pop.passthroughViews = [view] // view can interactive
-            }
+//            if let view = sourceView as? UIView, canInteract {
+//                pop.passthroughViews = [view] // view can interactive
+//            }
             if let vc = holdController {
                 pop.sourceView = vc.view
                 if let sourceView = sourceView as? UIView,
