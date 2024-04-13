@@ -104,7 +104,7 @@ fileprivate class DropDown: UIViewController {
         }
         tableView.delegate = self
         
-        let width = max(300,(sourceView as? UIView)?.frame.width ?? 0)
+        let width = max(300,popoverPresentationController?.sourceRect.width ?? 0)
         let max = UIScreen.bounceWindow.height * 0.8
         var height:CGFloat = CGFloat(items.count * 50)
         if let nv = self.navigationController {
