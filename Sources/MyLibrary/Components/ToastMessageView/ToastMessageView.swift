@@ -85,6 +85,11 @@ public struct ToastMessageViewConfig {
     let preferredMaxWidth: CGFloat
     let dismissInterval: TimeInterval
     
+    public init(preferredMaxWidth: CGFloat, dismissInterval: TimeInterval) {
+        self.preferredMaxWidth = preferredMaxWidth
+        self.dismissInterval = dismissInterval
+    }
+    
     public static var `default`: ToastMessageViewConfig {
         // current width follow to Figma
         .init(preferredMaxWidth: 222, dismissInterval: 2)
