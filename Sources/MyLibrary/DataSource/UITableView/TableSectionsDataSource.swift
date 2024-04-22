@@ -77,10 +77,10 @@ public final class TableSectionsDataSource<
         let shouldRegisterFooter = !FOOTER.isEqual(UITableViewHeaderFooterView.self)
         // If it's a UITableViewHeaderFooterView, don't register it, intended for cases where only the footer or header is desired.
         if shouldRegisterHeader {
-            self.tableView.register(UINib(nibName: String(describing: HEADER.self), bundle: nil), forHeaderFooterViewReuseIdentifier: String(describing: HEADER.self))
+            self.tableView.register(HEADER.self)
         }
         if shouldRegisterFooter {
-            self.tableView.register(UINib(nibName: String(describing: FOOTER.self), bundle: nil), forHeaderFooterViewReuseIdentifier: String(describing: FOOTER.self))
+            self.tableView.register(FOOTER.self)
         }
         
         if shouldRegisterFooter || shouldRegisterHeader {
@@ -90,7 +90,7 @@ public final class TableSectionsDataSource<
     
     public override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section < self.sections.count else {return nil}
-        if let sup = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: HEADER.self)) as? HEADER {
+        if let sup = tableView.dequeue(HEADER.self) {
             configSupplementary(self.sections[section], section, .header(sup))
             return sup
         } else {
@@ -100,7 +100,7 @@ public final class TableSectionsDataSource<
     
     public override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         guard section < self.sections.count else {return nil}
-        if let sup = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: FOOTER.self)) as? FOOTER {
+        if let sup = tableView.dequeue(FOOTER.self) {
             configSupplementary(self.sections[section], section, .footer(sup))
             return sup
         } else {

@@ -7,6 +7,27 @@
 
 import Foundation
 import UIKit
+public extension UICollectionView {
+    func dequeue<T: UICollectionViewCell>(_ cellType: T.Type, indexPath: IndexPath) -> T {
+        dequeueReusableCell(withReuseIdentifier: String(describing: cellType.self), for: indexPath) as! T
+    }
+    
+    func dequeue<T: UICollectionReusableView>(_ headerFooterType: T.Type, indexPath: IndexPath, kind: String) -> T? {
+        dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: headerFooterType.self), for: indexPath) as? T
+    }
+    
+    func register<T: UICollectionViewCell>(_ cellType: T.Type) {
+        register(UINib(nibName: String(describing: cellType.self), bundle: nil), forCellWithReuseIdentifier: String(describing: cellType.self))
+    }
+    
+    /// register header footer for the collection view
+    /// - Parameters:
+    ///   - headerFooterType: HeaderFooter Type
+    ///   - kind: ``UICollectionView.elementKindSectionFooter`` ||  ``UICollectionView.elementKindSectionHeader``
+    func register<T: UICollectionReusableView>(_ headerFooterType: T.Type, kind: String) {
+        register(UINib(nibName: String(describing: headerFooterType.self), bundle: nil), forSupplementaryViewOfKind: kind, withReuseIdentifier: String(describing: headerFooterType.self))
+    }
+}
 
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
 public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
@@ -180,15 +201,15 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard indexPath.section < sections.count, indexPath.item < sections[indexPath.section].items.count else {return UICollectionViewCell()}
         let item = sections[indexPath.section].items[indexPath.item]
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CELL.self), for: indexPath) as! CELL
+        let cell = collectionView.dequeue(CELL.self, indexPath: indexPath)
         configCell(item, indexPath, cell)
         return cell
     }
 }
 
-private extension CollectionDataSource {
+extension CollectionDataSource {
     func register(for cell: CELL.Type) {
-        self.collectionView.register(UINib(nibName: String(describing: cell.self), bundle: nil), forCellWithReuseIdentifier: String(describing: cell))
+        self.collectionView.register(cell.self)
     }
 }
 
@@ -201,7 +222,7 @@ extension CollectionDataSource {
     
     func setUpDataSource(configCell:@escaping ((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void?)) {
         self._dataSource = UICollectionViewDiffableDataSource<Int, T>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: CELL.self), for: indexPath) as! CELL
+            let cell = collectionView.dequeue(CELL.self, indexPath: indexPath)
             configCell(itemIdentifier, indexPath, cell)
             return cell
         })

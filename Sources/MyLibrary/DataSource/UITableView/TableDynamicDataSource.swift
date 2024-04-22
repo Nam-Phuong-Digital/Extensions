@@ -1,5 +1,5 @@
 //
-//  TableDataSource.swift
+//  TableDynamicDataSource.swift
 //  LearnRXSwift
 //
 //  Created by Dai Pham on 17/4/24.
@@ -8,31 +8,93 @@
 import Foundation
 import UIKit
 
-public typealias ConfigCell<T: Hashable, CELL: UITableViewCell> = ((_ item: T,_ indexPath: IndexPath, _ cell: CELL) ->Void)
-public typealias SELECTED_ITEM<T: Hashable> = ((T) -> Void)?
-public typealias SWIPE_CONFIGURATION<T: Hashable> = ((_ item: T,_ indexPath: IndexPath) -> UISwipeActionsConfiguration?)?
+public extension UITableView {
+    func dequeue<T: UITableViewCell>(_ cellType: T.Type) -> T {
+        dequeueReusableCell(withIdentifier: String(describing: cellType.self)) as! T
+    }
+    
+    func dequeue<T: UITableViewHeaderFooterView>(_ headerFooterType: T.Type) -> T? {
+        dequeueReusableHeaderFooterView(withIdentifier: String(describing: headerFooterType.self)) as? T
+    }
+    
+    func register<T: UITableViewCell>(_ cellType: T.Type) {
+        register(UINib(nibName: String(describing: cellType.self), bundle: nil), forCellReuseIdentifier: String(describing: cellType.self))
+    }
+    
+    func register<T: UITableViewHeaderFooterView>(_ headerFooterType: T.Type) {
+        register(UINib(nibName: String(describing: headerFooterType.self), bundle: nil), forHeaderFooterViewReuseIdentifier: String(describing: headerFooterType.self))
+    }
+}
+
 
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
 /// ```
-///        var dataSource: TableDataSource<ItemModel, TableViewCell>!
-///
-///        dataSource = TableSectionsDataSource(
+///        dataSource = TableDynamicDataSource(
 ///            for: self.tableView,
-///            // config content for registered cell
+///            cellsType: [TableViewCell.self, NoDataCell.self],
+///            sectionsType: [TableHeaderView.self, TableFooterView.self],
 ///            configCell: {
-///                item, indexPath, cell in
-///                cell.show(item)
-///            },
-///            // handling item selected
-///            itemSelected: {[weak self] item in
-///                if let section = self?.dataSectionsSource.sections[0] {
-///                    self?.dataSectionsSource.removeSections([section])
+///                item,
+///                indexPath,
+///                tableView in
+///                if indexPath.row % 2 == 0 {
+///                    let cell = tableView.dequeue(TableViewCell.self)
+///                    cell.show(item)
+///                    // cell.transform = .flip() //for chat
+///                    return cell
+///                } else {
+///                    let cell = tableView.dequeue(TableViewCell2.self)
+///                    // cell.transform = .flip() // for chat
+///                    return cell
 ///                }
-///            }
+///            },
+///            configHeaderFooter: { sectionModel, section, tableView, kind in
+///                if case .header = kind {
+///                    let view = tableView.dequeue(TableHeaderView.self)
+///                    view?.show(UUID().uuidString)
+///                    // view?.transform = .flip() //for chat
+///                    return view
+///                }
+///                if case .footer = kind {
+///                    let view = tableView.dequeue(TableFooterView.self)
+///                    view?.show(UUID().uuidString)
+///                    // view?.transform = .flip() // for chat
+///                    return view
+///                }
+///                return nil
+///            },
+///            itemSelected: {[weak self] item in
+///
+///                self?.dataSource.removeItems(items: [item])
+///                /*
+///                 if let section = self?.dataSource.sections[0] {
+///                 self?.dataSource.removeSections([section])
+///                 }*/
+///            },
+///            configuration: .init(
+///                leadingSwipeActionsConfiguration: { item, indexPath in
+///                    return UISwipeActionsConfiguration(actions: [
+///                        .init(style: .normal, title: "test", handler: { _, _, completion in
+///                            completion(true)
+///                        })
+///                    ])
+///                },
+///                trailingSwipeActionsConfiguration: { item, indexPath in
+///                    return UISwipeActionsConfiguration(actions: [
+///                        .init(style: .destructive, title: "test", handler: { _, _, completion in
+///                            completion(true)
+///                        })
+///                    ])
+///                },
+///                textNoData: "There are no items."
+///            )
 ///        )
 /// ```
-public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITableViewDelegate, UITableViewDataSource {
-    
+public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate, UITableViewDataSource {
+    public enum SupplementaryType {
+        case footer
+        case header
+    }
     public class Configuration {
         var havePullToRefresh: Bool = false
         var leadingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
@@ -70,10 +132,12 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     private var _dataSource: Any?
     let tableView: UITableView
     
+    var configCell: ((_ item: T,_ indexPath: IndexPath,_ tableView: UITableView) -> UITableViewCell)
+    var configHeaderFooter: ((_ sectionModel: SectionDataSourceModel<T>,_ section: Int,_ tableView: UITableView, _ kind: SupplementaryType) -> UITableViewHeaderFooterView?)?
+    
     private let refreshControl: UIRefreshControl = UIRefreshControl()
     private let loadMoreIndicator: DataSourceScrollViewConfiguration.LoadMoreActivityIndicator
     private var selectingItem:SELECTED_ITEM<T>
-    private var configCell:ConfigCell<T, CELL>
     private let configuration: Configuration
     
     public var sections:[SectionDataSourceModel<T>] = []
@@ -81,31 +145,43 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     
     private var shouldReloadSections: [Int] = []
     
-    /// data source manage behaviours of table view
+    /// Declare a data source with dynamic cells and dynamic header and footer views.
     /// - Parameters:
-    ///   - tableView: `UITableView` to handle.
-    ///   - configCell: closure call back with `T` generic  object, indexPath of item. `CELL` registered.
-    ///   - itemSelected: closure call back selected `T` generic object.
-    ///   - configuration: Set up some advanced features for the tableView data source.
+    ///   - tableView: The tableView is applied.
+    ///   - cellsType: List cell types registered to display.
+    ///   - sectionsType: List of header and footer view types registered to display. Leave it empty to not display footer or header views.
+    ///   - configCell: The closure retrieves a cell based on the item and indexPath.
+    ///   - configHeaderFooter: The closure retrieves a footer or header view based on the section. It's optional
+    ///   - itemSelected: The closure returns a selected item.
+    ///   - configuration: ``Configuration`` set up leading and trailing swipe actions, and display a notice text when there are no items.
     public init(
         for tableView: UITableView,
-        configCell: @escaping ConfigCell<T, CELL>,
+        cellsType: [UITableViewCell.Type],
+        sectionsType:[UITableViewHeaderFooterView.Type] = [],
+        configCell:@escaping ((_ item: T,_ indexPath: IndexPath,_ tableView: UITableView) -> UITableViewCell),
+        configHeaderFooter: ((_ sectionModel: SectionDataSourceModel<T>,_ section: Int,_ tableView: UITableView, _ kind: SupplementaryType) -> UITableViewHeaderFooterView?)? = nil,
         itemSelected: SELECTED_ITEM<T> = nil,
         configuration: Configuration = .default
     ) {
         self.tableView = tableView
-        self.configCell = configCell
         loadMoreIndicator = DataSourceScrollViewConfiguration.LoadMoreActivityIndicator(scrollView: self.tableView)
         self.selectingItem = itemSelected
         self.configuration = configuration
+        self.configCell = configCell
+        self.configHeaderFooter = configHeaderFooter
         super.init()
+        cellsType.forEach({ self.register(for: $0) })
+        sectionsType.forEach({ self.register(for: $0) })
         if #available(iOS 13, *), !TEST_OLD_VERSION {
             self.setUpDataSource(configCell: configCell)
         } else {
             self.tableView.dataSource = self
         }
-        self.register(for: CELL.self)
         self.tableView.delegate = self
+
+        tableView.estimatedSectionFooterHeight = 50
+        tableView.estimatedSectionHeaderHeight = 50
+        
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0 // Remove the padding at the top for UITableView with a style different from plain.
         }
@@ -124,7 +200,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     }
    
     public func updateItems(_ items: [T], to section: Int = 0) {
-        if self.sections.isEmpty && !(self is TableSectionsDataSource) {
+        if self.sections.isEmpty /*&& !(self is TableSectionsDataSource)*/ {
             self.sections = [SectionDataSourceModel(id: "", title: "", items: [])]
         }
         guard section < self.sections.count else {return}
@@ -133,7 +209,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     }
     
     public func appendItems(items: [T], to section: Int = 0) {
-        if self.sections.isEmpty && !(self is TableSectionsDataSource) {
+        if self.sections.isEmpty /*&& !(self is TableSectionsDataSource)*/ {
             self.sections = [SectionDataSourceModel(id: "", title: "", items: [])]
         }
         guard section < self.sections.count else {return}
@@ -332,25 +408,35 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             return UITableViewCell()
         }
         let item = sections[indexPath.section].items[indexPath.item]
-        let cell = tableView.dequeue(CELL.self)
-        configCell(item, indexPath, cell)
-        return cell
+        return configCell(item, indexPath, tableView)
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
+        if section >= sections.count {
+            return 0
+        }
+        return configHeaderFooter?(sections[section], section, tableView, .footer) == nil ? 0 : UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        if section >= sections.count {
+            return 0
+        }
+        return configHeaderFooter?(sections[section], section, tableView, .header) == nil ? 0 : UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return nil
+        if section >= sections.count {
+            return nil
+        }
+        return configHeaderFooter?(sections[section],section,tableView,.header)
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return nil
+        if section >= sections.count {
+            return nil
+        }
+        return configHeaderFooter?(sections[section],section,tableView,.footer)
     }
     
     public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -380,7 +466,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     }
 }
 
-private extension TableDataSource {
+private extension TableDynamicDataSource {
     
     func showNoData() {
         hideNoData()
@@ -416,13 +502,17 @@ private extension TableDataSource {
         self.tableView.viewWithTag(10000000)?.removeFromSuperview()
     }
     
-    func register(for cell: CELL.Type) {
+    func register(for cell: UITableViewCell.Type) {
         self.tableView.register(cell)
+    }
+    
+    func register(for view: UITableViewHeaderFooterView.Type) {
+        self.tableView.register(view)
     }
 }
 
 @available (iOS 13,*)
-extension TableDataSource {
+extension TableDynamicDataSource {
     
     func getDataSource() -> SwipableDataSource<T> {
         let ds =  self._dataSource as! SwipableDataSource<T>
@@ -430,18 +520,11 @@ extension TableDataSource {
         return ds
     }
     
-    func setUpDataSource(configCell:@escaping ((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void?)) {
+    func setUpDataSource(
+        configCell:@escaping ((_ item: T,_ indexPath: IndexPath,_ tableView: UITableView) -> UITableViewCell)
+    ) {
         self._dataSource = SwipableDataSource<T>(tableView: self.tableView, cellProvider: { tableView, indexPath, itemIdentifier in
-            let cell = tableView.dequeue(CELL.self)
-            configCell(itemIdentifier, indexPath, cell)
-            return cell
+            return configCell(itemIdentifier, indexPath, tableView)
         })
-    }
-}
-
-@available (iOS 13,*)
-class SwipableDataSource<T: Hashable>: UITableViewDiffableDataSource<Int, T> {
-    public override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
     }
 }

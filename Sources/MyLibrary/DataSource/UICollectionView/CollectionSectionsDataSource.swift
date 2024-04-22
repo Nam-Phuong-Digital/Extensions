@@ -51,11 +51,11 @@ public final class CollectionSectionsDataSource<
                 guard let self else { return nil}
                 switch kind {
                 case UICollectionView.elementKindSectionHeader:
-                    let sup = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: HEADER.self), for: indexPath) as? HEADER
+                    let sup = collectionView.dequeue(HEADER.self, indexPath: indexPath, kind: kind)
                     configSupplementary(self.sections[indexPath.section], indexPath, .header(sup))
                     return sup
                 case UICollectionView.elementKindSectionFooter:
-                    let sup = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: FOOTER.self), for: indexPath) as? FOOTER
+                    let sup = collectionView.dequeue(FOOTER.self, indexPath: indexPath, kind: kind)
                     configSupplementary(self.sections[indexPath.section], indexPath, .footer(sup))
                     return sup
                 default: return nil
@@ -67,12 +67,12 @@ public final class CollectionSectionsDataSource<
     public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
-            if let sup = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: String(describing: HEADER.self), for: indexPath) as? HEADER {
+            if let sup = collectionView.dequeue(HEADER.self, indexPath: indexPath, kind: kind) {
                 configSupplementary(self.sections[indexPath.section], indexPath, .header(sup))
                 return sup
             }
         case UICollectionView.elementKindSectionFooter:
-            if let sup = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: String(describing: FOOTER.self), for: indexPath) as? FOOTER {
+            if let sup = collectionView.dequeue(FOOTER.self, indexPath: indexPath, kind: kind) {
                 configSupplementary(self.sections[indexPath.section], indexPath, .footer(sup))
                 return sup
             }
@@ -82,18 +82,12 @@ public final class CollectionSectionsDataSource<
     }
 }
 
-private extension CollectionSectionsDataSource {
-    /// register cell
-    /// - Parameter cell: type of cell
-    func register(for cell:CELL.Type) {
-        self.collectionView.register(UINib(nibName: String(describing: cell.self), bundle: nil), forCellWithReuseIdentifier: String(describing: cell))
-    }
-    
+private extension CollectionSectionsDataSource {    
     /// register supplementary for collection view
     /// - Parameters:
     ///   - sup: type registered
     ///   - kind:UICollectionView.elementKindSectionFooter or Header
     func register(for sup:UICollectionReusableView.Type, kind: String) {
-        self.collectionView.register(UINib(nibName: String(describing: sup.self), bundle: nil), forSupplementaryViewOfKind: kind, withReuseIdentifier: String(describing: sup.self))
+        self.collectionView.register(sup.self, kind: kind)
     }
 }

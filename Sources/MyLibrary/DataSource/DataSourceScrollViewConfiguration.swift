@@ -12,6 +12,7 @@ public enum DataSourceScrollViewConfiguration {
     case didEndDecelerating(scrollView: UIScrollView)
     case didEndDragging(scrollView: UIScrollView)
     case loadMore
+    case pullToRefresh
     
     public class LoadMoreActivityIndicator {
 
