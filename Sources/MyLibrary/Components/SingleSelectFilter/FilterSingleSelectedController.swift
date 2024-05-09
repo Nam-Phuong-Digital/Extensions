@@ -41,7 +41,7 @@ public extension UIViewController {
         items: [FilterSingleSelectedObject],
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) {
-        let shouldUseActionInstead = sourceView is UIButton || sourceView is UIBarButtonItem
+        let shouldUseActionInstead = (sourceView as? UIButton != nil) || (sourceView as? UIBarButtonItem != nil)
         if #available(iOS 14, *), items.count < 8, shouldUseActionInstead {
             let menus = UIMenu(title: title ?? "",
                                children: items.compactMap{
