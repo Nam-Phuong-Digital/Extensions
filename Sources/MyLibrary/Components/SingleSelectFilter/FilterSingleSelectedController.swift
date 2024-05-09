@@ -57,7 +57,7 @@ public extension UIViewController {
             barButton.menu = menus
             barButton.primaryAction = nil
             if let action = barButton.action {
-                UIApplication.shared.sendAction(action, to: barButton.target, from: nil, for: nil)
+                UIApplication.shared.sendAction(action, to: barButton.target, from: self, for: nil)
             }
         } else {
             self.selectSingleFilter(title: title, sourceView: barButton, current: current, items: items, result: result)
