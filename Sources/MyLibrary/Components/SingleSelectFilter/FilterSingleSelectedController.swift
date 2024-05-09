@@ -37,7 +37,6 @@ public extension UIViewController {
     
     func makeBarButtonItem(
         title:String? = nil,
-        for barButton:UIBarButtonItem,
         current: FilterSingleSelectedObject?,
         items: [FilterSingleSelectedObject],
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
