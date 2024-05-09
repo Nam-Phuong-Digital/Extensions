@@ -35,6 +35,29 @@ public class MyAction<T: Hashable>: UIAction {
 
 public extension UIViewController {
     
+    @available (iOS 14,*)
+    func makeMenus(
+        title:String? = nil,
+        for barButton:UIBarButtonItem,
+        current: FilterSingleSelectedObject?,
+        items: [FilterSingleSelectedObject],
+        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+    ) {
+        let menus = UIMenu(title: title ?? "",
+                           children: items.compactMap{
+            MyAction<FilterSingleSelectedObject>.init(
+                $0,
+                title: $0.title,
+                image: nil,
+                state: current == $0 ? .on : .off) { selected in
+                    result(selected)
+                }
+            }
+        )
+        barButton.menu = menus
+        barButton.primaryAction = nil
+    }
+    
     func selectSingleAction(
         title:String? = nil,
         for barButton:UIBarButtonItem,
@@ -42,23 +65,7 @@ public extension UIViewController {
         items: [FilterSingleSelectedObject],
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) {
-        if #available(iOS 14, *), items.count < 8 {
-            let menus = UIMenu(title: title ?? "",
-                               children: items.compactMap{
-                MyAction<FilterSingleSelectedObject>.init(
-                    $0,
-                    title: $0.title,
-                    image: nil,
-                    state: current == $0 ? .on : .off) { selected in
-                        result(selected)
-                    }
-                }
-            )
-            barButton.menu = menus
-            barButton.primaryAction = nil
-            if let action = barButton.action {
-                UIApplication.shared.sendAction(action, to: barButton.target, from: self, for: nil)
-            }
+        if #available(iOS 14, *), items.count < 8, barButton.menu != nil {
         } else {
             self.selectSingleFilter(title: title, sourceView: barButton, current: current, items: items, result: result)
         }
