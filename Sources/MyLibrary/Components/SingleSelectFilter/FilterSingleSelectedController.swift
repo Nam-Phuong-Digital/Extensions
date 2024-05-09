@@ -35,50 +35,14 @@ public class MyAction<T: Hashable>: UIAction {
 
 public extension UIViewController {
     
-    @available (iOS 14,*)
-    func makeMenus(
+    func makeBarButtonItem(
         title:String? = nil,
         for barButton:UIBarButtonItem,
         current: FilterSingleSelectedObject?,
         items: [FilterSingleSelectedObject],
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
-    ) {
-        let menus = UIMenu(title: title ?? "",
-                           children: items.compactMap{
-            MyAction<FilterSingleSelectedObject>.init(
-                $0,
-                title: $0.title,
-                image: nil,
-                state: current == $0 ? .on : .off) { selected in
-                    result(selected)
-                }
-            }
-        )
-        barButton.menu = menus
-        barButton.primaryAction = nil
-    }
-    
-    func selectSingleAction(
-        title:String? = nil,
-        for barButton:UIBarButtonItem,
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
-    ) {
-        if #available(iOS 14, *), items.count < 8, barButton.menu != nil {
-        } else {
-            self.selectSingleFilter(title: title, sourceView: barButton, current: current, items: items, result: result)
-        }
-    }
-    
-    func selectSingleAction(
-        title:String? = nil,
-        for button:UIButton,
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
-    ) {
-        if #available(iOS 14, *), items.count < 8 {
+    ) -> UIBarButtonItem? {
+        if #available(iOS 14, *) {
             let menus = UIMenu(title: title ?? "",
                                children: items.compactMap{
                 MyAction<FilterSingleSelectedObject>.init(
@@ -90,12 +54,24 @@ public extension UIViewController {
                     }
                 }
             )
-            button.menu = menus
-            button.showsMenuAsPrimaryAction = true
-            button.sendActions(for: .touchUpInside)
+            return UIBarButtonItem(title: title, menu: menus)
         } else {
-            self.selectSingleFilter(title: title, sourceView: button, current: current, items: items, result: result)
+            return UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(self.makeAction(_:)))
         }
+    }
+    
+    @objc private func makeAction(_ sender: UIBarButtonItem) {
+        self.selectSingleFilter(title: sender.title, sourceView: sender, current: nil, items: [], result: {_ in})
+    }
+    
+    func selectSingleAction(
+        title:String? = nil,
+        for button:UIButton,
+        current: FilterSingleSelectedObject?,
+        items: [FilterSingleSelectedObject],
+        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+    ) {
+        self.selectSingleFilter(title: title, sourceView: button, current: current, items: items, result: result)
     }
     
     func selectSingleFilter(
