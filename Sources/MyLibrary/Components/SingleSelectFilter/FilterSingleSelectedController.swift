@@ -41,7 +41,7 @@ public extension UIViewController {
         items: [FilterSingleSelectedObject],
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) {
-        var shouldUseActionInstead = sourceView is UIButton || sourceView is UIBarButtonItem
+        let shouldUseActionInstead = sourceView is UIButton || sourceView is UIBarButtonItem
         if #available(iOS 14, *), items.count < 8, shouldUseActionInstead {
             let menus = UIMenu(title: title ?? "",
                                children: items.compactMap{
@@ -60,7 +60,9 @@ public extension UIViewController {
             } else if let sourceView = sourceView as? UIBarButtonItem {
                 sourceView.primaryAction = nil
                 sourceView.menu = menus
-                _ = sourceView.target?.perform(sourceView.action)
+                if let action = sourceView.action {
+                    UIApplication.shared.sendAction(action, to: sourceView.target, from: nil, for: nil)
+                }
             }
         } else {
             let vc = FilterSingleSelectedController(current: current, items: items, result: result)
