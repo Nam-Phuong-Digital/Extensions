@@ -61,7 +61,7 @@ public class DateConvert {
         if isUTC {
             df.timeZone = TimeZone(identifier: "UTC")
         }
-        let locale = Locale(identifier: "en_US_POSIX")
+        let locale = Locale.app//Locale(identifier: "en_US_POSIX")
         df.locale = locale
         let dateString = df.string(from: date)
         return dateString
