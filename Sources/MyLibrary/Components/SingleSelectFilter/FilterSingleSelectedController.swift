@@ -8,6 +8,31 @@
 
 import UIKit
 
+public typealias MyActionHandler<T: Hashable> = (T) -> Void
+@available (iOS 13,*)
+public class MyAction<T: Hashable>: UIAction {
+    public var object: T
+    public convenience init(
+        _ object: T,
+        title: String = "",
+        image: UIImage? = nil,
+        identifier: UIAction.Identifier? = nil,
+        discoverabilityTitle: String? = nil,
+        attributes: UIMenuElement.Attributes = [],
+        state: UIMenuElement.State = .off,
+        handler: @escaping MyActionHandler<T>
+    ) {
+        self.init(title: title, image: image, identifier: identifier, discoverabilityTitle: discoverabilityTitle, attributes: attributes, state: state, handler: { _ in
+            handler(object)
+        })
+        self.object = object
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 public extension UIViewController {
     func selectSingleFilter(
         title:String? = nil,
@@ -16,21 +41,44 @@ public extension UIViewController {
         items: [FilterSingleSelectedObject],
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) {
-        let vc = FilterSingleSelectedController(current: current, items: items, result: result)
-        if let title {
-            vc.title = title
-            let nv = PopoverNavigationController(root: vc,sourceView: sourceView)
-            let popVC = PopoverContainerController(
-                sourceView: sourceView,
-                contentController: nv
+        var shouldUseActionInstead = sourceView is UIButton || sourceView is UIBarButtonItem
+        if #available(iOS 14, *), items.count < 8, shouldUseActionInstead {
+            let menus = UIMenu(title: title ?? "",
+                               children: items.compactMap{
+                MyAction<FilterSingleSelectedObject>.init(
+                    $0,
+                    title: $0.title,
+                    image: nil,
+                    state: current == $0 ? .on : .off) { selected in
+                        result(selected)
+                    }
+                }
             )
-            self.present(popVC, animated: true)
+            if let sourceView = sourceView as? UIButton {
+                sourceView.menu = menus
+                sourceView.showsMenuAsPrimaryAction = true
+            } else if let sourceView = sourceView as? UIBarButtonItem {
+                sourceView.primaryAction = nil
+                sourceView.menu = menus
+                _ = sourceView.target?.perform(sourceView.action)
+            }
         } else {
-            let popVC = PopoverContainerController(
-                sourceView: sourceView,
-                contentController: vc
-            )
-            self.present(popVC, animated: true)
+            let vc = FilterSingleSelectedController(current: current, items: items, result: result)
+            if let title {
+                vc.title = title
+                let nv = PopoverNavigationController(root: vc,sourceView: sourceView)
+                let popVC = PopoverContainerController(
+                    sourceView: sourceView,
+                    contentController: nv
+                )
+                self.present(popVC, animated: true)
+            } else {
+                let popVC = PopoverContainerController(
+                    sourceView: sourceView,
+                    contentController: vc
+                )
+                self.present(popVC, animated: true)
+            }
         }
     }
 }
