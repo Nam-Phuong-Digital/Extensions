@@ -83,7 +83,7 @@ extension UITextView
     func addToolbar(title:String,
                     action:Selector,
                     target:Any?) {
-        let bar = UIToolbar()
+        let bar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: 50)))
         let reset = UIBarButtonItem(title: title, style: .plain, target: target, action: action)
         bar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),reset]
         bar.sizeToFit()
@@ -91,7 +91,7 @@ extension UITextView
     }
     
     func addToolbarEndEditing(title:String = "Done") {
-        let bar = UIToolbar()
+        let bar = UIToolbar(frame: CGRect(origin: .zero, size: CGSize(width: self.frame.width, height: 50)))
         let reset = UIBarButtonItem(title: title, style: .plain, target: self, action: #selector(self.endEdit))
         bar.items = [UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),reset]
         bar.sizeToFit()
