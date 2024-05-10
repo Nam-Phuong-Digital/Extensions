@@ -25,8 +25,8 @@ public class TextViewPublisher: BaseObservableView, UITextViewDelegate {
         config()
     }
     
-    @IBOutlet weak var textView: UITextView!
-    @IBOutlet weak var lblPlaceholder: UILabel!
+    @IBOutlet public weak var textView: UITextView!
+    @IBOutlet public weak var lblPlaceholder: UILabel!
     
     let PLACEHOLDER_TAG = 100
     @Published public  var value:String = ""
