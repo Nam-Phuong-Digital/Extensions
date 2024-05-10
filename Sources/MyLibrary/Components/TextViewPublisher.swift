@@ -29,10 +29,10 @@ public class TextViewPublisher: BaseObservableView, UITextViewDelegate {
     @IBOutlet weak var lblPlaceholder: UILabel!
     
     let PLACEHOLDER_TAG = 100
-    @Published var value:String = ""
+    @Published public  var value:String = ""
     @Published private var showPlaceholder:Bool = true
     
-    @IBInspectable var placeholder:String = "" {
+    @IBInspectable public var placeholder:String = "" {
         didSet {
             if lblPlaceholder != nil {
                 lblPlaceholder.text = placeholder
@@ -40,7 +40,7 @@ public class TextViewPublisher: BaseObservableView, UITextViewDelegate {
         }
     }
     
-    @IBInspectable var placeholderColor:UIColor = UIColor.borderColor {
+    @IBInspectable public var placeholderColor:UIColor = UIColor.borderColor {
         didSet {
             if lblPlaceholder != nil {
                 lblPlaceholder.textColor = placeholderColor
@@ -48,7 +48,7 @@ public class TextViewPublisher: BaseObservableView, UITextViewDelegate {
         }
     }
     
-    var font:UIFont? = UIFont.systemFont(ofSize: 17) {
+    public var font:UIFont? = UIFont.systemFont(ofSize: 17) {
         didSet {
             if textView != nil {
                 textView.font = font
@@ -56,7 +56,7 @@ public class TextViewPublisher: BaseObservableView, UITextViewDelegate {
         }
     }
     
-    var text:String = "" {
+    public var text:String = "" {
         didSet {
             if textView != nil {
                 textView.text = text
@@ -65,7 +65,7 @@ public class TextViewPublisher: BaseObservableView, UITextViewDelegate {
         }
     }
     
-    var textColor:UIColor? = .black {
+    public var textColor:UIColor? = .black {
         didSet {
             if textView != nil {
                 textView.textColor = textColor
