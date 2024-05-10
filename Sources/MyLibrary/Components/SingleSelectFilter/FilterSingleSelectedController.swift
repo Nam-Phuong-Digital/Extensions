@@ -35,26 +35,36 @@ public class MyAction<T: Hashable>: UIAction {
 
 public extension UIViewController {
     
-    @available (iOS 14,*)
     func makeBarButtonItemMenu(
         title:String? = nil,
         image: UIImage? = nil,
         current: FilterSingleSelectedObject?,
         items: [FilterSingleSelectedObject],
+        action: Selector?,
         result:@escaping (_ T:FilterSingleSelectedObject?)->()
     ) -> UIBarButtonItem? {
-        let menus = UIMenu(title: title ?? "",
-                           children: items.compactMap{
-            MyAction<FilterSingleSelectedObject>.init(
-                $0,
-                title: $0.title,
-                image: nil,
-                state: current == $0 ? .on : .off) { selected in
-                    result(selected)
+        if #available(iOS 14, *) {
+            let menus = UIMenu(title: title ?? "",
+                               children: items.compactMap{
+                MyAction<FilterSingleSelectedObject>.init(
+                    $0,
+                    title: $0.title,
+                    image: nil,
+                    state: current == $0 ? .on : .off) { selected in
+                        result(selected)
+                    }
                 }
+            )
+            return UIBarButtonItem(title: title, image: image, menu: menus)
+        } else {
+            if let title {
+                return UIBarButtonItem(title: title, style: .plain, target: self, action: action)
+            } else if let image {
+                return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
+            } else {
+                return UIBarButtonItem(title: "", style: .plain, target: self, action: action)
             }
-        )
-        return UIBarButtonItem(title: title, image: image, menu: menus)
+        }
     }
     
     func selectSingleAction(
