@@ -191,6 +191,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         if configuration.havePullToRefresh {
             tableView.addSubview(refreshControl)
             tableView.sendSubviewToBack(refreshControl)
+            refreshControl.tintColor = Resource.Color.primary
             refreshControl.addTarget(self, action: #selector(refreshAction), for: .valueChanged)
         }
     }
