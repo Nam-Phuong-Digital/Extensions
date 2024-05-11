@@ -71,7 +71,7 @@ public extension UIButton {
         }
     }
     
-    func configButtonBottom(title:String, bgColor: UIColor? = UIColor("#006783"), titleColor:UIColor = .white, disabledColor:UIColor = UIColor("#f6f6f7")) {
+    func configButtonBottom(title:String, bgColor: UIColor? = UIColor("#006783"), titleColor:UIColor = .white, disabledColor:UIColor = UIColor("#f6f6f7"), insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)) {
         if #available(iOS 15.0, *) {
             configuration = .plain()
             configurationUpdateHandler = {btn in
@@ -80,7 +80,7 @@ public extension UIButton {
                 var bg = UIBackgroundConfiguration.clear()
                 bg.backgroundColor = btn.isEnabled ? bgColor : disabledColor
                 btn.configuration?.background = bg
-                btn.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+                btn.configuration?.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: insets.left, bottom: insets.bottom, trailing: insets.right)
                 btn.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ income in
                     var temp = income
                     temp.font = UIFont.systemFont(ofSize: 17, weight: .bold)
@@ -93,7 +93,7 @@ public extension UIButton {
             setTitle(title, for: UIControl.State())
             setTitleColor(titleColor, for: UIControl.State())
             backgroundColor = bgColor
-            contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+            contentEdgeInsets = insets
             setBackgroundImage(bgColor?.imageRepresentation, for: UIControl.State.normal)
             setBackgroundImage(UIColor("#f6f6f7").imageRepresentation, for: UIControl.State.disabled)
         }
