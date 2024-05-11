@@ -75,7 +75,11 @@ public extension PHAsset {
         }
     }
     
-    func getDataToUpload(maxLength:Int = 320000,completionHandler : @escaping ((_ responseURL : URL?,_ data:Data?,_ error:Any?) -> Void)){
+    func getDataToUpload(
+        maxLength:Int = 320000,
+        size: CGSize = UIScreen.bounceWindow.size,
+        completionHandler : @escaping ((_ responseURL : URL?,_ data:Data?,_ error:Any?) -> Void)
+    ){
         if self.mediaType == .image {
             let manager = PHImageManager.default()
             let option = PHImageRequestOptions()
@@ -83,7 +87,7 @@ public extension PHAsset {
             option.resizeMode = .exact
             option.deliveryMode = .highQualityFormat
             option.isSynchronous = true
-            manager.requestImage(for: self, targetSize: UIScreen.bounceWindow.size, contentMode: .default, options: option) { image, info in
+            manager.requestImage(for: self, targetSize: size, contentMode: .default, options: option) { image, info in
                 if let image = image {
                     ImageCompressor.compress(image: image, maxByte: maxLength) { image in
                         DispatchQueue.main.async {
@@ -112,9 +116,9 @@ public extension PHAsset {
     }
     
     @available (iOS 13,*)
-    func getDataToUpload(maxLength:Int = 320000) async throws -> (URL?,Data?) {
+    func getDataToUpload(maxLength:Int = 320000, size: CGSize) async throws -> (URL?,Data?) {
         return try await withUnsafeThrowingContinuation({ c in
-            self.getDataToUpload(maxLength: maxLength) { responseURL, data, error in
+            self.getDataToUpload(maxLength: maxLength,size: size) { responseURL, data, error in
                 if error != nil {
                     c.resume(throwing: NSError(domain: "com.photos.error.app", code: 404, userInfo: [:]))
                 } else {
