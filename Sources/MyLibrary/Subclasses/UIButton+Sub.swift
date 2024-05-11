@@ -42,7 +42,7 @@ public class ButtonHalfHeight: IBInspectableButton {
         }
     }
     
-    var object:Any? // need keep object to handle in extension using this button class
+    public var object:Any? // need keep object to handle in extension using this button class
 }
 
 
