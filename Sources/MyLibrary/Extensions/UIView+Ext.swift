@@ -160,17 +160,16 @@ public extension UIView {
         action:Selector,
         keepObject:Any?
     ) {
-        self.clipsToBounds = false
         let button = ButtonHalfHeight(type: .custom)
         button.object = keepObject
-        button.contentMode = .scaleToFill
+        button.contentMode = .scaleAspectFill
         button.tag = 19001800
         button.setImage(image, for: UIControl.State())
         button.backgroundColor = .white
         button.addTarget(target, action: action, for: .touchUpInside)
         addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
-        let top = button.topAnchor.constraint(equalTo: topAnchor, constant: -12)
+        let top = button.topAnchor.constraint(equalTo: topAnchor, constant: 0)
         top.priority = UILayoutPriority(999)
         let trailing = trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: 0)
         trailing.priority = UILayoutPriority(999)
@@ -181,6 +180,7 @@ public extension UIView {
         let ratio = button.widthAnchor.constraint(equalTo: button.heightAnchor, multiplier: 1)
         ratio.priority = UILayoutPriority(999)
         button.addConstraints([height,ratio])
+        self.bringSubviewToFront(button)
     }
     
     func removeRemoveButton(target:Any?,action:Selector?) {
