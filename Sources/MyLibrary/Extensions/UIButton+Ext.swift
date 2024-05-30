@@ -120,7 +120,7 @@ public extension UIButton {
         }
     }
     
-    func setTitleStyle(title:String?, color:UIColor? = .black) {
+    func setTitleStyle(title:String?, color:UIColor? = .black, font: UIFont? = nil) {
         setTitle(title, for: UIControl.State())
         tintColor = color
         if #available(iOS 15, *) {
@@ -131,10 +131,22 @@ public extension UIButton {
                 btn.configuration?.background = bg
                 btn.configuration?.title = title
                 btn.configuration?.baseForegroundColor = color
+                if let font {
+                    btn.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ income in
+                        var temp = income
+                        temp.font = font
+                        temp.foregroundColor = color
+                        return temp
+                    })
+                }
             }
         } else {
             backgroundColor = .clear
+            setTitleColor(color, for: UIControl.State())
             setImage(nil, for: .disabled)
+            if let font {
+                titleLabel?.font = font
+            }
         }
     }
     

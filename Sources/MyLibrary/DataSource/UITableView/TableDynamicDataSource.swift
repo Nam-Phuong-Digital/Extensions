@@ -28,7 +28,7 @@ public extension UITableView {
 
 
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
-/// ```
+/// ```swift
 ///        dataSource = TableDynamicDataSource(
 ///            for: self.tableView,
 ///            cellsType: [TableViewCell.self, NoDataCell.self],
@@ -186,6 +186,8 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
             tableView.sectionHeaderTopPadding = 0 // Remove the padding at the top for UITableView with a style different from plain.
         }
         tableView.contentInsetAdjustmentBehavior = .scrollableAxes // Prevent the padding at the top from increasing when pulling to refresh.
+        
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
         
         // setup pull to refresh
         if configuration.havePullToRefresh {

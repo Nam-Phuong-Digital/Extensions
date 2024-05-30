@@ -13,7 +13,7 @@ public typealias SELECTED_ITEM<T: Hashable> = ((T) -> Void)?
 public typealias SWIPE_CONFIGURATION<T: Hashable> = ((_ item: T,_ indexPath: IndexPath) -> UISwipeActionsConfiguration?)?
 
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
-/// ```
+/// ```swift
 ///        var dataSource: TableDataSource<ItemModel, TableViewCell>!
 ///
 ///        dataSource = TableSectionsDataSource(
@@ -110,6 +110,8 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             tableView.sectionHeaderTopPadding = 0 // Remove the padding at the top for UITableView with a style different from plain.
         }
         tableView.contentInsetAdjustmentBehavior = .scrollableAxes // Prevent the padding at the top from increasing when pulling to refresh.
+        
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
         
         // setup pull to refresh
         if configuration.havePullToRefresh {
