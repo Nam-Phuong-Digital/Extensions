@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
-/// ```
+/// ```swift
 ///        var dataSectionsSource: TableSectionsDataSource<ItemModel, TableViewCell, TableFooterView, TableFooterView>!
 ///
 ///        dataSectionsSource = TableSectionsDataSource(
@@ -122,5 +122,13 @@ public final class TableSectionsDataSource<
         } else {
             return 0
         }
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        scrollViewDelegating?(.willDisplayHeader(section: section))
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        scrollViewDelegating?(.willDisplayFooter(section: section))
     }
 }

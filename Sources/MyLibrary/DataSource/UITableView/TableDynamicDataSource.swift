@@ -391,6 +391,14 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         scrollViewDelegating?(.didEndDragging(scrollView: scrollView))
     }
     
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        scrollViewDelegating?(.willDisplayHeader(section: section))
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        scrollViewDelegating?(.willDisplayFooter(section: section))
+    }
+    
     private func loadingMore(closure: (() -> Void)?) {
         loadMoreIndicator.start (closure: closure)
     }
