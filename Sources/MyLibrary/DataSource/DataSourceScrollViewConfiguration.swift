@@ -11,8 +11,10 @@ public enum DataSourceScrollViewConfiguration {
     case didScroll(scrollView: UIScrollView)
     case didEndDecelerating(scrollView: UIScrollView)
     case didEndDragging(scrollView: UIScrollView)
-    case willDisplayHeader(section: Int)
-    case willDisplayFooter(section: Int)
+    case willDisplayHeader(section: Int, view: UIView)
+    case willDisplayFooter(section: Int, view: UIView)
+    case didEndDisplayHeader(section: Int, view: UIView)
+    case didEndDisplayFooter(section: Int, view: UIView)
     case loadMore
     case pullToRefresh
     

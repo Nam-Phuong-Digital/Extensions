@@ -125,10 +125,18 @@ public final class TableSectionsDataSource<
     }
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        scrollViewDelegating?(.willDisplayHeader(section: section))
+        scrollViewDelegating?(.willDisplayHeader(section: section, view: view))
     }
     
     public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        scrollViewDelegating?(.willDisplayFooter(section: section))
+        scrollViewDelegating?(.willDisplayFooter(section: section, view: view))
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
+        scrollViewDelegating?(.didEndDisplayHeader(section: section, view: view))
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
+        scrollViewDelegating?(.didEndDisplayFooter(section: section, view: view))
     }
 }
