@@ -16,7 +16,7 @@ public final class CollectionSectionsDataSource<
     FOOTER: UICollectionReusableView
 >:  CollectionDataSource<T, CELL> {
     
-    enum SupplementaryType {
+    public enum SupplementaryType {
         case header(HEADER?)
         case footer(FOOTER?)
     }
@@ -29,7 +29,7 @@ public final class CollectionSectionsDataSource<
     ///   - configCell: config  content for `CELL.self`
     ///   - configSupplementary: config content for supplementary kind
     ///   - layout: setup a layout to collection view
-    init(
+    public init(
         for collectionView: UICollectionView,
         configCell:@escaping ((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void),
         configSupplementary:@escaping ((_ section:SectionDataSourceModel<T>,_ indexPath: IndexPath,_ sup: SupplementaryType) ->Void),
