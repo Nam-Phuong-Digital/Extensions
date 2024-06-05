@@ -59,9 +59,15 @@ public class MLCheckBox: UIControl {
         addSubview(stack)
         
         titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.numberOfLines = 0
+        titleLabel.textAlignment = .left
         
         imageView.image = normalImage
         imageView.highlightedImage = selectedImage
+        imageView.addConstraints([
+            .init(item: imageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 24),
+            .init(item: imageView, attribute: .width, relatedBy: .equal, toItem: imageView, attribute: .height, multiplier: 1, constant: 0)
+        ])
         
         stack.addArrangedSubview(imageView)
         stack.addArrangedSubview(titleLabel)
