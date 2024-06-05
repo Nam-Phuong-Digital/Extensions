@@ -97,6 +97,8 @@ public class MLCheckBox: UIControl {
     public func setColor(_ color: UIColor) {
         tintColor = color
         imageView.tintColor = color
+        imageView.image = normalImage?.withRenderingMode(.alwaysTemplate).tint(with: color)
+        imageView.highlightedImage = selectedImage?.withRenderingMode(.alwaysTemplate).tint(with: color)
         titleLabel.textColor = color
     }
     
