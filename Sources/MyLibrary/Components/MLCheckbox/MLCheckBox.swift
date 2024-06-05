@@ -66,7 +66,10 @@ public class MLCheckBox: UIControl {
         stack.addArrangedSubview(titleLabel)
         
         stack.boundInside(self, insets: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
-        
+        let height = self.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
+        height.priority = UILayoutPriority(999)
+        self.addConstraint(height)
+
         updateUI()
     }
     
