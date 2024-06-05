@@ -20,19 +20,23 @@ public class MLCheckBox: UIControl {
     public var isChecked: Bool = false {
         didSet {
             updateUI()
-            sendActions(for: .valueChanged)
         }
     }
+    
+    @IBInspectable
+    public var alignment: UIStackView.Alignment = .center
     
     public init(
         normalImage: UIImage?,
         selectedImage: UIImage?,
-        isChecked: Bool = false
+        isChecked: Bool = false,
+        alignment: UIStackView.Alignment = .center
     ) {
         self.normalImage = normalImage
         self.selectedImage = selectedImage
         self.isChecked = isChecked
         super.init(frame: .zero)
+        self.alignment = alignment
         setupViews()
     }
     
@@ -52,7 +56,7 @@ public class MLCheckBox: UIControl {
         
         stack.frame = bounds
         stack.axis = .horizontal
-        stack.alignment = .top
+        stack.alignment = alignment
         stack.distribution = .fill
         stack.spacing = 10
         
