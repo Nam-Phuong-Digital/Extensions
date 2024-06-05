@@ -49,6 +49,7 @@ public class MLCheckBox: UIControl {
         
         [stack, titleLabel, imageView].forEach{ $0.isUserInteractionEnabled = false }
         
+        stack.frame = bounds
         stack.axis = .horizontal
         stack.alignment = .top
         stack.distribution = .fill
@@ -65,10 +66,14 @@ public class MLCheckBox: UIControl {
         stack.addArrangedSubview(imageView)
         stack.addArrangedSubview(titleLabel)
         
-        stack.boundInside(self, insets: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
         let height = self.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
-        height.priority = UILayoutPriority(999)
-        self.addConstraint(height)
+        let top = NSLayoutConstraint(item: stack, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1, constant: 10)
+        let leading = NSLayoutConstraint(item: stack, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 15)
+        let trailing = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: stack, attribute: .trailing, multiplier: 1, constant: 15)
+        let bottom = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: stack, attribute: .trailing, multiplier: 1, constant: 10)
+        let constraint = [top, leading, trailing, bottom, height]
+        constraint.forEach{ $0.priority = UILayoutPriority(999) }
+        self.addConstraints(constraint)
 
         updateUI()
     }
