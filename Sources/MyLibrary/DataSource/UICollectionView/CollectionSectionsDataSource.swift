@@ -64,7 +64,7 @@ public final class CollectionSectionsDataSource<
         }
     }
     
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    public override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             if let sup = collectionView.dequeue(HEADER.self, indexPath: indexPath, kind: kind) {
@@ -79,15 +79,5 @@ public final class CollectionSectionsDataSource<
         default: return UICollectionReusableView(frame: .zero)
         }
         return UICollectionReusableView(frame: .zero)
-    }
-}
-
-private extension CollectionSectionsDataSource {    
-    /// register supplementary for collection view
-    /// - Parameters:
-    ///   - sup: type registered
-    ///   - kind:UICollectionView.elementKindSectionFooter or Header
-    func register(for sup:UICollectionReusableView.Type, kind: String) {
-        self.collectionView.register(sup.self, kind: kind)
     }
 }
