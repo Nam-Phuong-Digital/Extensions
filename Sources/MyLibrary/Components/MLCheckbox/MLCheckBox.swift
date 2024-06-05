@@ -33,6 +33,7 @@ public class MLCheckBox: UIControl {
         self.selectedImage = selectedImage
         self.isChecked = isChecked
         super.init(frame: .zero)
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
