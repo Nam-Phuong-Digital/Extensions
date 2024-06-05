@@ -75,13 +75,13 @@ public class MLCheckBox: UIControl {
     }
     
     // MARK: -  PUBLIC APIS
-    func setColor(_ color: UIColor) {
+    public func setColor(_ color: UIColor) {
         tintColor = color
         imageView.tintColor = color
         titleLabel.textColor = color
     }
     
-    func setTitle(_ text: String?) {
+    public func setTitle(_ text: String?) {
         titleLabel.text = text
     }
 }
