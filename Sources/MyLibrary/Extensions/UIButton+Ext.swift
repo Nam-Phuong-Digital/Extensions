@@ -48,6 +48,7 @@ public extension UIButton {
             setImage(image, for: .normal)
             setImage(selectedImage, for: .selected)
             contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+            tintColor = normalTextColor
         }
     }
     
