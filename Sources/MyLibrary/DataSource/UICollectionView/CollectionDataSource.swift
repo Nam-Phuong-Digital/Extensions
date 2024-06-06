@@ -206,6 +206,10 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
         configCell(item, indexPath, cell)
         return cell
     }
+    
+    @objc public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        return UICollectionReusableView(frame: .zero)
+    }
 }
 
 extension CollectionDataSource {
