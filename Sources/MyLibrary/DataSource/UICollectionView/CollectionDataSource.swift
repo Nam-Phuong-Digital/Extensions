@@ -40,20 +40,16 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
     private var selectingItem:SELECTED_ITEM<T>
     private var configCell:((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void)
     public var scrollViewDelegating:((DataSourceScrollViewConfiguration) -> Void)?
-    var configHeaderFooter: ((_ section: Int,_ collectionView: UICollectionView, _ kind: String) -> UICollectionReusableView?)?
     
     public init(
         for collectionView: UICollectionView,
         configCell: @escaping ((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void),
-        headerType:[UICollectionReusableView.Type] = [],
-        footerType:[UICollectionReusableView.Type] = [],
         configHeaderFooter: ((_ section: Int,_ collectionView: UICollectionView, _ kind: String) -> UICollectionReusableView?)? = nil,
         itemSelected: SELECTED_ITEM<T> = nil,
         layout: UICollectionViewLayout? = nil
     ) {
         self.collectionView = collectionView
         self.configCell = configCell
-        self.configHeaderFooter = configHeaderFooter
         loadMoreIndicator = DataSourceScrollViewConfiguration.LoadMoreActivityIndicator(scrollView: self.collectionView)
         self.selectingItem = itemSelected
         super.init()
@@ -63,8 +59,6 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
             self.collectionView.dataSource = self
         }
         self.register(for: CELL.self)
-        headerType.forEach({ self.register(for: $0, kind: UICollectionView.elementKindSectionHeader) })
-        footerType.forEach({ self.register(for: $0, kind: UICollectionView.elementKindSectionFooter) })
         self.collectionView.delegate = self
         if let layout {
             if #available(iOS 13, *) {
@@ -212,10 +206,6 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
         configCell(item, indexPath, cell)
         return cell
     }
-    
-    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        return self.configHeaderFooter?(indexPath.section, collectionView, kind) ?? UICollectionReusableView(frame: .zero)
-    }
 }
 
 extension CollectionDataSource {
@@ -241,9 +231,5 @@ extension CollectionDataSource {
             configCell(itemIdentifier, indexPath, cell)
             return cell
         })
-        
-        getDataSource().supplementaryViewProvider = {(collectionView, kind, indexPath) in
-            return self.configHeaderFooter?(indexPath.section, collectionView, kind)
-        }
     }
 }

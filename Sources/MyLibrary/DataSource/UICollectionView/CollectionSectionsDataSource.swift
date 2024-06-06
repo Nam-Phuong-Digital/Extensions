@@ -64,7 +64,7 @@ public final class CollectionSectionsDataSource<
         }
     }
     
-    public override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+    public func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionHeader:
             if let sup = collectionView.dequeue(HEADER.self, indexPath: indexPath, kind: kind) {
