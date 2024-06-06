@@ -30,7 +30,7 @@ public extension UICollectionView {
 }
 
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
-public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObject, UICollectionViewDelegate, UICollectionViewDataSource {
+public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     private var _dataSource: Any?
     let collectionView: UICollectionView

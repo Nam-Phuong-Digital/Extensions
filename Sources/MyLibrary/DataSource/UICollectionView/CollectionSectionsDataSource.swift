@@ -80,4 +80,12 @@ public final class CollectionSectionsDataSource<
         }
         return UICollectionReusableView(frame: .zero)
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return UIView.layoutFittingCompressedSize
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return UIView.layoutFittingCompressedSize
+    }
 }
