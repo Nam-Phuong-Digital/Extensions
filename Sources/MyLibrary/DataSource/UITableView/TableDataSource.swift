@@ -420,7 +420,11 @@ private extension TableDataSource {
     }
     
     func register(for cell: CELL.Type) {
-        self.tableView.register(cell)
+        if CELL.isEqual(UITableViewCell.self) {
+            self.tableView.register(cell.self, forCellReuseIdentifier: String(describing: cell.self))
+        } else {
+            self.tableView.register(cell)
+        }
     }
 }
 
