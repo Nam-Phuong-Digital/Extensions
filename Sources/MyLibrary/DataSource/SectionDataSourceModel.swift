@@ -17,17 +17,15 @@ public class SectionDataSourceModel<T: Hashable>: Hashable {
         hasher.combine(id)
     }
     
-    public var _isExpand: Bool = true {
-        didSet {
-            items = _isExpand ? _storedItems : []
-        }
-    }
+    public var _isExpand: Bool = true
     
     private var _storedItems: [T]
     
     public var id: String
     public var title:String
-    public var items: [T] = []
+    public var items: [T] {
+        _isExpand ? _storedItems : []
+    }
     public var object: Any?
     public init(id: String, title: String, items: [T], isExpand: Bool = true, object: Any? = nil) {
         self.id = id
