@@ -250,7 +250,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     }
     
     func reloadData() {
-        if self.sections.flatMap({ $0.items }).isEmpty {
+        if self.sections.flatMap({ $0.items }).isEmpty && self.sections.filter({ $0._isExpand == false }).isEmpty {
             self.showNoData()
         } else {
             self.hideNoData()
