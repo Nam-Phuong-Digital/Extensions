@@ -17,6 +17,7 @@ public class SectionDataSourceModel<T: Hashable>: Hashable {
         hasher.combine(id)
     }
     
+    public var _isExpand: Bool = true
     
     public var id: String
     public var title:String
