@@ -72,7 +72,7 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
             self.sections = [SectionDataSourceModel(id: "", title: "", items: [])]
         }
         guard section < self.sections.count else {return}
-        self.sections[section].items = items
+        self.sections[section].updateItems(items)
         reloadData()
     }
     
@@ -81,7 +81,7 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
             self.sections = [SectionDataSourceModel(id: "", title: "", items: [])]
         }
         guard section < self.sections.count else {return}
-        self.sections[section].items.append(contentsOf: items)
+        self.sections[section].appendItems(items)
         reloadData()
     }
     
@@ -119,7 +119,7 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
             if #available(iOS 13, *), !TEST_OLD_VERSION {
                 if let indexPath = getDataSource().indexPath(for: item) {
                     // remove item at section
-                    self.sections[indexPath.section].items.remove(at: indexPath.item)
+                    self.sections[indexPath.section].removeItem(indexPath.item)
                     if self.sections[indexPath.section].items.isEmpty {
                         // remove section if items  is empty
                         self.sections.remove(at: indexPath.section)
@@ -133,7 +133,7 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
                 let temp = self.sections
                 for (offset,section) in temp.enumerated() {
                     if section.items.contains(item) {
-                        self.sections[offset].items.removeAll(where: { $0 == item})
+                        self.sections[offset].removeItem(item)
                     }
                 }
             }

@@ -34,4 +34,20 @@ public class SectionDataSourceModel<T: Hashable>: Hashable {
         _storedItems = items
         _isExpand = isExpand
     }
+    
+    public func updateItems(_ items: [T]) {
+        _storedItems = items
+    }
+    
+    public func removeItem(_ index: Int) {
+        _storedItems.remove(at: index)
+    }
+    
+    public func removeItem(_ item: T) {
+        _storedItems.removeAll(where: { $0 == item })
+    }
+    
+    public func appendItems(_ items: [T]) {
+        _storedItems.append(contentsOf: items)
+    }
 }
