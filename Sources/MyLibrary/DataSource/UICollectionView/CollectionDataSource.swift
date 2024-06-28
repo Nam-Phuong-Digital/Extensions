@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 public extension UICollectionView {
     func dequeue<T: UICollectionViewCell>(_ cellType: T.Type, indexPath: IndexPath) -> T {
-        dequeueReusableCell(withReuseIdentifier: String(describing: cellType.self), for: indexPath) as! T
+        dequeueReusableCell(withReuseIdentifier: cellType.identifier, for: indexPath) as! T
     }
     
     func dequeue<T: UICollectionReusableView>(_ headerFooterType: T.Type, indexPath: IndexPath, kind: String) -> T? {
-        dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: String(describing: headerFooterType.self), for: indexPath) as? T
+        dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerFooterType.identifier, for: indexPath) as? T
     }
     
     func register<T: UICollectionViewCell>(_ cellType: T.Type) {
@@ -25,7 +25,7 @@ public extension UICollectionView {
     ///   - headerFooterType: HeaderFooter Type
     ///   - kind: ``UICollectionView.elementKindSectionFooter`` ||  ``UICollectionView.elementKindSectionHeader``
     func register<T: UICollectionReusableView>(_ headerFooterType: T.Type, kind: String) {
-        register(UINib(nibName: String(describing: headerFooterType.self), bundle: nil), forSupplementaryViewOfKind: kind, withReuseIdentifier: String(describing: headerFooterType.self))
+        register(headerFooterType.nib(bundle: nil), forSupplementaryViewOfKind: kind, withReuseIdentifier: headerFooterType.identifier)
     }
 }
 
