@@ -8,13 +8,17 @@
 
 import UIKit
 
+public protocol DropDownItem {
+    var content: String { get }
+}
+
 public extension UIViewController {
-    func presentDropdown(
+    func presentDropdown<T: Hashable & DropDownItem>(
         sourceView:Any?,
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
+        current: T?,
+        items: [T],
         canInteract: Bool = false,
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+        result:@escaping (_ T:T?)->()
     ) {
         guard !items.isEmpty else {return}
         let vc = DropDown(
@@ -30,20 +34,24 @@ public extension UIViewController {
     }
 }
 
-fileprivate class DropDown: UIViewController {
+fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopoverPresentationControllerDelegate, UITableViewDelegate, UITableViewDataSource {
 
+    struct Item: Hashable {
+        let title: String
+    }
+    
     @IBOutlet weak var tableView: UITableView!
     private var sourceView:Any?
-    private let items:[FilterSingleSelectedObject]
-    private var current:FilterSingleSelectedObject?
-    private var result:(_ T:FilterSingleSelectedObject?)->()
+    private let items:[T]
+    private var current:T?
+    private var result:(_ T:T?)->()
     init(
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
+        current: T?,
+        items: [T],
         sourceView:Any?,
         holdController: UIViewController?,
         canInteract:Bool,
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+        result:@escaping (_ T:T?)->()
     ) {
         self.items = items
         self.current = current
@@ -81,18 +89,18 @@ fileprivate class DropDown: UIViewController {
         if #available(iOS 13, *) {
             setupDataSource {
                 .init(tableView: self.tableView) {[weak self] tableView, indexPath, itemIdentifier in guard let self else { return nil}
-                    guard let item = itemIdentifier as? FilterSingleSelectedObject else {
+                    guard let item = itemIdentifier as? T else {
                         return nil
                     }
                     let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
                     if #available(iOS 14.0, *) {
                         var configure = UIListContentConfiguration.cell()
-                        configure.text = item.title
+                        configure.text = item.content
                         configure.textProperties.numberOfLines = 3
                         cell?.contentConfiguration = configure
                     } else {
                         cell?.textLabel?.numberOfLines = 3
-                        cell?.textLabel?.text = item.title
+                        cell?.textLabel?.text = item.content
                     }
                     cell?.accessoryType = item == self.current ? .checkmark : .none
                     cell?.setBGColor(.clear)
@@ -127,12 +135,9 @@ fileprivate class DropDown: UIViewController {
             tableView.reloadData()
         }
     }
-}
 
-extension DropDown: UITableViewDelegate, UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item: FilterSingleSelectedObject? =
+        let item: T? =
         if #available(iOS 13, *) {
             getItemIdentifier(indexPath)
         } else {
@@ -159,27 +164,21 @@ extension DropDown: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if #available(iOS 14.0, *) {
             var configure = UIListContentConfiguration.cell()
-            configure.text = item.title
+            configure.text = item.content
             configure.textProperties.numberOfLines = 3
             cell.contentConfiguration = configure
         } else {
             cell.textLabel?.numberOfLines = 3
-            cell.textLabel?.text = item.title
+            cell.textLabel?.text = item.content
         }
         cell.setBGColor(.clear)
         cell.accessoryType = item == self.current ? .checkmark : .none
         return cell
     }
-}
 
-extension DropDown: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         .none
     }
-}
-
-@available (iOS 13,*)
-extension DropDown {
     
     @available(iOS 13.0, *)
     func getDatasource() -> UITableViewDiffableDataSource<Int,AnyHashable>? {
@@ -243,18 +242,8 @@ extension DropDown {
     }
     
     @available (iOS 13,*)
-    func getItemIdentifier<T:Codable>(_ indexPath:IndexPath) -> T? {
+    func getItemIdentifier(_ indexPath:IndexPath) -> T? {
         return getDatasource()?.itemIdentifier(for:indexPath) as? T
-    }
-    
-    @available (iOS 13,*)
-    func getItemIdentifier<T:Hashable>(_ indexPath:IndexPath) -> T? {
-        return getDatasource()?.itemIdentifier(for:indexPath) as? T
-    }
-    
-    @available (iOS 13,*)
-    func getItemIdentifier(_ indexPath:IndexPath) -> AnyHashable? {
-        return getDatasource()?.itemIdentifier(for: indexPath)
     }
     
     @available (iOS 13,*)
