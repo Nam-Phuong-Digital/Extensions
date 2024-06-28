@@ -25,6 +25,10 @@ public extension UICollectionView {
     ///   - headerFooterType: HeaderFooter Type
     ///   - kind: ``UICollectionView.elementKindSectionFooter`` ||  ``UICollectionView.elementKindSectionHeader``
     func register<T: UICollectionReusableView>(_ headerFooterType: T.Type, kind: String) {
+        guard Bundle.main.path(forResource: String(describing: headerFooterType.self), ofType: "nib") != nil else {
+            register(headerFooterType.self, forSupplementaryViewOfKind: kind, withReuseIdentifier: headerFooterType.identifier)
+            return
+        }
         register(headerFooterType.nib(bundle: nil), forSupplementaryViewOfKind: kind, withReuseIdentifier: headerFooterType.identifier)
     }
 }
