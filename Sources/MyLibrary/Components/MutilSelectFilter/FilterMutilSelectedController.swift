@@ -127,8 +127,8 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
     }
     
     @objc func selectorDone(_ sender: Any) {
-        self.dismiss(animated: true)
         if subItems.isEmpty {
+            self.dismiss(animated: true)
             self.result(self.current, [])
         } else {
             let vc = FilterMutilSelectedController<S,S>(
@@ -139,6 +139,7 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
                 maxSubSelect: 0,
                 onMaximumSelected: nil
             ) {[weak self] item,_ in guard let self else { return }
+                self.dismiss(animated: true)
                 self.result(self.current, item)
             }
             vc.title = self.subTitle
