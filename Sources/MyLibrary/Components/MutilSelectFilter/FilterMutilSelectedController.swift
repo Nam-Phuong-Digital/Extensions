@@ -139,7 +139,6 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
                 maxSubSelect: 0,
                 onMaximumSelected: nil
             ) {[weak self] item,_ in guard let self else { return }
-                self.dismiss(animated: true)
                 self.result(self.current, item)
             }
             vc.title = self.subTitle
