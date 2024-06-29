@@ -109,6 +109,17 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
         }
         tableView.delegate = self
         
+        updateHeight()
+        
+        reloadData()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.updateHeight()
+    }
+    
+    private func updateHeight() {
         let max = UIScreen.bounceWindow.height * 0.8
         var height:CGFloat = CGFloat(items.count * 50)
         if let nv = self.navigationController {
@@ -122,8 +133,6 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
         } else {
             self.parent?.preferredContentSize = preferredContentSize
         }
-        
-        reloadData()
     }
     
     @objc func selectorDone(_ sender: Any) {
