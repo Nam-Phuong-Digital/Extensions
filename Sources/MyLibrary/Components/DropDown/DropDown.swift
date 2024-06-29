@@ -112,14 +112,14 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         }
         tableView.delegate = self
         
-        let width = max(300,popoverPresentationController?.sourceRect.width ?? 0)
+        let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
         let max = UIScreen.bounceWindow.height * 0.8
         var height:CGFloat = CGFloat(items.count * 50)
         if let nv = self.navigationController {
             height += nv.navigationBar.frame.height
         }
         height = min(height,max)
-        preferredContentSize = CGSize(width: 300, height: height)
+        preferredContentSize = CGSize(width: width, height: height)
         reloadData()
     }
     

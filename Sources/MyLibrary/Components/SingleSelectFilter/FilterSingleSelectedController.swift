@@ -8,9 +8,9 @@
 
 import UIKit
 
-public typealias MyActionHandler<T: Hashable> = (T) -> Void
+public typealias MyActionHandler<T: Hashable & DropDownItem> = (T) -> Void
 @available (iOS 13,*)
-public class MyAction<T: Hashable>: UIAction {
+public class MyAction<T: Hashable & DropDownItem>: UIAction {
     public var object: T
     public convenience init(
         _ object: T,
@@ -35,20 +35,20 @@ public class MyAction<T: Hashable>: UIAction {
 
 public extension UIViewController {
     
-    func makeBarButtonItemMenu(
+    func makeBarButtonItemMenu<T: Hashable & DropDownItem>(
         title:String? = nil,
         image: UIImage? = nil,
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
+        current: T?,
+        items: [T],
         action: Selector?,
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+        result:@escaping (_ item:T?)->()
     ) -> UIBarButtonItem? {
         if #available(iOS 14, *) {
             let menus = UIMenu(title: title ?? "",
                                children: items.compactMap{
-                MyAction<FilterSingleSelectedObject>.init(
+                MyAction<T>.init(
                     $0,
-                    title: $0.title,
+                    title: $0.content,
                     image: nil,
                     state: current == $0 ? .on : .off) { selected in
                         result(selected)
@@ -67,24 +67,24 @@ public extension UIViewController {
         }
     }
     
-    func selectSingleAction(
+    func selectSingleAction<T: Hashable & DropDownItem>(
         title:String? = nil,
         for button:UIButton,
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+        current: T?,
+        items: [T],
+        result:@escaping (_ item:T?)->()
     ) {
         self.selectSingleFilter(title: title, sourceView: button, current: current, items: items, result: result)
     }
     
-    func selectSingleFilter(
+    func selectSingleFilter<T: Hashable & DropDownItem>(
         title:String? = nil,
         sourceView:Any?,
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+        current: T?,
+        items: [T],
+        result:@escaping (_ T:T?)->()
     ) {
-        let vc = FilterSingleSelectedController(current: current, items: items, result: result)
+        let vc = FilterSingleSelectedController<T>(current: current, items: items, result: result)
         if let title {
             vc.title = title
             let nv = PopoverNavigationController(root: vc,sourceView: sourceView)
@@ -119,17 +119,17 @@ public struct FilterSingleSelectedObject: Hashable {
     }
 }
 
-class FilterSingleSelectedController: UIViewController {
+class FilterSingleSelectedController<T: Hashable & DropDownItem>: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private let items:[FilterSingleSelectedObject]
-    private var current:FilterSingleSelectedObject?
-    private var result:(_ T:FilterSingleSelectedObject?)->()
+    private let items:[T]
+    private var current:T?
+    private var result:(_ T:T?)->()
     init(
-        current: FilterSingleSelectedObject?,
-        items: [FilterSingleSelectedObject],
-        result:@escaping (_ T:FilterSingleSelectedObject?)->()
+        current: T?,
+        items: [T],
+        result:@escaping (_ item:T?)->()
     ) {
         self.items = items
         self.current = current
@@ -150,18 +150,18 @@ class FilterSingleSelectedController: UIViewController {
         if #available(iOS 13, *) {
             setupDataSource {
                 .init(tableView: self.tableView) {[weak self] tableView, indexPath, itemIdentifier in guard let self else { return nil}
-                    guard let item = itemIdentifier as? FilterSingleSelectedObject else {
+                    guard let item = itemIdentifier as? T else {
                         return nil
                     }
                     let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
                     if #available(iOS 14.0, *) {
                         var configure = UIListContentConfiguration.cell()
-                        configure.text = item.title
+                        configure.text = item.content
                         configure.textProperties.numberOfLines = 3
                         cell?.contentConfiguration = configure
                     } else {
                         cell?.textLabel?.numberOfLines = 3
-                        cell?.textLabel?.text = item.title
+                        cell?.textLabel?.text = item.content
                     }
                     cell?.accessoryType = item == self.current ? .checkmark : .none
                     cell?.setBGColor(.clear)
@@ -202,12 +202,9 @@ class FilterSingleSelectedController: UIViewController {
             tableView.reloadData()
         }
     }
-}
-
-extension FilterSingleSelectedController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item: FilterSingleSelectedObject? =
+        let item: T? =
         if #available(iOS 13, *) {
             getItemIdentifier(indexPath)
         } else {
@@ -234,12 +231,12 @@ extension FilterSingleSelectedController: UITableViewDelegate, UITableViewDataSo
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
         if #available(iOS 14.0, *) {
             var configure = UIListContentConfiguration.cell()
-            configure.text = item.title
+            configure.text = item.content
             configure.textProperties.numberOfLines = 3
             cell.contentConfiguration = configure
         } else {
             cell.textLabel?.numberOfLines = 3
-            cell.textLabel?.text = item.title
+            cell.textLabel?.text = item.content
         }
         cell.setBGColor(.clear)
         cell.accessoryType = item == self.current ? .checkmark : .none
@@ -312,18 +309,8 @@ extension FilterSingleSelectedController {
     }
     
     @available (iOS 13,*)
-    func getItemIdentifier<T:Codable>(_ indexPath:IndexPath) -> T? {
+    func getItemIdentifier(_ indexPath:IndexPath) -> T? {
         return getDatasource()?.itemIdentifier(for:indexPath) as? T
-    }
-    
-    @available (iOS 13,*)
-    func getItemIdentifier<T:Hashable>(_ indexPath:IndexPath) -> T? {
-        return getDatasource()?.itemIdentifier(for:indexPath) as? T
-    }
-    
-    @available (iOS 13,*)
-    func getItemIdentifier(_ indexPath:IndexPath) -> AnyHashable? {
-        return getDatasource()?.itemIdentifier(for: indexPath)
     }
     
     @available (iOS 13,*)
