@@ -9,14 +9,14 @@
 import UIKit
 
 public extension UIViewController {
-    func selectMutilFilter(
+    func selectMutilFilter<T: Hashable & DropDownItem>(
         title:String? = nil,
         sourceView:Any?,
-        current: [FilterSingleSelectedObject],
-        items: [FilterSingleSelectedObject],
+        current: [T],
+        items: [T],
         maxSelect:Int? = nil,
         onMaximumSelected:(()->String)? = nil,
-        result:@escaping (_ T:[FilterSingleSelectedObject])->()
+        result:@escaping (_ item: [T])->()
     ) {
         let vc = FilterMutilSelectedController(
             current: current,
@@ -43,21 +43,21 @@ public extension UIViewController {
     }
 }
 
-class FilterMutilSelectedController: UIViewController {
+class FilterMutilSelectedController<T: Hashable & DropDownItem>: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
     private var maxSelect:Int?
-    private let items:[FilterSingleSelectedObject]
-    private var current:[FilterSingleSelectedObject]
-    private var result:(_ T:[FilterSingleSelectedObject])->()
+    private let items:[T]
+    private var current:[T]
+    private var result:(_ item: [T])->()
     private var onMaximumSelected:(()->String)?
     init(
-        current: [FilterSingleSelectedObject],
-        items: [FilterSingleSelectedObject],
+        current: [T],
+        items: [T],
         maxSelect:Int?,
         onMaximumSelected:(()->String)?,
-        result:@escaping (_ T:[FilterSingleSelectedObject])->()
+        result:@escaping (_ item: [T])->()
     ) {
         self.items = items
         self.current = current
@@ -84,7 +84,7 @@ class FilterMutilSelectedController: UIViewController {
         if #available(iOS 13, *) {
             setupDataSource {
                 .init(tableView: self.tableView) {[weak self] tableView, indexPath, itemIdentifier in guard let self else { return nil}
-                    guard let item = itemIdentifier as? FilterSingleSelectedObject else {
+                    guard let item = itemIdentifier as? T else {
                         return nil
                     }
                     
@@ -126,27 +126,24 @@ class FilterMutilSelectedController: UIViewController {
         }
     }
     
-    private func config(tableView:UITableView, item:FilterSingleSelectedObject) -> UITableViewCell {
+    private func config(tableView:UITableView, item: T) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         if #available(iOS 14.0, *) {
             var configure = UIListContentConfiguration.cell()
-            configure.text = item.title
+            configure.text = item.content
             configure.textProperties.numberOfLines = 3
             cell?.contentConfiguration = configure
         } else {
             cell?.textLabel?.numberOfLines = 3
-            cell?.textLabel?.text = item.title
+            cell?.textLabel?.text = item.content
         }
         cell?.accessoryType = self.current.contains(item) ? .checkmark : .none
         cell?.setBGColor(.clear)
         return cell ?? UITableViewCell()
     }
-}
-
-extension FilterMutilSelectedController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item: FilterSingleSelectedObject? =
+        let item: T? =
         if #available(iOS 13, *) {
             getItemIdentifier(indexPath)
         } else {
@@ -158,7 +155,7 @@ extension FilterMutilSelectedController: UITableViewDelegate, UITableViewDataSou
         }
         guard let item else {return}
         if self.current.contains(item) {
-            self.current.removeAll(where: {$0.id == item.id})
+            self.current.removeAll(where: {$0 == item})
         } else {
             if let maxSelect, self.current.count == maxSelect, let message = self.onMaximumSelected?() {
                 let vc = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -255,12 +252,7 @@ extension FilterMutilSelectedController {
     }
     
     @available (iOS 13,*)
-    func getItemIdentifier<T:Codable>(_ indexPath:IndexPath) -> T? {
-        return getDatasource()?.itemIdentifier(for:indexPath) as? T
-    }
-    
-    @available (iOS 13,*)
-    func getItemIdentifier<T:Hashable>(_ indexPath:IndexPath) -> T? {
+    func getItemIdentifier(_ indexPath:IndexPath) -> T? {
         return getDatasource()?.itemIdentifier(for:indexPath) as? T
     }
     
