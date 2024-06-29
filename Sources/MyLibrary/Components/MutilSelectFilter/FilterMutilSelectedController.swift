@@ -89,9 +89,11 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let doneButton = UIBarButtonItem(image: Resource.Icon.checkMark, style: .done, target: self, action: #selector(self.selectorDone(_:)))
-        doneButton.tintColor = .white
-        self.navigationItem.rightBarButtonItem = doneButton
+        if self.maxSelect > 1 {
+            let doneButton = UIBarButtonItem(image: Resource.Icon.checkMark, style: .done, target: self, action: #selector(self.selectorDone(_:)))
+            doneButton.tintColor = .white
+            self.navigationItem.rightBarButtonItem = doneButton
+        }
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         if #available(iOS 13, *) {
