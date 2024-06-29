@@ -9,23 +9,29 @@
 import UIKit
 
 public extension UIViewController {
-    func selectMutilFilter<T: Hashable & DropDownItem>(
+    func selectMutilFilter<T: Hashable & DropDownItem,S: Hashable & DropDownItem>(
         title:String? = nil,
+        subTitle:String? = nil,
         sourceView:Any?,
         current: [T],
         items: [T],
-        maxSelect:Int? = nil,
+        subItems: [S] = [],
+        maxSelect:Int = 1,
+        maxSubSelect: Int = 1,
         onMaximumSelected:(()->String)? = nil,
-        result:@escaping (_ item: [T])->()
+        result:@escaping (_ item: [T],_ subItem: [S])->()
     ) {
         let vc = FilterMutilSelectedController(
+            subTitle: subTitle,
             current: current,
             items: items,
+            subItems: subItems,
             maxSelect: maxSelect,
+            maxSubSelect:maxSubSelect,
             onMaximumSelected: onMaximumSelected,
             result: result
         )
-        if let title {
+        if title != nil || !subItems.isEmpty {
             vc.title = title
             let nv = PopoverNavigationController(root: vc, sourceView: sourceView)
             let popVC = PopoverContainerController(
@@ -43,27 +49,34 @@ public extension UIViewController {
     }
 }
 
-class FilterMutilSelectedController<T: Hashable & DropDownItem>: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & DropDownItem>: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var maxSelect:Int?
-    private let items:[T]
-    private var current:[T]
-    private var result:(_ item: [T])->()
-    private var onMaximumSelected:(()->String)?
+    private var subTitle: String?
+    private var maxSelect:Int
+    private let items: [T]
+    private var current: [T]
+    private var subItems: [S]
+    private var result: (_ item: [T],_ subItem: [S])->()
+    private var onMaximumSelected: (()->String)?
     init(
+        subTitle: String?,
         current: [T],
         items: [T],
-        maxSelect:Int?,
+        subItems: [S] = [],
+        maxSelect:Int,
+        maxSubSelect:Int,
         onMaximumSelected:(()->String)?,
-        result:@escaping (_ item: [T])->()
+        result:@escaping (_ item: [T], _ subItem: [S])->()
     ) {
+        self.subTitle = subTitle
         self.items = items
         self.current = current
         self.result = result
         self.maxSelect = maxSelect
         self.onMaximumSelected = onMaximumSelected
+        self.subItems = subItems
         super.init(nibName: "FilterMutilSelectedController", bundle: .module)
     }
     
@@ -115,7 +128,22 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem>: UIViewControlle
     
     @objc func selectorDone(_ sender: Any) {
         self.dismiss(animated: true)
-        self.result(self.current)
+        if subItems.isEmpty {
+            self.result(self.current, [])
+        } else {
+            let vc = FilterMutilSelectedController<S,S>(
+                subTitle: self.subTitle,
+                current: [],
+                items: subItems,
+                maxSelect: 1,
+                maxSubSelect: 0,
+                onMaximumSelected: nil
+            ) {[weak self] item,_ in guard let self else { return }
+                self.result(self.current, item)
+            }
+            vc.title = self.subTitle
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func reloadData() {
@@ -157,13 +185,16 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem>: UIViewControlle
         if self.current.contains(item) {
             self.current.removeAll(where: {$0 == item})
         } else {
-            if let maxSelect, self.current.count == maxSelect, let message = self.onMaximumSelected?() {
+            if self.current.count == self.maxSelect, let message = self.onMaximumSelected?() {
                 let vc = UIAlertController(title: nil, message: message, preferredStyle: .alert)
                 vc.addAction(.init(title: "OK", style: .cancel))
                 self.present(vc, animated: true)
                 return
             }
             self.current.append(item)
+            if self.maxSelect == 1 {
+                self.dismiss(animated: true)
+            }
         }
         if #available(iOS 13, *) {
             reloadDataSource(rows: [item])
