@@ -10,7 +10,7 @@ import UIKit
 
 public protocol DropDownTreeItem {
     var content: String { get }
-    var child: [DropDownTreeItem] { get }
+    var child: [DropDownTreeItem] { get set }
     var isExpand: Bool { get set }
 }
 
