@@ -7,15 +7,15 @@
 
 import UIKit
 
-class DropdownSectionView<T: Hashable & DropDownTreeItem>: UITableViewHeaderFooterView {
+class DropdownSectionView: UITableViewHeaderFooterView {
 
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var selectButton: ContainerButton!
     
     var onTap:((Bool) -> Void)?
-    var onSelect:((T) -> Void)?
-    private var item: T?
+    var onSelect:((DropDownTreeItem) -> Void)?
+    private var item: DropDownTreeItem?
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
@@ -43,9 +43,9 @@ class DropdownSectionView<T: Hashable & DropDownTreeItem>: UITableViewHeaderFoot
     }
     
     func show(
-        item: T,
+        item: DropDownTreeItem,
         onTap:((Bool) -> Void)?,
-        onSelect:((T) -> Void)?
+        onSelect:((DropDownTreeItem) -> Void)?
     ) {
         self.item = item
         self.onTap = onTap

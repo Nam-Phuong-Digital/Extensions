@@ -180,11 +180,11 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DropdownSectionView") as! DropdownSectionView<T>
+        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "DropdownSectionView") as! DropdownSectionView
         view.show(item: items[section]) {[weak self] bool in
             self?.reloadData()
         } onSelect: {[weak self] item in guard let self else { return }
-            self.current = item
+            self.current = item as? T
             self.dismiss(animated: true)
         }
 
