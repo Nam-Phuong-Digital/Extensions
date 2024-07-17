@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class ContainerButton: UIControl {
+class ContainerButton: UIControl {
     
     public var disabledSubviews: Bool = true {
         didSet {
@@ -15,7 +15,7 @@ public class ContainerButton: UIControl {
         }
     }
     
-    public override func layoutSubviews() {
+    override func layoutSubviews() {
         super.layoutSubviews()
         subviews.forEach({ $0.isUserInteractionEnabled = !disabledSubviews })
     }
