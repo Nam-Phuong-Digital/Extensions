@@ -151,8 +151,12 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
         self.dismiss(animated: true)
     }
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        items.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.isEmpty ? 1 : items.count
+        return items[section].child.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
