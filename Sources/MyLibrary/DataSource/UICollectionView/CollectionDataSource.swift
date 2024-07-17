@@ -158,7 +158,7 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
         }
     }
     
-    func finishLoadMore() {
+    public func finishLoadMore() {
         loadMoreIndicator.stop()
     }
     
