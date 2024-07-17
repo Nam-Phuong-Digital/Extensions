@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="DropdownSectionView" customModule="MyLibrary">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="hNN-xW-3fe">
+                    <rect key="frame" x="8" y="67" width="377" height="743"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="80Q-dI-PSA" customClass="ContainerButton" customModule="MyLibrary">
+                            <rect key="frame" x="0.0" y="0.0" width="333" height="128"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beP-U0-Ba7">
+                                    <rect key="frame" x="0.0" y="0.0" width="333" height="128"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="beP-U0-Ba7" secondAttribute="trailing" id="IYT-ta-di9"/>
+                                <constraint firstItem="beP-U0-Ba7" firstAttribute="top" secondItem="80Q-dI-PSA" secondAttribute="top" id="fj5-NF-AMB"/>
+                                <constraint firstItem="beP-U0-Ba7" firstAttribute="leading" secondItem="80Q-dI-PSA" secondAttribute="leading" id="gRk-Mk-KcV"/>
+                                <constraint firstAttribute="bottom" secondItem="beP-U0-Ba7" secondAttribute="bottom" id="sBG-Ui-ZIN"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJq-aY-BHo">
+                            <rect key="frame" x="333" y="0.0" width="44" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="Ux2-2S-h52"/>
+                                <constraint firstAttribute="width" secondItem="rJq-aY-BHo" secondAttribute="height" id="rHL-U9-IeW"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                        </button>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hNN-xW-3fe" secondAttribute="trailing" constant="8" id="8e1-sf-6Nc"/>
+                <constraint firstItem="hNN-xW-3fe" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="8" id="IyR-aG-GjP"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hNN-xW-3fe" secondAttribute="bottom" constant="8" id="lyW-aA-cGJ"/>
+                <constraint firstItem="hNN-xW-3fe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="pDh-Uy-0xD"/>
+            </constraints>
+            <connections>
+                <outlet property="actionButton" destination="rJq-aY-BHo" id="sbY-Ho-OoG"/>
+                <outlet property="contentLabel" destination="beP-U0-Ba7" id="TWq-gm-oSQ"/>
+                <outlet property="selectButton" destination="80Q-dI-PSA" id="MN8-Ee-aNw"/>
+            </connections>
+            <point key="canvasLocation" x="-34" y="10"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

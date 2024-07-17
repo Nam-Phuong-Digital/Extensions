@@ -12,6 +12,8 @@ public class Resource {
         static public var back:UIImage?
         static public var right:UIImage?
         static public var checkMark:UIImage?
+        static public var chevronRight: UIImage?
+        static public var chevronDown: UIImage?
     }
     
     public class Color {
