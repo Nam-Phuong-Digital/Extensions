@@ -83,7 +83,7 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UINib(nibName: "DropdownSectionView", bundle: nil), forHeaderFooterViewReuseIdentifier: "DropdownSectionView")
+        tableView.register(UINib(nibName: "DropdownSectionView", bundle: .module), forHeaderFooterViewReuseIdentifier: "DropdownSectionView")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         if #available(iOS 13, *) {
             setupDataSource {
