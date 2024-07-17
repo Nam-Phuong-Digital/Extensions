@@ -56,11 +56,6 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hNN-xW-3fe" secondAttribute="bottom" constant="8" id="lyW-aA-cGJ"/>
                 <constraint firstItem="hNN-xW-3fe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="pDh-Uy-0xD"/>
             </constraints>
-            <connections>
-                <outlet property="actionButton" destination="rJq-aY-BHo" id="sbY-Ho-OoG"/>
-                <outlet property="contentLabel" destination="beP-U0-Ba7" id="TWq-gm-oSQ"/>
-                <outlet property="selectButton" destination="80Q-dI-PSA" id="MN8-Ee-aNw"/>
-            </connections>
             <point key="canvasLocation" x="-34" y="10"/>
         </view>
     </objects>
