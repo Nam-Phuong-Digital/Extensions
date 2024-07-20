@@ -18,10 +18,10 @@
                     <rect key="frame" x="10" y="59" width="373" height="759"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="80Q-dI-PSA" customClass="ContainerButton" customModule="MyLibrary">
-                            <rect key="frame" x="0.0" y="315.66666666666669" width="333" height="128"/>
+                            <rect key="frame" x="0.0" y="315.66666666666669" width="93" height="128"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="beP-U0-Ba7">
-                                    <rect key="frame" x="0.0" y="0.0" width="333" height="128"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="93" height="128"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -33,6 +33,9 @@
                                 <constraint firstItem="beP-U0-Ba7" firstAttribute="leading" secondItem="80Q-dI-PSA" secondAttribute="leading" id="gRk-Mk-KcV"/>
                                 <constraint firstAttribute="bottom" secondItem="beP-U0-Ba7" secondAttribute="bottom" id="sBG-Ui-ZIN"/>
                             </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2I-iZ-6ND" customClass="ContainerButton" customModule="MyLibrary">
+                            <rect key="frame" x="93" y="315.66666666666669" width="240" height="128"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJq-aY-BHo">
                             <rect key="frame" x="333" y="359.66666666666669" width="40" height="40"/>
@@ -54,6 +57,7 @@
                 <constraint firstItem="hNN-xW-3fe" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="pDh-Uy-0xD"/>
             </constraints>
             <connections>
+                <outlet property="action2Button" destination="E2I-iZ-6ND" id="qVK-bs-RgA"/>
                 <outlet property="actionButton" destination="rJq-aY-BHo" id="fSZ-M9-b4J"/>
                 <outlet property="contentLabel" destination="beP-U0-Ba7" id="85K-MR-zvn"/>
                 <outlet property="selectButton" destination="80Q-dI-PSA" id="MkL-RT-EQE"/>
