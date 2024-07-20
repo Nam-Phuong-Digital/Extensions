@@ -429,7 +429,7 @@ private extension TableDataSource {
 }
 
 @available (iOS 13,*)
-extension TableDataSource {
+public extension TableDataSource {
     
     func getDataSource() -> SwipableDataSource<T> {
         let ds =  self._dataSource as! SwipableDataSource<T>
@@ -447,7 +447,7 @@ extension TableDataSource {
 }
 
 @available (iOS 13,*)
-class SwipableDataSource<T: Hashable>: UITableViewDiffableDataSource<Int, T> {
+public class SwipableDataSource<T: Hashable>: UITableViewDiffableDataSource<Int, T> {
     public override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
