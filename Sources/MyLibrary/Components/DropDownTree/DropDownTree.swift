@@ -83,6 +83,7 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         tableView.register(UINib(nibName: "DropdownSectionView", bundle: .module), forHeaderFooterViewReuseIdentifier: "DropdownSectionView")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         if #available(iOS 13, *) {
@@ -120,9 +121,9 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     }
     
     private func updateSize() {
-        let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
+        let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0))
         let max = UIScreen.bounceWindow.height * 0.8
-        var height:CGFloat = CGFloat(items.flatMap({ [$0] + ($0.isExpand ? $0.child : []) }).count * 50)
+        var height:CGFloat = CGFloat(items.flatMap({ [$0] + ($0.isExpand ? $0.child : []) }).count * 50) + 20
         if let nv = self.navigationController {
             height += nv.navigationBar.frame.height
         }
@@ -270,7 +271,7 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     func updateDataSource(
         animation:UITableView.RowAnimation? = nil,
         showNodata:Bool = true,
-        animated:Bool = true
+        animated:Bool = false
     ) {
         guard let dataSource = getDatasource() else {return}
         if let animation = animation {
