@@ -24,6 +24,7 @@ class DropdownSectionView: UITableViewHeaderFooterView {
         action2Button.addTarget(self, action: #selector(self.didTap(_:)), for: .touchUpInside)
         selectButton.addTarget(self, action: #selector(self.didSelect(_:)), for: .touchUpInside)
         actionButton.setCheckBoxStyle(image: Resource.Icon.chevronRight, selectedImage: Resource.Icon.chevronDown)
+        contentLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
     }
 
     @objc func didTap(_ sender: UIButton) {
