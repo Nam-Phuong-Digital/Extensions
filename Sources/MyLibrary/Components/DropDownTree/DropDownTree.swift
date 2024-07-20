@@ -293,6 +293,7 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
             let child: [T] = item.isExpand ? item.child as! [T] : []
             snapShot.appendItems(child, toSection:offset)
         }
+        snapShot.reloadSections(sections)
         dataSource.apply(snapShot, animatingDifferences: animated)
     }
 
