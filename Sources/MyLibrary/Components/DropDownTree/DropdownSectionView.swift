@@ -28,7 +28,7 @@ class DropdownSectionView: UITableViewHeaderFooterView {
 
     @objc func didTap(_ sender: UIButton) {
         actionButton.isSelected = !actionButton.isSelected
-        self.item?.isExpand = action2Button.isSelected
+        self.item?.isExpand = actionButton.isSelected
         self.onTap?(actionButton.isSelected)
     }
     @objc func didSelect(_ sender: Any) {
