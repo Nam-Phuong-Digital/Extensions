@@ -36,11 +36,13 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E2I-iZ-6ND" customClass="ContainerButton" customModule="MyLibrary">
                             <rect key="frame" x="41.333333333333343" y="359.66666666666669" width="291.66666666666663" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="Ydf-5E-tb5"/>
+                            </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rJq-aY-BHo">
                             <rect key="frame" x="333" y="359.66666666666669" width="40" height="40"/>
                             <constraints>
-                                <constraint firstAttribute="height" priority="999" constant="40" id="Ux2-2S-h52"/>
                                 <constraint firstAttribute="width" secondItem="rJq-aY-BHo" secondAttribute="height" id="rHL-U9-IeW"/>
                             </constraints>
                             <state key="normal" title="Button"/>
