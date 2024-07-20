@@ -111,14 +111,6 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
         }
         tableView.delegate = self
         
-        let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
-        let max = UIScreen.bounceWindow.height * 0.8
-        var height:CGFloat = CGFloat(items.count * 50)
-        if let nv = self.navigationController {
-            height += nv.navigationBar.frame.height
-        }
-        height = min(height,max)
-        preferredContentSize = CGSize(width: width, height: height)
         reloadData()
     }
     
@@ -127,12 +119,24 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
         result(current) // involked result when dismissed
     }
     
+    private func updateSize() {
+        let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
+        let max = UIScreen.bounceWindow.height * 0.8
+        var height:CGFloat = CGFloat(items.count * 50)
+        if let nv = self.navigationController {
+            height += nv.navigationBar.frame.height
+        }
+        height = min(height,max)
+        preferredContentSize = CGSize(width: width, height: height)
+    }
+    
     private func reloadData() {
         if #available(iOS 13, *) {
             updateDataSource()
         } else {
             tableView.reloadData()
         }
+        updateSize()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
