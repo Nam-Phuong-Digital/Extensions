@@ -122,7 +122,7 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     private func updateSize() {
         let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
         let max = UIScreen.bounceWindow.height * 0.8
-        var height:CGFloat = CGFloat(items.count * 50)
+        var height:CGFloat = CGFloat(items.flatMap({ [$0] + $0.child }).count * 50)
         if let nv = self.navigationController {
             height += nv.navigationBar.frame.height
         }
