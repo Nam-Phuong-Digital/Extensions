@@ -36,6 +36,31 @@ public extension UICollectionView {
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
 public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObject, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    public class Configuration {
+        var textNoData: String?
+        var viewNoData: UIView?
+        
+        /// Set up some advanced features for the tableView data source.
+        /// - Parameters:
+        ///   - leadingSwipeActionsConfiguration: Configure actions for swiping from left to right.
+        ///   - trailingSwipeActionsConfiguration: Configure actions for swiping from right to left.
+        ///   - textNoData: Text to show when there are no items.
+        ///   - viewNoData: View to display when there are no items. This view will be shown with higher priority than textNoData.
+        public init(
+            textNoData: String? = nil,
+            viewNoData: UIView? = nil
+        ) {
+            self.textNoData = textNoData
+            self.viewNoData = viewNoData
+        }
+        
+        public static var `default`: Configuration {
+            Configuration(
+                textNoData: "There are no items."
+            )
+        }
+    }
+    
     private var _dataSource: Any?
     let collectionView: UICollectionView
     var sections:[SectionDataSourceModel<T>] = []
@@ -43,6 +68,7 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
     private let loadMoreIndicator: DataSourceScrollViewConfiguration.LoadMoreActivityIndicator
     private var selectingItem:SELECTED_ITEM<T>
     private var configCell:((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void)
+    private let configuration: Configuration
     public var scrollViewDelegating:((DataSourceScrollViewConfiguration) -> Void)?
     
     public init(
@@ -50,8 +76,10 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
         configCell: @escaping ((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void),
         configHeaderFooter: ((_ section: Int,_ collectionView: UICollectionView, _ kind: String) -> UICollectionReusableView?)? = nil,
         itemSelected: SELECTED_ITEM<T> = nil,
-        layout: UICollectionViewLayout? = nil
+        layout: UICollectionViewLayout? = nil,
+        configuration: Configuration = .default
     ) {
+        self.configuration = configuration
         self.collectionView = collectionView
         self.configCell = configCell
         loadMoreIndicator = DataSourceScrollViewConfiguration.LoadMoreActivityIndicator(scrollView: self.collectionView)
@@ -146,6 +174,11 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
     }
     
     func reloadData() {
+        if self.sections.flatMap({ $0.items }).isEmpty && self.sections.filter({ $0._isExpand == false }).isEmpty {
+            self.showNoData()
+        } else {
+            self.hideNoData()
+        }
         if #available(iOS 13, *), !TEST_OLD_VERSION {
             var snap = NSDiffableDataSourceSnapshot<Int, T>()
             snap.appendSections(self.sections.enumerated().map{$0.0})
@@ -217,6 +250,41 @@ public class CollectionDataSource<T: Hashable, CELL: UICollectionViewCell>:NSObj
 }
 
 extension CollectionDataSource {
+    
+    func showNoData() {
+        hideNoData()
+        if let viewNoData = configuration.viewNoData {
+            self.collectionView.addSubview(viewNoData)
+            viewNoData.translatesAutoresizingMaskIntoConstraints = false
+            viewNoData.tag = 10000000
+            self.collectionView.addConstraints(
+                [
+                    .init(item: self.collectionView, attribute: .centerXWithinMargins, relatedBy: .equal, toItem: viewNoData, attribute: .centerXWithinMargins, multiplier: 1, constant: 0),
+                    .init(item: self.collectionView, attribute: .centerYWithinMargins, relatedBy: .equal, toItem: viewNoData, attribute: .centerYWithinMargins, multiplier: 1, constant: 0)
+                ]
+            )
+        } else if let text = configuration.textNoData {
+            let label = UILabel()
+            label.tag = 10000000
+            label.font = .systemFont(ofSize: 16)
+            label.textColor = .gray
+            label.textAlignment = .center
+            label.text = text
+            self.collectionView.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            self.collectionView.addConstraints(
+                [
+                    .init(item: self.collectionView, attribute: .centerXWithinMargins, relatedBy: .equal, toItem: label, attribute: .centerXWithinMargins, multiplier: 1, constant: 0),
+                    .init(item: self.collectionView, attribute: .centerYWithinMargins, relatedBy: .equal, toItem: label, attribute: .centerYWithinMargins, multiplier: 1, constant: 0)
+                ]
+            )
+        }
+    }
+    
+    func hideNoData() {
+        self.collectionView.viewWithTag(10000000)?.removeFromSuperview()
+    }
+    
     func register(for cell: CELL.Type) {
         self.collectionView.register(cell.self)
     }
