@@ -83,6 +83,11 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
+        tableView.estimatedSectionFooterHeight = 0.1
+        
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         tableView.register(UINib(nibName: "DropdownSectionView", bundle: .module), forHeaderFooterViewReuseIdentifier: "DropdownSectionView")
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -194,6 +199,10 @@ fileprivate class DropDownTree<T: Hashable & DropDownTreeItem>: UIViewController
         }
 
         return view
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 0.1
     }
 
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
