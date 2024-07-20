@@ -17,11 +17,6 @@ class DropdownSectionView: UITableViewHeaderFooterView {
     var onSelect:((DropDownTreeItem) -> Void)?
     private var item: DropDownTreeItem?
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        fromNib()
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         actionButton.addTarget(self, action: #selector(self.didTap(_:)), for: .touchUpInside)
