@@ -50,4 +50,8 @@ public class SectionDataSourceModel<T: Hashable>: Hashable {
     public func appendItems(_ items: [T]) {
         _storedItems.append(contentsOf: items)
     }
+    
+    public func getItems() -> [T] {
+        _storedItems
+    }
 }
