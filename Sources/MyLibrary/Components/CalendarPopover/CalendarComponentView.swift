@@ -76,7 +76,7 @@ public class CalendarComponentView: UIView {
         }
     }
     
-    var currentMonth:CEVMonth = .init(date: Date(), days: []) {
+    public var currentMonth:CEVMonth = .init(date: Date(), days: []) {
         didSet {
             self.currentWeek = 0
             self.selectionIndexpath = nil
@@ -87,9 +87,9 @@ public class CalendarComponentView: UIView {
         }
     }
     
-    var selectionDate:CEVDate?
+    public var selectionDate:CEVDate?
 
-    weak var delegate:CalendarComponentViewDelegate? {
+    public weak var delegate:CalendarComponentViewDelegate? {
         didSet {
             self.delegate?.CalendarComponentView_allMonths(menuMonths)
             getDatesForMonths()
@@ -97,8 +97,8 @@ public class CalendarComponentView: UIView {
     }
     
     private var selectionIndexpath:IndexPath?
-    var onChangeDate:((Date?)->Void)?
-    var onChangeMonth:((Date?)->Void)?
+    public var onChangeDate:((Date?)->Void)?
+    public var onChangeMonth:((Date?)->Void)?
     
     private var icons:[String:UIImage?] = [:]
     
@@ -154,7 +154,7 @@ public class CalendarComponentView: UIView {
 //        getDatesForMonths()
     }
     
-    func setCurrentDay(date:Date = Date()) {
+    public func setCurrentDay(date:Date = Date()) {
         if let current = self.menuMonths.first(where: {$0.isEqual(date)}) {
             if let date = current.days.first(where: {$0.isEqual(date)}) {
                 self.selectionDate = date
@@ -170,7 +170,7 @@ public class CalendarComponentView: UIView {
         }
     }
     
-    func setCurrentMonth(month:CEVMonth) {
+    public func setCurrentMonth(month:CEVMonth) {
         currentMonth = month
         if let index = menuMonths.firstIndex(of: currentMonth) {
             self.delegate?.CalendarComponentView_stateForNext(isDisabled: !(index < menuMonths.count - 1))
@@ -183,7 +183,7 @@ public class CalendarComponentView: UIView {
         }
     }
     
-    func showMonth() {
+    public func showMonth() {
         UIView.transition(with: vwMonth, duration: 0.3) {[weak self] in guard let self = self else { return }
             self.tabMonths.isHidden.toggle()
         }
@@ -193,7 +193,7 @@ public class CalendarComponentView: UIView {
         }
     }
     
-    func reloadIcons() {
+    public func reloadIcons() {
         DispatchQueue.main.async {
             if #available(iOS 13, *) {
                 if let sections = self.dataSource?.snapshot().numberOfSections {
