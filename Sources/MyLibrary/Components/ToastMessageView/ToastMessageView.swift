@@ -148,10 +148,10 @@ fileprivate class ToastMessageView: UIViewController {
                 }
                 if let vcFirst = vc.getFirst(), (vcFirst.modalPresentationStyle != .fullScreen && vcFirst.modalPresentationStyle != .overFullScreen), let parent = vc.presentingViewController  {
                     pop.sourceView = parent.view
-                    pop.sourceRect = parent.view.frame
+                    pop.sourceRect = CGRect(origin: parent.view.center, size: CGSize(width: 0, height: 0))
                 } else {
                     pop.sourceView = vc.view
-                    pop.sourceRect = vc.view.frame
+                    pop.sourceRect = CGRect(origin: vc.view.center, size: CGSize(width: 0, height: 0))
                 }
             }
         }
@@ -200,17 +200,6 @@ fileprivate class ToastMessageView: UIViewController {
     private func updateSize() {
         let width: CGFloat = config.preferredMaxWidth
         let height: CGFloat = self.view.systemLayoutSizeFitting(CGSize(width: width, height: CGFLOAT_MAX)).height
-        let additionHeight: CGFloat =
-        if let holdVC = holdController, let nv = holdVC.navigationController {
-            nv.navigationBar.frame.height
-        } else {
-            0
-        }
-        if let containerView = self.popoverPresentationController?.containerView {
-            let y = containerView.frame.height/2 + height/2 - additionHeight
-            let x = containerView.frame.width/2 - width/2
-            self.popoverPresentationController?.sourceRect = CGRect(origin: CGPoint(x: x, y: y), size: CGSize(width: width, height: height))
-        }
         self.preferredContentSize = CGSize(width: width, height: height)
         self.popoverPresentationController?.containerView?.setNeedsLayout()
     }
