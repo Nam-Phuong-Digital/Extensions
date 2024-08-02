@@ -201,7 +201,6 @@ fileprivate class ToastMessageView: UIViewController {
         let width: CGFloat = config.preferredMaxWidth
         let height: CGFloat = self.view.systemLayoutSizeFitting(CGSize(width: width, height: CGFLOAT_MAX)).height
         self.preferredContentSize = CGSize(width: width, height: height)
-        self.popoverPresentationController?.containerView?.setNeedsLayout()
     }
     
     override func viewDidLayoutSubviews() {
