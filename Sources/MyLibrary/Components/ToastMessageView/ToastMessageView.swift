@@ -174,10 +174,13 @@ fileprivate class ToastMessageView: UIViewController {
         tapGestureDismiss = UITapGestureRecognizer(target: self, action: #selector(self.dismissTip(_:)))
         tapGestureDismiss?.numberOfTapsRequired = 1
         view.addGestureRecognizer(tapGestureDismiss!)
+        
+        updateSize()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        updateSize()
         countdownToDismiss()
     }
     
@@ -197,6 +200,7 @@ fileprivate class ToastMessageView: UIViewController {
         }
     }
     
+    
     private func updateSize() {
         let width: CGFloat = config.preferredMaxWidth
         let height: CGFloat = self.view.systemLayoutSizeFitting(CGSize(width: width, height: CGFLOAT_MAX)).height
@@ -205,7 +209,6 @@ fileprivate class ToastMessageView: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateSize()
         self.view.layer.cornerRadius = 12
         self.view.layer.shadowColor = UIColor.black.cgColor
         self.view.layer.shadowOffset = CGSize(width: -2, height: 5)
