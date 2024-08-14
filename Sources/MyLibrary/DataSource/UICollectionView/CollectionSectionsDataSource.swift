@@ -34,10 +34,11 @@ public final class CollectionSectionsDataSource<
         configCell:@escaping ((_ item:T,_ indexPath: IndexPath, _ cell: CELL) ->Void),
         configSupplementary:@escaping ((_ section:SectionDataSourceModel<T>,_ indexPath: IndexPath,_ sup: SupplementaryType) ->Void),
         itemSelected:((T) -> Void)? = nil,
-        layout: UICollectionViewLayout? = nil
+        layout: UICollectionViewLayout? = nil,
+        configuration: Configuration = .default
     ) {
         self.configSupplementary = configSupplementary
-        super.init(for: collectionView, configCell: configCell, itemSelected: itemSelected, layout: layout)
+        super.init(for: collectionView, configCell: configCell, itemSelected: itemSelected, layout: layout, configuration: configuration)
         // If it's a UICollectionReusableView, don't register it, intended for cases where only the footer or header is desired.
         if !(HEADER.isEqual(UICollectionReusableView.self)) {
             self.register(for: HEADER.self, kind: UICollectionView.elementKindSectionHeader)
