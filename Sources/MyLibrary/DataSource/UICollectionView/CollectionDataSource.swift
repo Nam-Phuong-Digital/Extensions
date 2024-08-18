@@ -294,8 +294,8 @@ extension CollectionDataSource {
     }
 }
 
-@available (iOS 13,*)
-extension CollectionDataSource {
+@available(iOS 13,*)
+public extension CollectionDataSource {
     
     func getDataSource() -> UICollectionViewDiffableDataSource<Int,T> {
         return self._dataSource as! UICollectionViewDiffableDataSource<Int, T>
