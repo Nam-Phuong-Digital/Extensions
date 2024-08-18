@@ -12,7 +12,7 @@ import RxSwift
 
 public struct ImageCompressor {
     #if canImport(RxSwift)
-    public static func compress(image: UIImage, maxBytes: Int = 320_000) -> Single<UIImage?> {
+    public static func compressObservable(image: UIImage, maxBytes: Int = 320_000) -> Single<UIImage?> {
         Single.create { ob in
             ImageCompressor.compress(image: image, maxByte: maxBytes, completion: {image in
                 ob(.success(image))
