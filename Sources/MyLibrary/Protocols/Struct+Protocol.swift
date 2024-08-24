@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol Mutable {
+public protocol Mutable {
 }
 
-extension Mutable {
+public extension Mutable {
     func mutateOne<T>(transform: (inout Self) -> T) -> Self {
         var newSelf = self
         _ = transform(&newSelf)
