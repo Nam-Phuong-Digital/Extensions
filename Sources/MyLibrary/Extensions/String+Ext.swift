@@ -10,6 +10,15 @@ import UIKit
 
 public extension String {
     
+    func removingDiacriticMarks() -> String {
+        guard let decode = replacingOccurrences(of: "đ", with: "d")
+                .replacingOccurrences(of: "Đ", with: "D")
+                .data(using: .ascii, allowLossyConversion: true) else {
+            return ""
+        }
+        return String(data: decode, encoding: .ascii) ?? ""
+    }
+    
     var na: String {
         if self.isEmpty {
             return "N/A"
