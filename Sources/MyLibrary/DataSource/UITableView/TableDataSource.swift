@@ -88,6 +88,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     private let _items = PublishSubject<T>()
     public let selectedItem: Observable<T>
     private let _selectedItem = PublishSubject<T>()
+    private let disposeBag = DisposeBag()
 #endif
     
     
