@@ -8,7 +8,7 @@
 
 import UIKit
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public class SwipeDataSource: UITableViewDiffableDataSource<Int, AnyHashable> {
     public override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true

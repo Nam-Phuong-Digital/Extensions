@@ -9,7 +9,7 @@
 import UIKit
 
 public typealias MyActionHandler<T: Hashable & DropDownItem> = (T) -> Void
-@available (iOS 13,*)
+@available(iOS 13,*)
 public class MyAction<T: Hashable & DropDownItem>: UIAction {
     public var object: T
     public convenience init(
@@ -244,7 +244,7 @@ class FilterSingleSelectedController<T: Hashable & DropDownItem>: UIViewControll
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 extension FilterSingleSelectedController {
     
     @available(iOS 13.0, *)
@@ -265,7 +265,7 @@ extension FilterSingleSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func reloadAllSections(for tableView:UITableView,animated:Bool = true) {
         if let s = self.getDatasource()?.numberOfSections(in: tableView) {
@@ -283,7 +283,7 @@ extension FilterSingleSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func reloadDataSource(rows:[AnyHashable], animated:Bool = true) {
         var snap = getDatasource()?.snapshot()
@@ -293,7 +293,7 @@ extension FilterSingleSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func deleteTableRows(rows:[AnyHashable], animated:Bool = true) {
         var snap = getDatasource()?.snapshot()
@@ -303,17 +303,17 @@ extension FilterSingleSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func setupDataSource(_ dataSource:@escaping ()->UITableViewDiffableDataSource<Int,AnyHashable>) {
         _dataSource = dataSource()
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getItemIdentifier(_ indexPath:IndexPath) -> T? {
         return getDatasource()?.itemIdentifier(for:indexPath) as? T
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func updateDataSource(
         items:[AnyHashable],
@@ -336,7 +336,7 @@ extension FilterSingleSelectedController {
         dataSource.apply(snapShot, animatingDifferences: animated)
     }
 
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func updateDataSoure(
         animated:Bool = true,

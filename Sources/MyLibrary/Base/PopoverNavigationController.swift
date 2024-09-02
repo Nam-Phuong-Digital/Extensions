@@ -79,7 +79,7 @@ extension PopoverNavigationController: UIPopoverPresentationControllerDelegate {
         }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 fileprivate extension UINavigationBarAppearance {
     static var standard:UINavigationBarAppearance {
         let navBarAppearance = UINavigationBarAppearance()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct iOS15TintColor: ViewModifier {
    
     init(tintColor:Color?) {
@@ -44,7 +44,7 @@ struct Redacted: ViewModifier {
 }
 
 // MARK: -  ViewModifier
-@available (iOS 13,*)
+@available(iOS 13,*)
 struct BorderModifier: ViewModifier {
     
     var hidden:Bool = false
@@ -89,7 +89,7 @@ struct BorderModifier: ViewModifier {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 struct BottomInsetViewModifier<OverlayContent: View>: ViewModifier {
   var overlayContent: OverlayContent
   func body(content: Self.Content) -> some View {
@@ -103,7 +103,7 @@ struct BottomInsetViewModifier<OverlayContent: View>: ViewModifier {
   }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 struct ModalBackgroundViewModifier: ViewModifier {
     let color:UIColor
     func body(content: Content) -> some View {
@@ -126,7 +126,7 @@ struct ModalBackgroundViewModifier: ViewModifier {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 struct ClearTopBackgroundViewModifier: ViewModifier {
     let top:CGFloat
     func body(content: Content) -> some View {

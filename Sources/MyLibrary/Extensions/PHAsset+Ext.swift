@@ -11,7 +11,7 @@ import UIKit
 
 public extension PHAsset {
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getImage(size:CGSize, deliveryMode:PHImageRequestOptionsDeliveryMode = .opportunistic)
     async -> UIImage? {
         return await withUnsafeContinuation({ c in
@@ -115,7 +115,7 @@ public extension PHAsset {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getDataToUpload(maxLength:Int = 320000, size: CGSize) async throws -> (URL?,Data?) {
         return try await withUnsafeThrowingContinuation({ c in
             self.getDataToUpload(maxLength: maxLength,size: size) { responseURL, data, error in

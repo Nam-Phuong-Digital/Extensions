@@ -198,7 +198,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func reloadAllSections(for tableView:UITableView,animated:Bool = true) {
         if let s = self.getDatasource()?.numberOfSections(in: tableView) {
@@ -216,7 +216,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func reloadDataSource(rows:[AnyHashable], animated:Bool = true) {
         var snap = getDatasource()?.snapshot()
@@ -226,7 +226,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func deleteTableRows(rows:[AnyHashable], animated:Bool = true) {
         var snap = getDatasource()?.snapshot()
@@ -236,17 +236,17 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func setupDataSource(_ dataSource:@escaping ()->UITableViewDiffableDataSource<Int,AnyHashable>) {
         _dataSource = dataSource()
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getItemIdentifier(_ indexPath:IndexPath) -> T? {
         return getDatasource()?.itemIdentifier(for:indexPath) as? T
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func updateDataSource(
         items:[AnyHashable],
@@ -269,7 +269,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         dataSource.apply(snapShot, animatingDifferences: animated)
     }
 
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func updateDataSoure(
         animated:Bool = true,

@@ -77,7 +77,7 @@ public extension UIColor {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public extension Color {
     
     init(hex: String) {
@@ -274,7 +274,7 @@ public extension UIColor {
     
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 extension Color {
     init(_ hex: String) {
         let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)

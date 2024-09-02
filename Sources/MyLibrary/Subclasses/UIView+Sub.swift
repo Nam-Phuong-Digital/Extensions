@@ -27,7 +27,7 @@ open class IBInspectableView:UIView {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 /// This view bring sourceview uikit from swiftui bring to uikit to use, suggest overlay on position you want action sheet
 public struct SourceViewAction:UIViewRepresentable {
     public typealias UIViewType = UIView
@@ -63,7 +63,7 @@ public struct SourceViewAction:UIViewRepresentable {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct Loading:View {
     let style: UIActivityIndicatorView.Style
     let color:UIColor?
@@ -81,7 +81,7 @@ public struct Loading:View {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct ProgressIndicatior: UIViewRepresentable {
     
     let style: UIActivityIndicatorView.Style

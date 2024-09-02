@@ -49,7 +49,7 @@ public class ImageView5Corner: UIImageViewProgress {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct BindingImageViewRepresentable:UIViewRepresentable {
     public typealias UIViewType = UIView
     
@@ -73,7 +73,7 @@ public struct BindingImageViewRepresentable:UIViewRepresentable {
     
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct ImageViewRepresentable:UIViewRepresentable {
     public typealias UIViewType = UIView
     

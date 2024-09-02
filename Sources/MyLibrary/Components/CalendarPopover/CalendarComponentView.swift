@@ -442,7 +442,7 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 private extension CalendarComponentView {
     var dataSource: UICollectionViewDiffableDataSource<Int,AnyHashable>? {
         get {return _dataSource as? UICollectionViewDiffableDataSource<Int,AnyHashable>}

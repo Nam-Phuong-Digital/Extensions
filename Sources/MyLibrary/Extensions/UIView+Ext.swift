@@ -8,13 +8,13 @@
 import UIKit
 import SwiftUI
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct SizePreferenceKey: PreferenceKey {
     public static var defaultValue: CGSize = .zero
     public static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public extension View {
     func tint(color:Color?) -> some View {
         modifier(iOS15TintColor(tintColor: color))

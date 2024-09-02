@@ -531,7 +531,7 @@ private extension TableDynamicDataSource {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 extension TableDynamicDataSource {
     
     func getDataSource() -> SwipableDataSource<T> {

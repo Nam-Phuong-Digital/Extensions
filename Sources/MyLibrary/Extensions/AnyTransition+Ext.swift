@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public extension AnyTransition {
     static var appearFromTop: AnyTransition {
         .asymmetric(

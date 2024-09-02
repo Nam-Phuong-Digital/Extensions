@@ -10,7 +10,7 @@ import UIKit
 import Combine
 #endif
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 open class BaseObservableView: UIView {
     
     lazy public var cancellables = Set<AnyCancellable>()

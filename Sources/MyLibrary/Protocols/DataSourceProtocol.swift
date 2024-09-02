@@ -10,7 +10,7 @@ import UIKit
 
 public protocol DataSourceProtocol {
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getDatasource() -> UITableViewDiffableDataSource<Int,AnyHashable>?
     
     @MainActor
@@ -54,7 +54,7 @@ public protocol DataSourceProtocol {
 
 public protocol CollectionDataSourceProtocol {
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getDatasource() -> UICollectionViewDiffableDataSource<Int,AnyHashable>?
     
     @MainActor

@@ -9,7 +9,7 @@ import Foundation
 
 import OSLog
 
-@available (iOS 14,*)
+@available(iOS 14,*)
 public class AppLogger {
     static public let shared:AppLogger = {AppLogger()}()
     public let loggerAPI = Logger(subsystem: "\(Bundle.main.applicationName ?? "")", category: "API")

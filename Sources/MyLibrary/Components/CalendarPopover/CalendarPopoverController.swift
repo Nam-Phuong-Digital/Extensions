@@ -144,7 +144,7 @@ public class CalendarPopoverController: UIViewController {
         updateSize()
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     public override func viewIsAppearing(_ animated: Bool) {
         super.viewIsAppearing(animated)
         if let currentDate {

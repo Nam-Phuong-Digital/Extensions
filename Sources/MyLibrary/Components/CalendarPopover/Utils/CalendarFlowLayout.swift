@@ -30,7 +30,7 @@ public class CalendarFlowLayout: UICollectionViewFlowLayout {
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public extension UICollectionViewLayout {
     class func createLayout(
         columns: Int

@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 import Combine
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public class ScaleUpViewController<Content>: UIViewController where Content: View {
 
     typealias Content = View

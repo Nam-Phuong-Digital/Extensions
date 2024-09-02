@@ -9,7 +9,7 @@
 import SwiftUI
 #endif
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 public struct StandardButton: ButtonStyle {
     let bgColor:Color
     let textColor:Color

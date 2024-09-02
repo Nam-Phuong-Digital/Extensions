@@ -229,7 +229,7 @@ class FilterMutilSelectedController<T: Hashable & DropDownItem, S: Hashable & Dr
     }
 }
 
-@available (iOS 13,*)
+@available(iOS 13,*)
 extension FilterMutilSelectedController {
     
     @available(iOS 13.0, *)
@@ -250,7 +250,7 @@ extension FilterMutilSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func reloadAllSections(for tableView:UITableView,animated:Bool = true) {
         if let s = self.getDatasource()?.numberOfSections(in: tableView) {
@@ -268,7 +268,7 @@ extension FilterMutilSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func reloadDataSource(rows:[AnyHashable], animated:Bool = true) {
         var snap = getDatasource()?.snapshot()
@@ -278,7 +278,7 @@ extension FilterMutilSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func deleteTableRows(rows:[AnyHashable], animated:Bool = true) {
         var snap = getDatasource()?.snapshot()
@@ -288,22 +288,22 @@ extension FilterMutilSelectedController {
         }
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func setupDataSource(_ dataSource:@escaping ()->UITableViewDiffableDataSource<Int,AnyHashable>) {
         _dataSource = dataSource()
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getItemIdentifier(_ indexPath:IndexPath) -> T? {
         return getDatasource()?.itemIdentifier(for:indexPath) as? T
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     func getItemIdentifier(_ indexPath:IndexPath) -> AnyHashable? {
         return getDatasource()?.itemIdentifier(for: indexPath)
     }
     
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func updateDataSource(
         items:[AnyHashable],
@@ -326,7 +326,7 @@ extension FilterMutilSelectedController {
         dataSource.apply(snapShot, animatingDifferences: animated)
     }
 
-    @available (iOS 13,*)
+    @available(iOS 13,*)
     @MainActor
     func updateDataSoure(
         animated:Bool = true,
