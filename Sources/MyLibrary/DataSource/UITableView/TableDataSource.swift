@@ -7,7 +7,9 @@
 
 import Foundation
 import UIKit
-
+#if canImport(RxSwift)
+import RxSwift
+#endif
 public typealias ConfigCell<T: Hashable, CELL: UITableViewCell> = ((_ item: T,_ indexPath: IndexPath, _ cell: CELL) ->Void)
 public typealias SELECTED_ITEM<T: Hashable> = ((T) -> Void)?
 public typealias SWIPE_CONFIGURATION<T: Hashable> = ((_ item: T,_ indexPath: IndexPath) -> UISwipeActionsConfiguration?)?
@@ -81,6 +83,14 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     
     private var shouldReloadSections: [Int] = []
     
+#if canImport(RxSwift)
+    public let items: AnyObservable<[SectionDataSourceModel<T>]>
+    private let _items = PublishSubject<T>()
+    public let selectedItem: Observable<T>
+    private let _selectedItem = PublishSubject<T>()
+#endif
+    
+    
     /// data source manage behaviours of table view
     /// - Parameters:
     ///   - tableView: `UITableView` to handle.
@@ -93,6 +103,10 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         itemSelected: SELECTED_ITEM<T> = nil,
         configuration: Configuration = .default
     ) {
+#if canImport(RxSwift)
+        selectingItem = _selectedItem.asObserver()
+        items = _items.asObserver()
+#endif
         self.tableView = tableView
         self.configCell = configCell
         loadMoreIndicator = DataSourceScrollViewConfiguration.LoadMoreActivityIndicator(scrollView: self.tableView)
@@ -119,6 +133,15 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             tableView.sendSubviewToBack(refreshControl)
             refreshControl.addTarget(self, action: #selector(refreshAction), for: .valueChanged)
         }
+        
+#if canImport(RxSwift)
+        _items.asObservable()
+            .asDriver(onErrorJustReturn: [])
+            .drive(with: self) { owner, list in
+                owner.updateSections(items: list)
+            }
+            .disposed(by: self.disposeBag)
+#endif
     }
     
     @objc func refreshAction(_ sender: Any) {
@@ -295,6 +318,9 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         }
         guard let item else {return}
         selectingItem?(item)
+#if canImport(RxSwift)
+        _selectedItem.onNext(item)
+#endif
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
