@@ -117,22 +117,22 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             getItems.map({_ in .endLoading})
         )
         .observe(on: MainScheduler.instance)
-        .subscribe(with: self) { owner, action in
+        .subscribe(with: self, onNext: { owner, action in
                 switch action {
                 case .endLoading:
                     owner.finishLoadMore()
                     owner.finishPullToRefresh()
                 }
-            }
-            .disposed(by: self.disposeBag)
+        })
+        .disposed(by: self.disposeBag)
         
         getItems
             .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { owner, items in
+            .subscribe(with: self, onNext: { owner, items in
                 owner.finishLoadMore()
                 owner.finishPullToRefresh()
                 owner.updateSections(items: items)
-            }
+            })
             .disposed(by: self.disposeBag)
         
         return Output(
