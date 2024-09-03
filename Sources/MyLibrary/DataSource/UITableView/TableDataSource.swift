@@ -15,6 +15,10 @@ public typealias ConfigCell<T: Hashable, CELL: UITableViewCell> = ((_ item: T,_ 
 public typealias SELECTED_ITEM<T: Hashable> = ((T) -> Void)?
 public typealias SWIPE_CONFIGURATION<T: Hashable> = ((_ item: T,_ indexPath: IndexPath) -> UISwipeActionsConfiguration?)?
 
+public enum TableDataSourceAction {
+    case endLoading
+}
+
 /// An Object control a collection view datasource with T is Item and Cell is cell will be showed
 /// ```swift
 ///        var dataSource: TableDataSource<ItemModel, TableViewCell>!
@@ -89,13 +93,10 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     private let _items = PublishSubject<[SectionDataSourceModel<T>]>()
     private let _selectedItem = PublishSubject<T>()
     private let disposeBag = DisposeBag()
-    public enum Action {
-        case endLoading
-    }
     public struct Input {
         let items: Observable<[SectionDataSourceModel<T>]>
-        let action: Driver<Action>
-        public init(items: Observable<[SectionDataSourceModel<T>]>, action: Driver<Action>) {
+        let action: Driver<TableDataSourceAction>
+        public init(items: Observable<[SectionDataSourceModel<T>]>, action: Driver<TableDataSourceAction>) {
             self.items = items
             self.action = action
         }
@@ -112,7 +113,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         
         let getItems = input.items.share(replay: 1, scope: .whileConnected)
         
-        Driver<Action>.merge(
+        Driver<TableDataSourceAction>.merge(
             input.action,
             getItems.asDriver(onErrorJustReturn: [SectionDataSourceModel<T>]()).map({_ in .endLoading})
         )
