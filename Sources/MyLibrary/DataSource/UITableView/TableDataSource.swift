@@ -7,9 +7,8 @@
 
 import Foundation
 import UIKit
-#if canImport(RxSwift) && canImport(RxCocoa)
+#if canImport(RxSwift)
 import RxSwift
-import RxCocoa
 #endif
 public typealias ConfigCell<T: Hashable, CELL: UITableViewCell> = ((_ item: T,_ indexPath: IndexPath, _ cell: CELL) ->Void)
 public typealias SELECTED_ITEM<T: Hashable> = ((T) -> Void)?
@@ -95,8 +94,8 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     private let disposeBag = DisposeBag()
     public struct Input {
         let items: Observable<[SectionDataSourceModel<T>]>
-        let action: Driver<TableDataSourceAction>
-        public init(items: Observable<[SectionDataSourceModel<T>]>, action: Driver<TableDataSourceAction>) {
+        let action: Observable<TableDataSourceAction>
+        public init(items: Observable<[SectionDataSourceModel<T>]>, action: Observable<TableDataSourceAction>) {
             self.items = items
             self.action = action
         }
@@ -113,11 +112,12 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         
         let getItems = input.items.share(replay: 1, scope: .whileConnected)
         
-        Driver<TableDataSourceAction>.merge(
+        Observable<TableDataSourceAction>.merge(
             input.action,
-            getItems.asDriver(onErrorJustReturn: [SectionDataSourceModel<T>]()).map({_ in .endLoading})
+            getItems.map({_ in .endLoading})
         )
-        .drive(with: self) { owner, action in
+        .observe(on: MainScheduler.instance)
+        .subscribe(with: self) { owner, action in
                 switch action {
                 case .endLoading:
                     owner.finishLoadMore()
@@ -127,8 +127,8 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             .disposed(by: self.disposeBag)
         
         getItems
-            .asDriver(onErrorJustReturn: [])
-            .drive(with: self) { owner, items in
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, items in
                 owner.finishLoadMore()
                 owner.finishPullToRefresh()
                 owner.updateSections(items: items)
