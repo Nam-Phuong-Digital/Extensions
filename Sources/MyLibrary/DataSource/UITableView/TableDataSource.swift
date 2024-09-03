@@ -101,8 +101,8 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         }
     }
     public struct Output {
-        let selectedItem: Observable<T>
-        let scrollViewAction: Observable<DataSourceScrollViewConfiguration>
+        public let selectedItem: Observable<T>
+        public let scrollViewAction: Observable<DataSourceScrollViewConfiguration>
         public init(selectedItem: Observable<T>, scrollViewAction: Observable<DataSourceScrollViewConfiguration>) {
             self.selectedItem = selectedItem
             self.scrollViewAction = scrollViewAction
