@@ -85,22 +85,50 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     private var shouldReloadSections: [Int] = []
     
 #if canImport(RxSwift)
-    private let scrollViewAction: Observable<DataSourceScrollViewConfiguration>
     private let _scrollViewAction = PublishSubject<DataSourceScrollViewConfiguration>()
-    public let items: AnyObserver<[SectionDataSourceModel<T>]>
     private let _items = PublishSubject<[SectionDataSourceModel<T>]>()
-    public let selectedItem: Observable<T>
     private let _selectedItem = PublishSubject<T>()
     private let disposeBag = DisposeBag()
+    public enum Action {
+        case endLoading
+    }
     public struct Input {
-        let 
+        let items: Observable<[SectionDataSourceModel<T>]>
+        let action: Driver<Action>
     }
     public struct Output {
-        
+        let selectedItem: Observable<T>
+        let scrollViewAction: Observable<DataSourceScrollViewConfiguration>
     }
     public func transform(_ input: Input) -> Output {
+        
+        let getItems = input.items.share(replay: 1, scope: .whileConnected)
+        
+        Driver<Action>.merge(
+            input.action,
+            getItems.asDriver(onErrorJustReturn: [SectionDataSourceModel<T>]()).map({_ in .endLoading})
+        )
+        .drive(with: self) { owner, action in
+                switch action {
+                case .endLoading:
+                    owner.finishLoadMore()
+                    owner.finishPullToRefresh()
+                }
+            }
+            .disposed(by: self.disposeBag)
+        
+        getItems
+            .asDriver(onErrorJustReturn: [])
+            .drive(with: self) { owner, items in
+                owner.finishLoadMore()
+                owner.finishPullToRefresh()
+                owner.updateSections(items: items)
+            }
+            .disposed(by: self.disposeBag)
+        
         return Output(
-            
+            selectedItem: _selectedItem.asObserver(),
+            scrollViewAction: _scrollViewAction.asObserver()
         )
     }
 #endif
@@ -118,11 +146,6 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         itemSelected: SELECTED_ITEM<T> = nil,
         configuration: Configuration = .default
     ) {
-#if canImport(RxSwift)
-        selectedItem = _selectedItem.asObserver()
-        items = _items.asObserver()
-        scrollViewAction = _scrollViewAction.asObserver()
-#endif
         self.tableView = tableView
         self.configCell = configCell
         loadMoreIndicator = DataSourceScrollViewConfiguration.LoadMoreActivityIndicator(scrollView: self.tableView)
@@ -149,15 +172,6 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             tableView.sendSubviewToBack(refreshControl)
             refreshControl.addTarget(self, action: #selector(refreshAction), for: .valueChanged)
         }
-        
-#if canImport(RxSwift)
-        _items.asObservable()
-            .asDriver(onErrorJustReturn: [])
-            .drive(with: self) { owner, list in
-                owner.updateSections(items: list)
-            }
-            .disposed(by: self.disposeBag)
-#endif
     }
     
     @objc func refreshAction(_ sender: Any) {
