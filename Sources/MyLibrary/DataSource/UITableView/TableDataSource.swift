@@ -7,7 +7,7 @@
 
 import Foundation
 import UIKit
-#if canImport(RxSwift)
+#if canImport(RxSwift) && canImport(RxCocoa)
 import RxSwift
 import RxCocoa
 #endif
