@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 #if canImport(RxSwift)
 import RxSwift
+import RxCocoa
 #endif
 public typealias ConfigCell<T: Hashable, CELL: UITableViewCell> = ((_ item: T,_ indexPath: IndexPath, _ cell: CELL) ->Void)
 public typealias SELECTED_ITEM<T: Hashable> = ((T) -> Void)?
@@ -84,11 +85,24 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     private var shouldReloadSections: [Int] = []
     
 #if canImport(RxSwift)
-    public let items: AnyObservable<[SectionDataSourceModel<T>]>
-    private let _items = PublishSubject<T>()
+    private let scrollViewAction: Observable<DataSourceScrollViewConfiguration>
+    private let _scrollViewAction = PublishSubject<DataSourceScrollViewConfiguration>()
+    public let items: AnyObserver<[SectionDataSourceModel<T>]>
+    private let _items = PublishSubject<[SectionDataSourceModel<T>]>()
     public let selectedItem: Observable<T>
     private let _selectedItem = PublishSubject<T>()
     private let disposeBag = DisposeBag()
+    public struct Input {
+        let 
+    }
+    public struct Output {
+        
+    }
+    public func transform(_ input: Input) -> Output {
+        return Output(
+            
+        )
+    }
 #endif
     
     
@@ -105,8 +119,9 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         configuration: Configuration = .default
     ) {
 #if canImport(RxSwift)
-        selectingItem = _selectedItem.asObserver()
+        selectedItem = _selectedItem.asObserver()
         items = _items.asObserver()
+        scrollViewAction = _scrollViewAction.asObserver()
 #endif
         self.tableView = tableView
         self.configCell = configCell
@@ -147,6 +162,9 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     
     @objc func refreshAction(_ sender: Any) {
         self.scrollViewDelegating?(.pullToRefresh)
+#if canImport(RxSwift)
+        _scrollViewAction.onNext(.pullToRefresh)
+#endif
     }
    
     public func updateItems(_ items: [T], to section: Int = 0) {
@@ -328,18 +346,27 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         scrollViewDelegating?(.didScroll(scrollView: scrollView))
         // in case this closure have not implemented then it shouldn't executed
         if scrollViewDelegating != nil {
-            loadingMore {
+            loadingMore {[weak self] in guard let self else { return }
                 self.scrollViewDelegating?(.loadMore)
+#if canImport(RxSwift)
+                self._scrollViewAction.onNext(.loadMore)
+#endif
             }
         }
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollViewDelegating?(.didEndDecelerating(scrollView: scrollView))
+#if canImport(RxSwift)
+        self._scrollViewAction.onNext(.didEndDecelerating(scrollView: scrollView))
+#endif
     }
     
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollViewDelegating?(.didEndDragging(scrollView: scrollView))
+#if canImport(RxSwift)
+        self._scrollViewAction.onNext(.didEndDragging(scrollView: scrollView))
+#endif
     }
     
     private func loadingMore(closure: (() -> Void)?) {
