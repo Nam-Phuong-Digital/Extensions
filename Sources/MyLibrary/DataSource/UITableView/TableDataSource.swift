@@ -95,10 +95,18 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     public struct Input {
         let items: Observable<[SectionDataSourceModel<T>]>
         let action: Driver<Action>
+        public init(items: Observable<[SectionDataSourceModel<T>]>, action: Driver<Action>) {
+            self.items = items
+            self.action = action
+        }
     }
     public struct Output {
         let selectedItem: Observable<T>
         let scrollViewAction: Observable<DataSourceScrollViewConfiguration>
+        public init(selectedItem: Observable<T>, scrollViewAction: Observable<DataSourceScrollViewConfiguration>) {
+            self.selectedItem = selectedItem
+            self.scrollViewAction = scrollViewAction
+        }
     }
     public func transform(_ input: Input) -> Output {
         
