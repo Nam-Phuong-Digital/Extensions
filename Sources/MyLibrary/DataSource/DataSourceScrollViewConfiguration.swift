@@ -7,7 +7,7 @@
 
 import UIKit
 
-public enum DataSourceScrollViewConfiguration {
+public enum DataSourceScrollViewConfiguration: Equatable {
     case didScroll(scrollView: UIScrollView)
     case didEndDecelerating(scrollView: UIScrollView)
     case didEndDragging(scrollView: UIScrollView)
