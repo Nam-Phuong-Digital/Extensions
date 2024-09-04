@@ -41,6 +41,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     
     public class Configuration {
         var havePullToRefresh: Bool = false
+        var haveLoadMore: Bool = false
         var leadingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var trailingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var textNoData: String?
@@ -54,12 +55,14 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
         ///   - viewNoData: View to display when there are no items. This view will be shown with higher priority than textNoData.
         public init(
             havePullToRefresh: Bool = false,
+            haveLoadMore: Bool = false,
             leadingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil,
             trailingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil,
             textNoData: String? = nil,
             viewNoData: UIView? = nil
         ) {
             self.havePullToRefresh = havePullToRefresh
+            self.haveLoadMore = haveLoadMore
             self.leadingSwipeActionsConfiguration = leadingSwipeActionsConfiguration
             self.trailingSwipeActionsConfiguration = trailingSwipeActionsConfiguration
             self.textNoData = textNoData
@@ -368,7 +371,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDelegating?(.didScroll(scrollView: scrollView))
         // in case this closure have not implemented then it shouldn't executed
-        if scrollViewDelegating != nil {
+        if configuration.haveLoadMore {
             loadingMore {[weak self] in guard let self else { return }
                 self.scrollViewDelegating?(.loadMore)
 #if canImport(RxSwift)
