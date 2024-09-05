@@ -9,6 +9,42 @@ import UIKit
 
 public extension UIButton {
     
+    func outline(title:String, bgColor: UIColor? = UIColor("#006783"), titleColor:UIColor = .white, disabledColor:UIColor = UIColor("#f6f6f7"), insets: UIEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15), font: UIFont? = nil, borderColor: UIColor? = nil) {
+        if #available(iOS 15.0, *) {
+            configuration = .plain()
+            configurationUpdateHandler = {btn in
+                btn.configuration?.title = title
+                btn.configuration?.baseForegroundColor = titleColor
+                var bg = UIBackgroundConfiguration.clear()
+                bg.backgroundColor = btn.isEnabled ? bgColor : disabledColor
+                btn.configuration?.background = bg
+                btn.configuration?.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: insets.left, bottom: insets.bottom, trailing: insets.right)
+                btn.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ income in
+                    var temp = income
+                    if let font {
+                        temp.font = font
+                    } else {
+                        temp.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+                    }
+                    temp.foregroundColor = titleColor
+                    return temp
+                })
+            }
+        } else {
+            titleLabel?.font = .systemFont(ofSize: 17, weight: .bold)
+            setTitle(title, for: UIControl.State())
+            setTitleColor(titleColor, for: UIControl.State())
+            backgroundColor = bgColor
+            contentEdgeInsets = insets
+            setBackgroundImage(bgColor?.imageRepresentation, for: UIControl.State.normal)
+            setBackgroundImage(UIColor("#f6f6f7").imageRepresentation, for: UIControl.State.disabled)
+        }
+        if let borderColor {
+            layer.borderWidth = 1
+            layer.borderColor = borderColor.cgColor
+        }
+    }
+    
     func setBackground(normal:UIImage?, highlighted:UIImage?, color:UIColor? = nil) {
         if #available(iOS 15.0, *) {
             var configure = UIButton.Configuration.filled()
@@ -84,7 +120,7 @@ public extension UIButton {
                 btn.configuration?.contentInsets = NSDirectionalEdgeInsets(top: insets.top, leading: insets.left, bottom: insets.bottom, trailing: insets.right)
                 btn.configuration?.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer({ income in
                     var temp = income
-                    temp.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+                    temp.font = UIFont.systemFont(ofSize: 16, weight: .bold)
                     temp.foregroundColor = titleColor
                     return temp
                 })
