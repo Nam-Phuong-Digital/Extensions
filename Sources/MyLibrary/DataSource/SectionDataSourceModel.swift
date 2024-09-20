@@ -11,10 +11,14 @@ public var TEST_OLD_VERSION = false
 
 public class SectionDataSourceModel<T: Hashable>: Hashable {
     public static func == (lhs: SectionDataSourceModel, rhs: SectionDataSourceModel) -> Bool {
-        rhs.id == lhs.id
+        rhs.id == lhs.id &&
+        lhs._isExpand == rhs._isExpand &&
+        lhs.items == rhs.items
     }
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
+        hasher.combine(_isExpand)
+        hasher.combine(items.compactMap({ $0.hashValue }))
     }
     
     public var _isExpand: Bool = true

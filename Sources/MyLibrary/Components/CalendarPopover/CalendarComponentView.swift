@@ -131,9 +131,9 @@ public class CalendarComponentView: UIView {
         self.collectionView.register(DayComponentCell.nib(bundle: .module), forCellWithReuseIdentifier: DayComponentCell.identifier)
 
         if #available(iOS 13, *) {
-            dataSource = UICollectionViewDiffableDataSource<Int, AnyHashable>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+            dataSource = UICollectionViewDiffableDataSource<Int, CEVDate>(collectionView: self.collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DayComponentCell.identifier, for: indexPath) as! DayComponentCell
-                let item = itemIdentifier as! CEVDate
+                let item = itemIdentifier
                 let type = self.delegate?.CalendarComponentView_getIcon(for: item.date)
                 cell.show(
                     config: .init(
@@ -209,7 +209,7 @@ public class CalendarComponentView: UIView {
     private func updateDataSource() {
         if #available(iOS 13, *) {
             self.updateDataSoure {[unowned self] in
-                var snap = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+                var snap = NSDiffableDataSourceSnapshot<Int, CEVDate>()
                 snap.appendSections(self.menuMonths.enumerated().compactMap({$0.offset}))
                 self.menuMonths.enumerated().forEach { e in
                     snap.appendItems(e.element.days, toSection: e.offset)
@@ -323,8 +323,7 @@ extension CalendarComponentView: UICollectionViewDelegateFlowLayout, UICollectio
             if let selectionDate {
                 needreload.append(selectionDate)
             }
-            let item:CEVDate = self.dataSource?.itemIdentifier(for: indexPath) as! CEVDate
-            guard !item.disabled else {
+            guard let item:CEVDate = self.dataSource?.itemIdentifier(for: indexPath), !item.disabled else {
                 self.onChangeDate?(nil)
                 return
             }
@@ -444,8 +443,8 @@ extension CalendarComponentView: ButtonScrollTabViewDelegate {
 
 @available(iOS 13,*)
 private extension CalendarComponentView {
-    var dataSource: UICollectionViewDiffableDataSource<Int,AnyHashable>? {
-        get {return _dataSource as? UICollectionViewDiffableDataSource<Int,AnyHashable>}
+    var dataSource: UICollectionViewDiffableDataSource<Int,CEVDate>? {
+        get {return _dataSource as? UICollectionViewDiffableDataSource<Int,CEVDate>}
         set {_dataSource = newValue}
     }
     
@@ -461,20 +460,20 @@ private extension CalendarComponentView {
         return dataSource?.itemIdentifier(for: indexPath)
     }
     
-    func updateDataSoure(items:[AnyHashable], section:Int) {
+    func updateDataSoure(items:[CEVDate], section:Int) {
         guard let dataSourceCollection = dataSource else {return}
-        var snapShot = NSDiffableDataSourceSnapshot<Int,AnyHashable>()
+        var snapShot = NSDiffableDataSourceSnapshot<Int,CEVDate>()
         snapShot.appendSections([section])
         snapShot.appendItems(items)
         dataSourceCollection.apply(snapShot, animatingDifferences: false)
     }
 
-    func updateDataSoure(with snapShot:@escaping ()->NSDiffableDataSourceSnapshot<Int,AnyHashable>) {
+    func updateDataSoure(with snapShot:@escaping ()->NSDiffableDataSourceSnapshot<Int,CEVDate>) {
         guard let dataSourceCollection = dataSource else {return}
         dataSourceCollection.apply(snapShot(), animatingDifferences: false)
     }
     
-    func reload(rows:[AnyHashable]) {
+    func reload(rows:[CEVDate]) {
         var snap = dataSource?.snapshot()
         snap?.reloadItems(rows)
         if let snap = snap {

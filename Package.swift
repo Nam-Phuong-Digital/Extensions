@@ -18,7 +18,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/SDWebImage/SDWebImage", from: "5.18.10"),
         .package(url: "https://github.com/apple/swift-algorithms.git", from: "1.2.0"),
-        .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.6")
+        .package(url: "https://github.com/apple/swift-collections.git", from: "1.0.6"),
+        .package(url: "https://github.com/ReactiveX/RxSwift", .upToNextMajor(from: "6.7.1"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,7 +29,8 @@ let package = Package(
             dependencies: [
                 .product(name: "SDWebImage", package: "SDWebImage"),
                 .product(name: "Algorithms",package: "swift-algorithms"),
-                .product(name: "Collections",package: "swift-collections")
+                .product(name: "Collections",package: "swift-collections"),
+                .product(name: "RxCocoa", package: "RxSwift")
             ]
         ),
         .testTarget(
