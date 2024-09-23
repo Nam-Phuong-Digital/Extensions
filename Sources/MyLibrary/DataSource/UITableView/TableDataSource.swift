@@ -41,7 +41,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     
     public class Configuration {
         var havePullToRefresh: Bool = false
-        var haveLoadMore: Bool = true
+        var haveLoadMore: Bool = false
         var leadingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var trailingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var textNoData: String?
@@ -371,7 +371,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDelegating?(.didScroll(scrollView: scrollView))
         // in case this closure have not implemented then it shouldn't executed
-        if configuration.haveLoadMore {
+        if configuration.haveLoadMore || self.scrollViewDelegating != nil {
             loadingMore {[weak self] in guard let self else { return }
                 self.scrollViewDelegating?(.loadMore)
 #if canImport(RxSwift)
