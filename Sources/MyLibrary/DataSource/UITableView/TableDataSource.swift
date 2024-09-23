@@ -41,7 +41,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
     
     public class Configuration {
         var havePullToRefresh: Bool = false
-        var haveLoadMore: Bool = false
+        var haveLoadMore: Bool = true
         var leadingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var trailingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var textNoData: String?
