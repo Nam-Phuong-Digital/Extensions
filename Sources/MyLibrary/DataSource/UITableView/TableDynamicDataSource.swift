@@ -134,6 +134,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
     
     var configCell: ((_ item: T,_ indexPath: IndexPath,_ tableView: UITableView) -> UITableViewCell)
     var configHeaderFooter: ((_ sectionModel: SectionDataSourceModel<T>,_ section: Int,_ tableView: UITableView, _ kind: SupplementaryType) -> UITableViewHeaderFooterView?)?
+    private var heightForCell: ((_ indexPath: IndexPath,_ tableView: UITableView) -> CGFloat?)?
     
     private let refreshControl: UIRefreshControl = UIRefreshControl()
     private let loadMoreIndicator: DataSourceScrollViewConfiguration.LoadMoreActivityIndicator
@@ -161,6 +162,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         configCell:@escaping ((_ item: T,_ indexPath: IndexPath,_ tableView: UITableView) -> UITableViewCell),
         configHeaderFooter: ((_ sectionModel: SectionDataSourceModel<T>,_ section: Int,_ tableView: UITableView, _ kind: SupplementaryType) -> UITableViewHeaderFooterView?)? = nil,
         itemSelected: SELECTED_ITEM<T> = nil,
+        heightForCell: ((_ indexPath: IndexPath,_ tableView: UITableView) -> CGFloat?)? = nil,
         configuration: Configuration = .default
     ) {
         self.tableView = tableView
@@ -169,6 +171,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         self.configuration = configuration
         self.configCell = configCell
         self.configHeaderFooter = configHeaderFooter
+        self.heightForCell = heightForCell
         super.init()
         cellsType.forEach({ self.register(for: $0) })
         sectionsType.forEach({ self.register(for: $0) })
@@ -429,6 +432,10 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         }
         let item = sections[indexPath.section].items[indexPath.item]
         return configCell(item, indexPath, tableView)
+    }
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        self.heightForCell?(indexPath, tableView) ?? UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
