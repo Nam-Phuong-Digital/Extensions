@@ -205,13 +205,13 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         self.scrollViewDelegating?(.pullToRefresh)
     }
    
-    public func updateItems(_ items: [T], to section: Int = 0) {
+    public func updateItems(_ items: [T], to section: Int = 0, animated: Bool = true) {
         if self.sections.isEmpty /*&& !(self is TableSectionsDataSource)*/ {
             self.sections = [SectionDataSourceModel(id: "", title: "", items: [])]
         }
         guard section < self.sections.count else {return}
         self.sections[section].updateItems(items)
-        reloadData()
+        reloadData(animated)
     }
     
     public func appendItems(items: [T], to section: Int = 0) {
@@ -329,7 +329,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         reloadData()
     }
     
-    func reloadData() {
+    func reloadData(_ animated: Bool = true) {
         if self.sections.flatMap({ $0.items }).isEmpty {
             self.showNoData()
         } else {
@@ -347,7 +347,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
                 snap.appendItems(section.items, toSection: offset)
             }
             DispatchQueue.main.async {
-                self.getDataSource().apply(snap)
+                self.getDataSource().apply(snap, animatingDifferences: animated)
             }
         } else {
             DispatchQueue.main.async {
