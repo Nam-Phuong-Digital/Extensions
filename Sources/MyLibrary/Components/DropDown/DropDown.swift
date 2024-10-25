@@ -56,6 +56,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         self.items = items
         self.current = current
         self.result = result
+        self.sourceView = sourceView
         super.init(nibName: "DropDown", bundle: .module)
         self.modalPresentationStyle = .popover
         if let pop = self.popoverPresentationController {
@@ -106,7 +107,12 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
             }
         )
         
-        let width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
+        let width: CGFloat
+        if let sourceView = sourceView as? UIView {
+            width = max(300, sourceView.frame.width)
+        } else {
+            width = max(300, (popoverPresentationController?.sourceRect.width ?? 0) - 30)
+        }
         let max = UIScreen.bounceWindow.height * 0.8
         var height:CGFloat = CGFloat(items.count * 50)
         if let nv = self.navigationController {
