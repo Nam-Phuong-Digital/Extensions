@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 public protocol DropDownItem {
     var content: String { get }
@@ -39,7 +41,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
     struct Item: Hashable {
         let title: String
     }
-    
+    private let disposeBag = DisposeBag()
     @IBOutlet weak var tableView: UITableView!
     private var sourceView:Any?
     private let items:[T]
@@ -122,6 +124,21 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
         preferredContentSize = CGSize(width: width, height: height)
         
         ds.updateItems(items)
+        
+        tableView.rx.observe(CGSize.self, #keyPath(UIScrollView.contentSize))
+            .asDriver(onErrorJustReturn: nil)
+            .map { $0?.height }
+            .filter { $0 != nil }
+            .map { $0! }
+            .distinctUntilChanged()
+            .drive(with: self, onNext: { s, height in
+                s.preferredContentSize =
+                CGSize(
+                    width: s.preferredContentSize.width,
+                    height: height > s.preferredContentSize.height ? height : s.preferredContentSize.height
+                )
+            })
+            .disposed(by: disposeBag)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
