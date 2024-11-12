@@ -108,6 +108,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
                 self.dismiss(animated: true)
             }
         )
+        tableView.contentInset = .zero
         
         let width: CGFloat
         if let sourceView = sourceView as? UIView {
