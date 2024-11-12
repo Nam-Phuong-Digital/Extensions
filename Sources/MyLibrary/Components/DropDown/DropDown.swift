@@ -135,7 +135,7 @@ fileprivate class DropDown<T: Hashable & DropDownItem>: UIViewController, UIPopo
                 s.preferredContentSize =
                 CGSize(
                     width: s.preferredContentSize.width,
-                    height: height > s.preferredContentSize.height ? height : s.preferredContentSize.height
+                    height: height
                 )
             })
             .disposed(by: disposeBag)
