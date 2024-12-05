@@ -38,6 +38,8 @@ public class MLCheckBox: UIControl {
     @IBInspectable
     public var alignment: UIStackView.Alignment = .center
     
+    public var object: Any?
+    
     public init(
         normalImage: UIImage?,
         selectedImage: UIImage?,
