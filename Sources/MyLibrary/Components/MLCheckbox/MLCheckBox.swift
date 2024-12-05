@@ -23,6 +23,18 @@ public class MLCheckBox: UIControl {
         }
     }
     
+    public var font: UIFont = .systemFont(ofSize: 16) {
+        didSet {
+            titleLabel.font = font
+        }
+    }
+    
+    public var textColor: UIColor = .black {
+        didSet {
+            titleLabel.textColor = textColor
+        }
+    }
+    
     @IBInspectable
     public var alignment: UIStackView.Alignment = .center
     
@@ -58,30 +70,31 @@ public class MLCheckBox: UIControl {
         stack.axis = .horizontal
         stack.alignment = alignment
         stack.distribution = .fill
-        stack.spacing = 10
+        stack.spacing = 8
         
         stack.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stack)
         
-        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.font = font
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .left
+        titleLabel.textColor = textColor
         
         imageView.image = normalImage
         imageView.highlightedImage = selectedImage
         imageView.addConstraints([
-            .init(item: imageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 24),
+            .init(item: imageView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 16),
             .init(item: imageView, attribute: .width, relatedBy: .equal, toItem: imageView, attribute: .height, multiplier: 1, constant: 0)
         ])
         
         stack.addArrangedSubview(imageView)
         stack.addArrangedSubview(titleLabel)
         
-        let height = self.heightAnchor.constraint(greaterThanOrEqualToConstant: 40)
-        let top = NSLayoutConstraint(item: stack, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: self, attribute: .top, multiplier: 1, constant: 10)
-        let leading = NSLayoutConstraint(item: stack, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 15)
-        let trailing = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: stack, attribute: .trailing, multiplier: 1, constant: 15)
-        let bottom = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .greaterThanOrEqual, toItem: stack, attribute: .trailing, multiplier: 1, constant: 10)
+        let height = self.heightAnchor.constraint(greaterThanOrEqualToConstant: 22)
+        let top = NSLayoutConstraint(item: stack, attribute: .top, relatedBy: .greaterThanOrEqual, toItem: self, attribute: .top, multiplier: 1, constant: 3)
+        let leading = NSLayoutConstraint(item: stack, attribute: .leading, relatedBy: .equal, toItem: self, attribute: .leading, multiplier: 1, constant: 0)
+        let trailing = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .equal, toItem: stack, attribute: .trailing, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: self, attribute: .trailing, relatedBy: .greaterThanOrEqual, toItem: stack, attribute: .trailing, multiplier: 1, constant: 3)
         let constraint = [top, leading, trailing, bottom, height]
         constraint.forEach{ $0.priority = UILayoutPriority(999) }
         self.addConstraints(constraint)
@@ -99,7 +112,6 @@ public class MLCheckBox: UIControl {
         imageView.tintColor = color
         imageView.image = normalImage?.withRenderingMode(.alwaysTemplate).tint(with: color)
         imageView.highlightedImage = selectedImage?.withRenderingMode(.alwaysTemplate).tint(with: color)
-        titleLabel.textColor = color
     }
     
     public func setTitle(_ text: String?) {
