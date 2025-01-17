@@ -17,6 +17,7 @@ public enum DataSourceScrollViewConfiguration {
     case didEndDisplayFooter(section: Int, view: UIView)
     case loadMore
     case pullToRefresh
+    case shoudLoadMore((Bool) -> Void)
     
     public class LoadMoreActivityIndicator {
 

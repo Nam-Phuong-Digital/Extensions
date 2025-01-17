@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 public extension UITableView {
     func dequeue<T: UITableViewCell>(_ cellType: T.Type) -> T {
@@ -146,6 +147,11 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
     
     private var shouldReloadSections: [Int] = []
     
+    private let _items = PublishSubject<[SectionDataSourceModel<T>]>()
+    public var items: AnyObserver<[SectionDataSourceModel<T>]> { return _items.asObserver() }
+    
+    private let disposeBag = DisposeBag()
+    
     /// Declare a data source with dynamic cells and dynamic header and footer views.
     /// - Parameters:
     ///   - tableView: The tableView is applied.
@@ -199,6 +205,15 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
             refreshControl.tintColor = Resource.Color.primary
             refreshControl.addTarget(self, action: #selector(refreshAction), for: .valueChanged)
         }
+        
+        _items
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, items in
+                owner.finishLoadMore()
+                owner.finishPullToRefresh()
+                owner.updateSections(items: items)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     @objc func refreshAction(_ sender: Any) {
@@ -381,9 +396,13 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         scrollViewDelegating?(.didScroll(scrollView: scrollView))
         // in case this closure have not implemented then it shouldn't executed
         if scrollViewDelegating != nil {
-            loadingMore {
-                self.scrollViewDelegating?(.loadMore)
-            }
+            self.scrollViewDelegating?(.shoudLoadMore({ [weak self] should in
+                if should {
+                    self?.loadingMore { [weak self] in
+                        self?.scrollViewDelegating?(.loadMore)
+                    }
+                }
+            }))
         }
     }
     
