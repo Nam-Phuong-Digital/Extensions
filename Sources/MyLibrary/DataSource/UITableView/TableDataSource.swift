@@ -93,7 +93,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
 #if canImport(RxSwift)
     private let _scrollViewAction = PublishSubject<DataSourceScrollViewConfiguration>()
     private let _items = PublishSubject<[SectionDataSourceModel<T>]>()
-    public var items: AnyObserver<[SectionDataSourceModel<T>]> { return _items.asObservable() }
+    public var items: AnyObserver<[SectionDataSourceModel<T>]> { return _items.asObserver() }
     private let _selectedItem = PublishSubject<T>()
     private let disposeBag = DisposeBag()
     public struct Input {
