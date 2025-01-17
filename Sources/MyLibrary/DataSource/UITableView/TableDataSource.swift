@@ -185,6 +185,15 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
             tableView.sendSubviewToBack(refreshControl)
             refreshControl.addTarget(self, action: #selector(refreshAction), for: .valueChanged)
         }
+        
+        _items
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self, onNext: { owner, items in
+                owner.finishLoadMore()
+                owner.finishPullToRefresh()
+                owner.updateSections(items: items)
+            })
+            .disposed(by: self.disposeBag)
     }
     
     @objc func refreshAction(_ sender: Any) {
