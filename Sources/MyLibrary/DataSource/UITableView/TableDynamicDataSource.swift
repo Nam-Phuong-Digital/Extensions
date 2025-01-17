@@ -194,6 +194,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0 // Remove the padding at the top for UITableView with a style different from plain.
         }
+        tableView.tableHeaderView = UIView(frame: .init(origin: .zero, size: CGSize(width: 0, height: Double.leastNonzeroMagnitude)))
         tableView.contentInsetAdjustmentBehavior = .scrollableAxes // Prevent the padding at the top from increasing when pulling to refresh.
         
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
