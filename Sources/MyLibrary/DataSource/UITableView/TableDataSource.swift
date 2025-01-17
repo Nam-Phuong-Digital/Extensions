@@ -93,6 +93,7 @@ public class TableDataSource<T: Hashable, CELL: UITableViewCell>:NSObject, UITab
 #if canImport(RxSwift)
     private let _scrollViewAction = PublishSubject<DataSourceScrollViewConfiguration>()
     private let _items = PublishSubject<[SectionDataSourceModel<T>]>()
+    public var items: Observable<[SectionDataSourceModel<T>]> { return _items.asObservable() }
     private let _selectedItem = PublishSubject<T>()
     private let disposeBag = DisposeBag()
     public struct Input {
@@ -523,12 +524,5 @@ public extension TableDataSource {
             configCell(itemIdentifier, indexPath, cell)
             return cell
         })
-    }
-}
-
-@available(iOS 13,*)
-public class SwipableDataSource<T: Hashable>: UITableViewDiffableDataSource<Int, T> {
-    public override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
     }
 }

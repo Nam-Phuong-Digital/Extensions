@@ -555,3 +555,9 @@ extension TableDynamicDataSource {
         })
     }
 }
+@available(iOS 13,*)
+public class SwipableDataSource<T: Hashable>: UITableViewDiffableDataSource<Int, T> {
+    public override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+}
