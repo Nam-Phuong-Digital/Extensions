@@ -25,7 +25,7 @@ public enum DataSourceScrollViewConfiguration {
         private let spacingFromLastCellWhenLoadMoreActionStart: CGFloat
         private weak var activityIndicatorView: UIActivityIndicatorView?
         private weak var scrollView: UIScrollView?
-        private var originalContentInset:UIEdgeInsets = .zero
+        var originalContentInset:UIEdgeInsets = .zero
         
         private var defaultY: CGFloat {
             guard let height = scrollView?.contentSize.height else { return 0.0 }

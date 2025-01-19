@@ -102,6 +102,7 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         var trailingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil
         var textNoData: String?
         var viewNoData: UIView?
+        var contentInsert: UIEdgeInsets
         
         /// Set up some advanced features for the tableView data source.
         /// - Parameters:
@@ -114,13 +115,15 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
             leadingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil,
             trailingSwipeActionsConfiguration: SWIPE_CONFIGURATION<T> = nil,
             textNoData: String? = nil,
-            viewNoData: UIView? = nil
+            viewNoData: UIView? = nil,
+            contentInset: UIEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
         ) {
             self.havePullToRefresh = havePullToRefresh
             self.leadingSwipeActionsConfiguration = leadingSwipeActionsConfiguration
             self.trailingSwipeActionsConfiguration = trailingSwipeActionsConfiguration
             self.textNoData = textNoData
             self.viewNoData = viewNoData
+            self.contentInsert = contentInset
         }
         
         public static var `default`: Configuration {
@@ -197,7 +200,8 @@ public class TableDynamicDataSource<T: Hashable> :NSObject, UITableViewDelegate,
         tableView.tableHeaderView = UIView(frame: .init(origin: .zero, size: CGSize(width: 0, height: Double.leastNonzeroMagnitude)))
         tableView.contentInsetAdjustmentBehavior = .scrollableAxes // Prevent the padding at the top from increasing when pulling to refresh.
         
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 150, right: 0)
+        tableView.contentInset = configuration.contentInsert
+        loadMoreIndicator.originalContentInset = configuration.contentInsert
         
         // setup pull to refresh
         if configuration.havePullToRefresh {
